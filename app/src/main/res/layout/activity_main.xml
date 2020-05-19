@@ -35,5 +35,11 @@
             android:textSize="30sp" />
     </androidx.appcompat.widget.Toolbar>
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
 
 </LinearLayout>
