@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                Log.d("Check", user.getName());
                 Glide.with(MainActivity.this).load(user.getImageURL()).into(profile_pic); //set/resize image of profile pic
 
             }

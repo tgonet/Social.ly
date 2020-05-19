@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Social.ly</string>
+
+    <string-array name="Sports">
+        <item>Home</item>
+        <item>Work</item>
+        <item>Sports</item>
+        <item>Food</item>
+        <item>Others</item>
+    </string-array>
 </resources>
