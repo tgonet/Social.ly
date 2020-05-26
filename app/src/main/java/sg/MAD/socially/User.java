@@ -8,14 +8,24 @@ public class User {
     String NickName;
     String DOB;
     String Name;
+    String ShortDesc;
 
-    public User(String id, String username, String imageURL, String nickName, String DOB, String name) {
+
+    public User(String id, String username, String imageURL, String nickName, String DOB, String name, String shortDesc) {
         Id = id;
         Username = username;
         ImageURL = imageURL;
         NickName = nickName;
         this.DOB = DOB;
         Name = name;
+        ShortDesc = shortDesc;
+    }
+    public String getShortDesc() {
+        return ShortDesc;
+    }
+
+    public void setShortDesc(String shortDesc) {
+        ShortDesc = shortDesc;
     }
 
     public String getNickName() {
