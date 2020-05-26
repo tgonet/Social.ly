@@ -139,7 +139,7 @@ public class Register2 extends AppCompatActivity {
                     HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put("id", userid);
                     hashMap.put("Name", Name);
-                    hashMap.put("Nickname",Nickname);
+                    hashMap.put("NickName",Nickname);
                     hashMap.put("Password",Password);
                     hashMap.put("Email", Email);
                     hashMap.put("DOB",DOB);
