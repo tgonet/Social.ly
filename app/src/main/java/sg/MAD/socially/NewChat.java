@@ -71,8 +71,8 @@ public class NewChat extends AppCompatActivity {
                         }
 
                     }
-                    adapter = new UserAdapter(FriendList,getBaseContext());
-                    rv.setAdapter(adapter);
+                    //adapter = new UserAdapter(FriendList,getBaseContext());
+                    //rv.setAdapter(adapter);
                 }
 
                 @Override
