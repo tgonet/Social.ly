@@ -9,9 +9,12 @@ public class User {
     String DOB;
     String Name;
     String ShortDesc;
+    String Email;
+    String Friends;
 
 
-    public User(String id, String username, String imageURL, String nickName, String DOB, String name, String shortDesc) {
+    public User(String id, String username, String imageURL, String nickName, String DOB,
+                String name, String shortDesc, String email, String friends) {
         Id = id;
         Username = username;
         ImageURL = imageURL;
@@ -19,13 +22,32 @@ public class User {
         this.DOB = DOB;
         Name = name;
         ShortDesc = shortDesc;
-    }
-    public String getShortDesc() {
-        return ShortDesc;
+        Email = email;
+        Friends = friends;
     }
 
-    public void setShortDesc(String shortDesc) {
-        ShortDesc = shortDesc;
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setUsername(String username) {
+        Username = username;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
     }
 
     public String getNickName() {
@@ -52,30 +74,27 @@ public class User {
         Name = name;
     }
 
-    public User(){}
-
-    public String getId() {
-        return Id;
+    public String getShortDesc() {
+        return ShortDesc;
     }
 
-    public void setId(String id) {
-        Id = id;
+    public void setShortDesc(String shortDesc) {
+        ShortDesc = shortDesc;
     }
 
-    public String getUsername() {
-        return Username;
+    public String getEmail() {
+        return Email;
     }
 
-    public void setUsername(String username) {
-        Username = username;
+    public void setEmail(String email) {
+        Email = email;
     }
 
-    public String getImageURL() {
-        return ImageURL;
+    public String getFriends() {
+        return Friends;
     }
 
-    public void setImageURL(String imageURL) {
-        ImageURL = imageURL;
+    public void setFriends(String friends) {
+        Friends = friends;
     }
-
 }

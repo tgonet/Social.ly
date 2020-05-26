@@ -1,6 +1,7 @@
 package sg.MAD.socially.ui.Friends;
 
 import android.os.Bundle;
+import android.service.autofill.Dataset;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import sg.MAD.socially.R;
 import sg.MAD.socially.User;
@@ -56,4 +59,28 @@ public class FriendsFragment extends Fragment {
 
         return root;
     }
+
+    /*public void GenerateFindFriends(){
+
+        ArrayList<User> FriendList = new ArrayList<>();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userid = user.getUid();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                /*for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        })
+    } */
+
 }

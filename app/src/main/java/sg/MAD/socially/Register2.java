@@ -150,6 +150,7 @@ public class Register2 extends AppCompatActivity {
                     hashMap.put("ShortDesc",ShortDesc);
                     hashMap.put("Interest",Interest);
                     hashMap.put("Friends", "");
+                    //hashMap.put("PendingFriends", "");
 
 
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
