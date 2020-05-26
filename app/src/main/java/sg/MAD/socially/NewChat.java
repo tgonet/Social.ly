@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class NewChat extends AppCompatActivity {
 
     DatabaseReference reference;
-    ArrayList<User>User;
     FirebaseUser user;
-    ArrayList<User> UsersList;
+    ArrayList<User> FriendList;
+    ArrayList<String> FriendListID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +30,23 @@ public class NewChat extends AppCompatActivity {
         setContentView(R.layout.activity_new_chat);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        UsersList = new ArrayList<>();
+        FriendList = new ArrayList<>();
 
         Display();
 
-        User = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Friends");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User User = dataSnapshot.getValue(User.class);
-                //ArrayList<String> friendlist = User;
+                FriendListID = new ArrayList<>();
+                String friendliststring = dataSnapshot.getKey();
+                if(friendliststring.length() > 2){
+                    String[] friendList = friendliststring.split(",");
+                    for(String i : friendList){
+                        FriendListID.add(i);
+                    }
+                }
             }
 
             @Override
@@ -49,32 +54,33 @@ public class NewChat extends AppCompatActivity {
 
             }
         });
+        if(FriendListID.size() != 0){
+            reference = FirebaseDatabase.getInstance().getReference("Users");
 
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    FriendList.clear();
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User.clear();
-
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        User user = snapshot.getValue(User.class);
 
 
-                    if(friendList.contains(user.getId())){
-                        UsersList.add(user);
+                        if(FriendListID.contains(user.getId())){
+                            FriendList.add(user);
+                        }
+
                     }
+                    adapter = new UserAdapter(FriendList,getBaseContext());
+                    rv.setAdapter(adapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-                adapter = new UserAdapter(UsersList,getBaseContext());
-                rv.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+            });
+        }
     }
 
     public void Display() {
