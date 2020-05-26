@@ -81,6 +81,7 @@ public class Register2 extends AppCompatActivity {
             h.setSelected(false);
             listArray0.add(h);
         }
+        Interest = "";
 
 /***
  * -1 is no by default selection
@@ -95,8 +96,11 @@ public class Register2 extends AppCompatActivity {
                 for (int i = 0; i < items.size(); i++) {
                     if (items.get(i).isSelected()) {
                         Log.i("Check", i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
-                        Interest += items.get(i).getName() + " ";
+                        Interest += items.get(i).getName() + ",";
                     }
+                }
+                if (Interest != ""){
+                    Interest = Interest.substring(0, Interest.length() - 1);
                 }
             }
         });
@@ -145,7 +149,7 @@ public class Register2 extends AppCompatActivity {
                     hashMap.put("DOB",DOB);
                     hashMap.put("ShortDesc",ShortDesc);
                     hashMap.put("Interest",Interest);
-                    //hashMap.put("imageURL","default");
+                    hashMap.put("Friends", "");
 
 
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
