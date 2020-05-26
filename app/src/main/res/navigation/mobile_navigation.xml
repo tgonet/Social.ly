@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/navigation_Friend"
-        android:name="sg.MAD.socially.ui.home.HomeFragment"
+        android:name="sg.MAD.socially.ui.Friends.FriendsFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="sg.MAD.socially.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_explore"
+        android:name="sg.MAD.socially.ui.Explore.ExploreFragment"
+        android:label="@string/title_explore"
+        tools:layout="@layout/fragment_explore" />
 
     <fragment
         android:id="@+id/navigation_notifications"

@@ -13,8 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"/>
+        <activity android:name=".NewChat"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity android:name=".Conversation" />
+        <activity android:name=".Message" />
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".Register2"
             android:parentActivityName=".Register" />

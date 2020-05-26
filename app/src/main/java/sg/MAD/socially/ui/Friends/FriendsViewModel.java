@@ -1,14 +1,14 @@
-package sg.MAD.socially.ui.home;
+package sg.MAD.socially.ui.Friends;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class FriendsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public FriendsViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

@@ -1,4 +1,4 @@
-package sg.MAD.socially.ui.dashboard;
+package sg.MAD.socially.ui.Explore;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import sg.MAD.socially.R;
 
-public class DashboardFragment extends Fragment {
+public class ExploreFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private ExploreViewModel exploreViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        exploreViewModel =
+                ViewModelProviders.of(this).get(ExploreViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_explore, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        exploreViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
