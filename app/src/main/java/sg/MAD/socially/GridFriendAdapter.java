@@ -51,7 +51,7 @@ public class GridFriendAdapter extends RecyclerView.Adapter<GridFriendAdapter.My
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final User user = FriendsList.get(position);
-        holder.friendname.setText(user.getUsername());
+        holder.friendname.setText(user.getName());
         if(user.getImageURL().equals("default")){
             holder.friendpic.setImageResource(R.mipmap.ic_launcher);
         }

@@ -3,7 +3,6 @@ package sg.MAD.socially;
 public class User {
 
     String Id;
-    String Username;
     String ImageURL;
     String NickName;
     String DOB;
@@ -13,10 +12,9 @@ public class User {
     String Friends;
 
 
-    public User(String id, String username, String imageURL, String nickName, String DOB,
-                String name, String shortDesc, String email, String friends) {
+
+    public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email, String friends) {
         Id = id;
-        Username = username;
         ImageURL = imageURL;
         NickName = nickName;
         this.DOB = DOB;
@@ -32,14 +30,6 @@ public class User {
 
     public void setId(String id) {
         Id = id;
-    }
-
-    public String getUsername() {
-        return Username;
-    }
-
-    public void setUsername(String username) {
-        Username = username;
     }
 
     public String getImageURL() {

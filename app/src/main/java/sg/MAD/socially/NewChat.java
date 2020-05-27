@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.GridLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,9 @@ public class NewChat extends AppCompatActivity {
 
         Display();
 
+
+
+
         reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Friends");
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -73,7 +77,6 @@ public class NewChat extends AppCompatActivity {
 
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                         User user = snapshot.getValue(User.class);
-
 
                         if(FriendListID.contains(user.getId())){
                             FriendList.add(user);
