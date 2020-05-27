@@ -12,37 +12,16 @@ public class User {
     String Friends;
 
 
-    public User(String id, String username, String imageURL, String nickName, String DOB,
-                String name, String shortDesc, String email, String friends) {
+
+    public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email, String friends) {
         Id = id;
         ImageURL = imageURL;
         NickName = nickName;
         this.DOB = DOB;
         Name = name;
         ShortDesc = shortDesc;
-    }
-    public String getShortDesc() {
-        return ShortDesc;
-    }
-
-    public void setShortDesc(String shortDesc) {
-        ShortDesc = shortDesc;
-    }
-
-    public String getNickName() {
-        return NickName;
-    }
-
-    public void setNickName(String nickName) {
-        NickName = nickName;
-    }
-
-    public String getDOB() {
-        return DOB;
-    }
-
-    public void setDOB(String DOB) {
-        this.DOB = DOB;
+        Email = email;
+        Friends = friends;
     }
 
     public String getId() {
