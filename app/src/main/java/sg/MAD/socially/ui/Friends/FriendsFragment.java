@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import sg.MAD.socially.R;
@@ -38,6 +39,7 @@ public class FriendsFragment extends Fragment {
         friendsViewModel =
                 ViewModelProviders.of(this).get(FriendsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        /*
         profile_pic = root.findViewById(R.id.imageView);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userid = user.getUid();
@@ -48,7 +50,32 @@ public class FriendsFragment extends Fragment {
                 User user = dataSnapshot.getValue(User.class);
                 Log.d("Check", user.getImageURL());
                 Glide.with(FriendsFragment.this).load(user.getImageURL()).into(profile_pic); //set/resize image of profile pic
+            }
 
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+*/
+        return root;
+    }
+
+    public ArrayList<String> getFriendList(FirebaseUser user){
+        final ArrayList<String> FriendList = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Friends");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String userFriends = dataSnapshot.getKey();
+                if(userFriends.length() > 2){
+                    String[] friendList = userFriends.split(",");
+                    for(String i : friendList){
+                        FriendList.add(i);
+                    }
+                }
             }
 
             @Override
@@ -56,9 +83,44 @@ public class FriendsFragment extends Fragment {
 
             }
         });
-
-        return root;
+        return FriendList;
     }
+
+    public ArrayList<String> getUsersId(){
+        final ArrayList<String> userList = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String user = dataSnapshot.getKey();
+                userList.add(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return userList;
+    }
+
+    public ArrayList<String> GenerateFindFriends(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        ArrayList<String> userFriendList = getFriendList(user);
+        ArrayList<String> userList = getUsersId();
+        ArrayList<String> potentialFriendList = null;
+
+        for (String i: userList){
+            for (String j: userFriendList){
+                if (i != j){
+                    potentialFriendList.add(i);
+                }
+            }
+        }
+        return potentialFriendList;
+    }
+
 
     /*public void GenerateFindFriends(){
 

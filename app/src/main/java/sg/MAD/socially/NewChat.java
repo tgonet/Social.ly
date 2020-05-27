@@ -53,6 +53,7 @@ public class NewChat extends AppCompatActivity {
                     String[] friendList = friendliststring.split(",");
                     for(String i : friendList){
                         FriendListID.add(i);
+
                     }
                 }
             }
