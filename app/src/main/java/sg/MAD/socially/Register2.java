@@ -141,7 +141,7 @@ public class Register2 extends AppCompatActivity {
                     reference = FirebaseDatabase.getInstance().getReference("Users").child(userid); // address in the database to access (/User/$userid)
 
                     HashMap<String, String> hashMap = new HashMap<>();
-                    hashMap.put("id", userid);
+                    hashMap.put("Id", userid);
                     hashMap.put("Name", Name);
                     hashMap.put("NickName",Nickname);
                     hashMap.put("Password",Password);

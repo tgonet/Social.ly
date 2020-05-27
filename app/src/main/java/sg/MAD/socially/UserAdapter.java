@@ -51,7 +51,7 @@ public class UserAdapter  extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
     @Override
     public void onBindViewHolder(@NonNull UserAdapter.MyViewHolder holder, int position) {
         final User user = Users.get(position);
-        holder.username.setText(user.getUsername());
+        holder.username.setText(user.getName());
         if(user.getImageURL().equals("default")){
             holder.profilepic.setImageResource(R.mipmap.ic_launcher);
         }

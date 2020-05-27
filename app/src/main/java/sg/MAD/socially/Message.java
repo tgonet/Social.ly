@@ -88,7 +88,7 @@ public class Message extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getUsername());  //Retreive the name of the person and display it at the top to show user who he is chatting with
+                username.setText(user.getName());  //Retreive the name of the person and display it at the top to show user who he is chatting with
                 if(user.getImageURL().equals("default")){   //retrieve profile pic of friend and display it
                     profile_pic.setImageResource(R.mipmap.ic_launcher);
                 }
