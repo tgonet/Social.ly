@@ -8,22 +8,57 @@ public class User {
     String DOB;
     String Name;
     String ShortDesc;
+    String Email;
+    String Friends;
 
-    public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc) {
-        this.Id = id;
-        this.ImageURL = imageURL;
-        this.NickName = nickName;
+
+    public User(String id, String username, String imageURL, String nickName, String DOB,
+                String name, String shortDesc, String email, String friends) {
+        Id = id;
+        ImageURL = imageURL;
+        NickName = nickName;
         this.DOB = DOB;
-        this.Name = name;
-        this.ShortDesc = shortDesc;
+        Name = name;
+        ShortDesc = shortDesc;
     }
-
     public String getShortDesc() {
         return ShortDesc;
     }
 
     public void setShortDesc(String shortDesc) {
         ShortDesc = shortDesc;
+    }
+
+    public String getNickName() {
+        return NickName;
+    }
+
+    public void setNickName(String nickName) {
+        NickName = nickName;
+    }
+
+    public String getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(String DOB) {
+        this.DOB = DOB;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
     }
 
     public String getNickName() {
@@ -50,22 +85,27 @@ public class User {
         Name = name;
     }
 
-    public User(){}
-
-    public String getId() {
-        return Id;
+    public String getShortDesc() {
+        return ShortDesc;
     }
 
-    public void setId(String id) {
-        Id = id;
+    public void setShortDesc(String shortDesc) {
+        ShortDesc = shortDesc;
     }
 
-    public String getImageURL() {
-        return ImageURL;
+    public String getEmail() {
+        return Email;
     }
 
-    public void setImageURL(String imageURL) {
-        ImageURL = imageURL;
+    public void setEmail(String email) {
+        Email = email;
     }
 
+    public String getFriends() {
+        return Friends;
+    }
+
+    public void setFriends(String friends) {
+        Friends = friends;
+    }
 }
