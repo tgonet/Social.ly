@@ -2,9 +2,12 @@ package sg.MAD.socially;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.widget.GridLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +26,8 @@ public class NewChat extends AppCompatActivity {
     FirebaseUser user;
     ArrayList<User> FriendList;
     ArrayList<String> FriendListID;
+    GridFriendAdapter adapter;
+    RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,9 @@ public class NewChat extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         FriendList = new ArrayList<>();
+        rv = findViewById(R.id.rv_newchat);
+        rv.setLayoutManager(new GridLayoutManager(this,3));
+        FriendListID = new ArrayList<>();
 
         Display();
 
@@ -71,8 +79,8 @@ public class NewChat extends AppCompatActivity {
                         }
 
                     }
-                    //adapter = new UserAdapter(FriendList,getBaseContext());
-                    //rv.setAdapter(adapter);
+                    adapter = new GridFriendAdapter(FriendList,getBaseContext());
+                    rv.setAdapter(adapter);
                 }
 
                 @Override
