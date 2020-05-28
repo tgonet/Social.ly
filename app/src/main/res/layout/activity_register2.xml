@@ -31,9 +31,10 @@
             android:text="@string/profile_picture"
             android:textSize="20sp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/Camera_Register2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginTop="30dp"
             android:contentDescription="@string/take_photo"
             android:foregroundGravity="left"
