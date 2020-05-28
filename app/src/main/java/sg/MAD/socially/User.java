@@ -10,10 +10,11 @@ public class User {
     String ShortDesc;
     String Email;
     String Friends;
+    String PendingFriends;
 
 
 
-    public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email, String friends) {
+    public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email, String friends, String pendingfriends) {
         Id = id;
         ImageURL = imageURL;
         NickName = nickName;
@@ -22,6 +23,7 @@ public class User {
         ShortDesc = shortDesc;
         Email = email;
         Friends = friends;
+        PendingFriends = pendingfriends;
     }
 
     public String getId() {
@@ -86,5 +88,13 @@ public class User {
 
     public void setFriends(String friends) {
         Friends = friends;
+    }
+
+    public String getPendingFriends() {
+        return PendingFriends;
+    }
+
+    public void setPendingFriends(String pendingFriends) {
+        PendingFriends = pendingFriends;
     }
 }
