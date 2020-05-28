@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
-    Button Loginbutton;
+    Button Loginbutton, Backbutton;
     EditText Email, Password;
     FirebaseAuth auth;
 
@@ -29,6 +29,7 @@ public class Login extends AppCompatActivity {
         Loginbutton = findViewById(R.id.Login_login);
         Email = findViewById(R.id.Email_login);
         Password = findViewById(R.id.Password_login);
+        Backbutton = findViewById(R.id.Back_login);
 
         auth = FirebaseAuth.getInstance();
 
@@ -56,6 +57,13 @@ public class Login extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        Backbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+                public void onClick(View v) {
+                finish();
             }
         });
     }
