@@ -97,7 +97,7 @@ public class FriendsFragment extends Fragment {
         return FriendList;
     }
 
-    public ArrayList<User> getUsersId(){
+    public ArrayList<User> getUsers(){
         final ArrayList<User> userList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -122,16 +122,17 @@ public class FriendsFragment extends Fragment {
     public ArrayList<User> GenerateFindFriends(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         ArrayList<String> userFriendList = getFriendList(user);
-        ArrayList<User> userList = getUsersId();
+        ArrayList<User> userList = getUsers();
         ArrayList<User> potentialFriendList = null;
 
         for (User u: userList){
             for (String j: userFriendList){
-                if (u.getId() != j){
+                if (u.getId().contains(j) == false){
                     potentialFriendList.add(u);
                 }
             }
         }
+
         return potentialFriendList;
     }
 
