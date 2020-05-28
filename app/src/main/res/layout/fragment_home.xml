@@ -6,11 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.Friends.FriendsFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

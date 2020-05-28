@@ -1,12 +1,15 @@
 package sg.MAD.socially.ui.Friends;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.service.autofill.Dataset;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -31,6 +34,13 @@ public class FriendsFragment extends Fragment {
 
     DatabaseReference reference;
     ImageView profile_pic;
+    ImageView profilepic;
+    TextView name;
+    TextView friendCount;
+    TextView DateOfBirth;
+    TextView ShortDesc;
+    Button notFriend;
+    Button addFriend;
 
     private FriendsViewModel friendsViewModel;
 
@@ -39,6 +49,7 @@ public class FriendsFragment extends Fragment {
         friendsViewModel =
                 ViewModelProviders.of(this).get(FriendsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
         /*
         profile_pic = root.findViewById(R.id.imageView);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -86,15 +97,18 @@ public class FriendsFragment extends Fragment {
         return FriendList;
     }
 
-    public ArrayList<String> getUsersId(){
-        final ArrayList<String> userList = new ArrayList<>();
+    public ArrayList<User> getUsersId(){
+        final ArrayList<User> userList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Users");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String user = dataSnapshot.getKey();
-                userList.add(user);
+                for (DataSnapshot snapshot: dataSnapshot.getChildren())
+                {
+                    User user = snapshot.getValue(User.class);
+                    userList.add(user);
+                }
             }
 
             @Override
@@ -105,20 +119,33 @@ public class FriendsFragment extends Fragment {
         return userList;
     }
 
-    public ArrayList<String> GenerateFindFriends(){
+    public ArrayList<User> GenerateFindFriends(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         ArrayList<String> userFriendList = getFriendList(user);
-        ArrayList<String> userList = getUsersId();
-        ArrayList<String> potentialFriendList = null;
+        ArrayList<User> userList = getUsersId();
+        ArrayList<User> potentialFriendList = null;
 
-        for (String i: userList){
+        for (User u: userList){
             for (String j: userFriendList){
-                if (i != j){
-                    potentialFriendList.add(i);
+                if (u.getId() != j){
+                    potentialFriendList.add(u);
                 }
             }
         }
         return potentialFriendList;
+    }
+
+    public void DisplayFindFriends(){
+        ArrayList<User> potentialFriendList = GenerateFindFriends();
+
+        profilepic = getView().findViewById(R.id.addfriend_profilepic);
+        name = getView().findViewById(R.id.addfriend_name);
+        friendCount = getView().findViewById(R.id.addfriend_friendcount);
+        DateOfBirth = getView().findViewById(R.id.addfriend_dob);
+        ShortDesc = getView().findViewById(R.id.addfriend_shortdesc);
+        addFriend = getView().findViewById(R.id.addfriend_yes);
+        notFriend = getView().findViewById(R.id.addfriend_no);
+
     }
 
 
