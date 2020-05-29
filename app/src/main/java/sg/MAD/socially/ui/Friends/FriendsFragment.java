@@ -1,5 +1,6 @@
 package sg.MAD.socially.ui.Friends;
 
+import android.app.Activity;
 import android.media.Image;
 import android.os.Bundle;
 import android.service.autofill.Dataset;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,10 +25,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import sg.MAD.socially.MainActivity;
 import sg.MAD.socially.R;
 import sg.MAD.socially.User;
 
@@ -97,7 +101,7 @@ public class FriendsFragment extends Fragment {
         return FriendList;
     }
 
-    public ArrayList<User> getUsersId(){
+    public ArrayList<User> getUsers(){
         final ArrayList<User> userList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -122,30 +126,72 @@ public class FriendsFragment extends Fragment {
     public ArrayList<User> GenerateFindFriends(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         ArrayList<String> userFriendList = getFriendList(user);
-        ArrayList<User> userList = getUsersId();
+        ArrayList<User> userList = getUsers();
         ArrayList<User> potentialFriendList = null;
 
         for (User u: userList){
             for (String j: userFriendList){
-                if (u.getId() != j){
+                if (u.getId().contains(j) == false && u.getId() != user.getUid()){
                     potentialFriendList.add(u);
                 }
             }
         }
+
         return potentialFriendList;
     }
 
     public void DisplayFindFriends(){
-        ArrayList<User> potentialFriendList = GenerateFindFriends();
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        profilepic = getView().findViewById(R.id.addfriend_profilepic);
-        name = getView().findViewById(R.id.addfriend_name);
-        friendCount = getView().findViewById(R.id.addfriend_friendcount);
-        DateOfBirth = getView().findViewById(R.id.addfriend_dob);
-        ShortDesc = getView().findViewById(R.id.addfriend_shortdesc);
+        final ArrayList<User> potentialFriendList = GenerateFindFriends();
+
         addFriend = getView().findViewById(R.id.addfriend_yes);
         notFriend = getView().findViewById(R.id.addfriend_no);
 
+        //FriendsAdapter = new FriendsAdapter(this, R.layout.fragment_home_addfriend, potentialFriendList);
+        SwipeFlingAdapterView swipeContainer =(SwipeFlingAdapterView) getView().findViewById(R.id.frame);
+
+        //swipeContainer.setAdapter(FriendsAdapter);
+        swipeContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+            @Override
+            public void removeFirstObjectInAdapter() {
+                Log.d("Find Friends", "Removed object");
+                potentialFriendList.remove(0);
+                //FriendsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onLeftCardExit(Object o) {
+            }
+
+            @Override
+            public void onRightCardExit(Object o) {
+                User user = (User)o;
+                String userId = user.getId();
+                String pendingfriends = user.getPendingFriends();
+                String[] pendingfriendList = pendingfriends.split(",");
+                //String currUserFriendList = currentUser.get
+
+                boolean isPendingFriend;
+                for (String i: pendingfriendList){
+                    if (i == userId){
+                       // pendingfriendList = ArrayUtils.remove(pendingfriendList,i);
+                      //  currentUser
+                    }
+                }
+
+            }
+
+            @Override
+            public void onAdapterAboutToEmpty(int i) {
+
+            }
+
+            @Override
+            public void onScroll(float v) {
+
+            }
+        });
     }
 
 

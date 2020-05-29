@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="150dp"
-        android:layout_marginEnd="30dp"
         android:text="Register An Account"
         android:textSize="30sp" />
 
@@ -19,17 +19,13 @@
         android:id="@+id/text4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="30dp"
         android:text="Name" />
 
     <EditText
         android:id="@+id/Name_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:ems="10"
         android:inputType="textPersonName" />
 
@@ -37,18 +33,14 @@
         android:id="@+id/text5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:text="Email" />
 
     <EditText
         android:id="@+id/Email_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:ems="10"
         android:inputType="textEmailAddress" />
 
@@ -56,47 +48,38 @@
         android:id="@+id/text7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:text="Password" />
 
     <EditText
         android:id="@+id/Password_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/text8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:text="Birthday" />
 
     <EditText
         android:id="@+id/DOB_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:ems="10"
+        android:hint="01/12/2000"
         android:inputType="date" />
 
     <Button
         android:id="@+id/Continue_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
         android:text="Continue" />
 
 
