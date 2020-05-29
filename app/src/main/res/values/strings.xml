@@ -12,4 +12,16 @@
     <string name="title_home">Friends</string>
     <string name="title_explore">Explore</string>
     <string name="title_notifications">Notifications</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="back">Back</string>
+    <string name="register">Register</string>
+    <string name="personalise_your_profile">Personalise your profile</string>
+    <string name="image_gallery">Image Gallery</string>
+    <string name="take_photo">Take photo</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="short_description">Short Description</string>
+    <string name="nickname">Nickname</string>
+    <string name="interest">Interest</string>
 </resources>
