@@ -47,6 +47,7 @@ public class FriendsFragment extends Fragment {
     TextView ShortDesc;
     Button notFriend;
     Button addFriend;
+    hii
      */
     FriendsAdapter adapter;
 
