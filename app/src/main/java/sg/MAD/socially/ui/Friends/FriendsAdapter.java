@@ -56,4 +56,3 @@ public class FriendsAdapter extends ArrayAdapter<User> {
 
     }
 }
-

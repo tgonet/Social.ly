@@ -12,7 +12,7 @@ public class User {
     String Friends;
     String PendingFriends;
 
-
+    public User(){}
 
     public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email, String friends, String pendingfriends) {
         Id = id;
