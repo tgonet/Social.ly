@@ -26,6 +26,7 @@ public class User {
         PendingFriends = pendingfriends;
     }
 
+
     public String getId() {
         return Id;
     }

@@ -46,23 +46,6 @@ public class Conversation extends AppCompatActivity {
         fuser = FirebaseAuth.getInstance().getCurrentUser();  //Logged in user
         UsersList = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-                   // Log.d("ID", user.getId());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override

@@ -29,11 +29,12 @@ public class GridFriendAdapter extends RecyclerView.Adapter<GridFriendAdapter.My
 
         public TextView friendname;
         public ImageView friendpic;
-
+        public View view;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            view = itemView;
             friendname = itemView.findViewById(R.id.Friend_name);
             friendpic = itemView.findViewById(R.id.Friend_pic);
         }
@@ -65,6 +66,12 @@ public class GridFriendAdapter extends RecyclerView.Adapter<GridFriendAdapter.My
                 Intent intent = new Intent(mContext, Message.class);
                 intent.putExtra("userid",user.getId());
                 mContext.startActivity(intent);
+            }
+        });
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

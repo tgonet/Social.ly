@@ -84,7 +84,8 @@ public class FriendsFragment extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String userFriends = dataSnapshot.getKey();
+                User userFriends = dataSnapshot.getValue(User.class);
+                Log.d("check", "onDataChange: ");
                 if(userFriends.contains(",")){
                     String[] friendList = userFriends.split(",");
                     for(String i : friendList){
@@ -94,6 +95,7 @@ public class FriendsFragment extends Fragment {
                 }
                 else if(userFriends != "") {
                     FriendList.add(userFriends);
+                    Log.d("1 friennd", "friendList: " + FriendList.get(0));
                 }
             }
 
@@ -103,7 +105,7 @@ public class FriendsFragment extends Fragment {
 
             }
         });
-        System.out.print("Friend List" + FriendList);
+        Log.d("GetFriends display list", String.valueOf(FriendList));
         return FriendList;
     }
 
@@ -118,9 +120,8 @@ public class FriendsFragment extends Fragment {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren())
                 {
                     User user = snapshot.getValue(User.class);
-                    System.out.println("User" + user);
                     userList.add(user);
-                    System.out.println("User List" + userList);
+                    Log.d("User List display list", String.valueOf(userList));
                 };
             }
 
@@ -128,7 +129,7 @@ public class FriendsFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        System.out.println("UUUUser List" + userList);
+        Log.d("getUsers display list: ", String.valueOf(userList));
         return userList;
     }
 
@@ -155,7 +156,7 @@ public class FriendsFragment extends Fragment {
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //current user PendingFriends
-        ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("Pending Friends");
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("PendingFriends");
         final ArrayList<String> currUserPendingFriendList = getFriendList(ref);
 
         //current user Friends
