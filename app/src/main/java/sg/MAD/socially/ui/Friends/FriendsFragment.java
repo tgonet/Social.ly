@@ -37,6 +37,7 @@ import sg.MAD.socially.User;
 public class FriendsFragment extends Fragment {
 
     DatabaseReference ref;
+    ArrayList<String> FriendList;
     /*
     ImageView profile_pic;
     ImageView profilepic;
@@ -57,34 +58,32 @@ public class FriendsFragment extends Fragment {
                 ViewModelProviders.of(this).get(FriendsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         DisplayFindFriends(root);
-        /*
-        profile_pic = root.findViewById(R.id.imageView);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userid = user.getUid();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                Log.d("Check", user.getName());
-                Glide.with(FriendsFragment.this).load(user.getImageURL()).into(profile_pic); //set/resize image of profile pic
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-*/
+
         return root;
     }
-
     public ArrayList<String> getFriendList(DatabaseReference reference){
+        //final ArrayList<String> FriendList = new ArrayList<>();
         Log.d("getFriendList","Method used");
-        final ArrayList<String> FriendList = new ArrayList<>();
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FriendList = new ArrayList<>();
                 User userFriends = dataSnapshot.getValue(User.class);
+                Log.d("check", "onDataChange: ");
+                String getTypeofFriend = userFriends.getFriends();
+                if(getTypeofFriend.contains(",")){
+                    String[] friendList = getTypeofFriend.split(",");
+                    for(String i : friendList){
+                        FriendList.add(i);
+                        //Log.d("getFriendList", "friendList: " + FriendList);
+                    }
+                }
+                else if(getTypeofFriend != "") {
+                    FriendList.add(getTypeofFriend);
+                    //Log.d("1 friend", "friendList: " + FriendList);
+                }
+                //Log.d("getFriendList", "friendList: " + FriendList);
+                /*
                 Log.d("check", "onDataChange: ");
                 if(userFriends.contains(",")){
                     String[] friendList = userFriends.split(",");
@@ -97,6 +96,55 @@ public class FriendsFragment extends Fragment {
                     FriendList.add(userFriends);
                     Log.d("1 friennd", "friendList: " + FriendList.get(0));
                 }
+                 */
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
+        //Log.d("GetFriends display list", String.valueOf(FriendList));
+        return FriendList;
+    }
+
+
+    public ArrayList<String> getPendingFriendList(DatabaseReference reference){
+        Log.d("getFriendList","Method used");
+        final ArrayList<String> FriendList = new ArrayList<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User userFriends = dataSnapshot.getValue(User.class);
+                String getTypeofFriend = userFriends.getPendingFriends();
+                if(getTypeofFriend.contains(",")){
+                    String[] friendList = getTypeofFriend.split(",");
+                    for(String i : friendList){
+                        FriendList.add(i);
+                        //Log.d("getFriendList", "friendList: " + FriendList);
+                    }
+                }
+                else if(getTypeofFriend != "") {
+                    FriendList.add(getTypeofFriend);
+                    //Log.d("1 friend", "friendList: " + FriendList);
+                }
+                //Log.d("check", "onDataChange: ");
+                //Log.d("getFriendList", "friendList: " + FriendList);
+                /*
+                Log.d("check", "onDataChange: ");
+                if(userFriends.contains(",")){
+                    String[] friendList = userFriends.split(",");
+                    for(String i : friendList){
+                        FriendList.add(i);
+                        Log.d("getFriendList", "friendList: " + FriendList);
+                    }
+                }
+                else if(userFriends != "") {
+                    FriendList.add(userFriends);
+                    Log.d("1 friennd", "friendList: " + FriendList.get(0));
+                }
+                 */
             }
 
 
@@ -104,8 +152,9 @@ public class FriendsFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
-        Log.d("GetFriends display list", String.valueOf(FriendList));
+        //Log.d("GetFriends display list", String.valueOf(FriendList));
         return FriendList;
     }
 
@@ -129,14 +178,14 @@ public class FriendsFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Log.d("getUsers display list: ", String.valueOf(userList));
+        //Log.d("getUsers display list: ", String.valueOf(userList));
         return userList;
     }
 
-    public ArrayList<User> GenerateFindFriends(){
+    public ArrayList<User> GenerateFindFriends(ArrayList<String> userFriendList){
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Friends");
-        ArrayList<String> userFriendList = getFriendList(ref);
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
         ArrayList<User> userList = getUsers();
         ArrayList<User> potentialFriendList = new ArrayList<>();
 
@@ -145,7 +194,7 @@ public class FriendsFragment extends Fragment {
                 potentialFriendList.add(u);
             }
         }
-        System.out.println("Potential friend List" + potentialFriendList);
+        //Log.d("GeneratePotentialFriend", "Potential friend List:" + potentialFriendList);
         return potentialFriendList;
     }
 
@@ -156,16 +205,22 @@ public class FriendsFragment extends Fragment {
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //current user PendingFriends
-        ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("PendingFriends");
-        final ArrayList<String> currUserPendingFriendList = getFriendList(ref);
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId);
+        //String whatFriend = "PendingFriends";
+        //ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("PendingFriends");
+        final ArrayList<String> currUserPendingFriendList = getPendingFriendList(ref);
+        Log.d("currUserPendingFriends", String.valueOf(currUserPendingFriendList));
 
         //current user Friends
-        ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("Friends");
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId);
+        //ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("Friends");
         final ArrayList<String> currUserFriendList = getFriendList(ref);
+        Log.d("currUserFriendList", String.valueOf(currUserFriendList));
 
 
         //potential friends to populate the frame layout
-        final ArrayList<User> potentialFriendList = GenerateFindFriends();
+        final ArrayList<User> potentialFriendList = GenerateFindFriends(currUserFriendList);
+        Log.d("PotentialFriends", String.valueOf(potentialFriendList));
 
 
         //buttons to accept or reject
