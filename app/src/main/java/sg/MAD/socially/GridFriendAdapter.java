@@ -60,18 +60,12 @@ public class GridFriendAdapter extends RecyclerView.Adapter<GridFriendAdapter.My
             Glide.with(mContext).load(user.getImageURL()).into(holder.friendpic);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, Message.class);
                 intent.putExtra("userid",user.getId());
                 mContext.startActivity(intent);
-            }
-        });
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
     }

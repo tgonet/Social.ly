@@ -62,10 +62,8 @@ public class Conversation extends AppCompatActivity {
                         UsersList.add(chat.getSender());
                     }
                 }
-
                 readChats();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
