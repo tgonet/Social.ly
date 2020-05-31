@@ -37,6 +37,7 @@ import sg.MAD.socially.User;
 public class FriendsFragment extends Fragment {
 
     DatabaseReference ref;
+    DatabaseReference ref1;
 
     String currentUserId;
     ArrayList<String> FriendList;
@@ -88,7 +89,7 @@ public class FriendsFragment extends Fragment {
                 pendingFriends = user.getPendingFriends();
 
                 //Current User FriendList
-                if (friends != ""){
+                if (!friends.isEmpty()){
                     if (friends.contains(",")) {
                         String[] friendList = friends.split(",");
                         for (String i : friendList) {
@@ -102,7 +103,7 @@ public class FriendsFragment extends Fragment {
                 Log.d("Current User", "FriendsList: " + FriendList);
 
                 //Current User PendingFriendList
-                if (pendingFriends != "") {
+                if (!pendingFriends.isEmpty()) {
                     if (pendingFriends.contains(",")) {
                         String[] pendingFriendList = pendingFriends.split(",");
                         for (String i : pendingFriendList) {
@@ -127,9 +128,9 @@ public class FriendsFragment extends Fragment {
         //userList
         Log.d("getUsers","Method used");
         userList = new ArrayList<>();
-        ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref1 = FirebaseDatabase.getInstance().getReference("Users");
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren())
@@ -140,7 +141,7 @@ public class FriendsFragment extends Fragment {
                     potentialFriendList = new ArrayList<>();
 
                     for (User u: userList) {
-                        if (FriendList.contains(u.getId()) == false && currentUserId != u.getId()) {
+                        if (FriendList.contains(u.getId()) == false && !currentUserId.equals(u.getId())) {
                             potentialFriendList.add(u);
                         }
                     }
