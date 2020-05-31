@@ -1,5 +1,6 @@
 package sg.MAD.socially.ui.Friends;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,8 @@ import sg.MAD.socially.User;
 
 public class FriendsAdapter extends ArrayAdapter<User> {
 
-    public FriendsAdapter(Context context, int resourceId, ArrayList<User> User){
-        super(context, resourceId, User);
+    public FriendsAdapter(Activity activity, int resourceId, ArrayList<User> User){
+        super(activity, resourceId, User);
     }
     public View getView(int position, View convertView, ViewGroup parent){
         User user = getItem(position);
@@ -39,7 +40,7 @@ public class FriendsAdapter extends ArrayAdapter<User> {
 
         name.setText("Name: " + user.getName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
-
+        Log.d("Get user", "Image URL: " + user.getImageURL());
         String userFriends = user.getFriends();
         int friends = 0;
         String[] friendList = userFriends.split(",");
