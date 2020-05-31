@@ -7,16 +7,20 @@
     tools:context=".ui.Friends.FriendsFragment">
 
      <com.lorentzos.flingswipe.SwipeFlingAdapterView
-        android:id="@+id/frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffeee9e2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:rotation_degrees="15.5"
-        tools:context=".ui.Friends.FriendsFragment" />
+         android:id="@+id/frame"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_marginStart="16dp"
+         android:layout_marginTop="16dp"
+         android:layout_marginEnd="16dp"
+         android:layout_marginBottom="16dp"
+         android:background="#ffeee9e2"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintVertical_bias="0.0"
+         app:rotation_degrees="15.5"
+         tools:context=".ui.Friends.FriendsFragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

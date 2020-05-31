@@ -1,6 +1,7 @@
 package sg.MAD.socially.ui.Friends;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,13 @@ import sg.MAD.socially.R;
 import sg.MAD.socially.User;
 
 public class FriendsAdapter extends ArrayAdapter<User> {
-    Context context;
 
-    public FriendsAdapter(Context context, int resourceId, ArrayList<User> user){
-        super(context, resourceId, user);
+    public FriendsAdapter(Context context, int resourceId, ArrayList<User> User){
+        super(context, resourceId, User);
     }
     public View getView(int position, View convertView, ViewGroup parent){
         User user = getItem(position);
+
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_home_addfriend, parent, false);
         }
@@ -41,12 +42,9 @@ public class FriendsAdapter extends ArrayAdapter<User> {
 
         String userFriends = user.getFriends();
         int friends = 0;
-        if(userFriends.length() > 2) {
-            String[] friendList = userFriends.split(",");
-            for (String i : friendList) {
-                friends +=1;
-            }
-        }
+        String[] friendList = userFriends.split(",");
+        friends =friendList.length;
+
         friendCount.setText("Friends:" + friends);
 
         dob.setText("Date of Birth" + user.getDOB());

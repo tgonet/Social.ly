@@ -52,5 +52,4 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.pratikbutani:MultiSelectSpinner:-SNAPSHOT'
     implementation 'com.lorentzos.swipecards:library:1.0.9@aar'
-    implementation 'link.fls:swipestack:0.3.0'
 }
