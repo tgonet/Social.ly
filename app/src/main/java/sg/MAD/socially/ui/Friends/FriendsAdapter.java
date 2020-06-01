@@ -28,6 +28,7 @@ public class FriendsAdapter extends ArrayAdapter<User> {
     public View getView(int position, View convertView, ViewGroup parent){
         User user = getItem(position);
 
+        Log.d("Adapter", "getView " + position + " ");
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_home_addfriend, parent, false);
         }

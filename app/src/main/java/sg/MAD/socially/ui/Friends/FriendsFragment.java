@@ -143,15 +143,17 @@ public class FriendsFragment extends Fragment {
                     potentialFriendList = new ArrayList<>();
 
                     for (User u: userList) {
-                        if (FriendList.contains(u.getId()) == false && !currentUserId.equals(u.getId())) {
+                        //if (FriendList.contains(u.getId()) == false && !currentUserId.equals(u.getId())) {
                             potentialFriendList.add(u);
-                        }
+                        //}
                     }
                     //adapter.notifyDataSetChanged();
-                    Log.d("User Potential Friends", "Potential friend List:" + potentialFriendList);
-                    DisplayFindFriends(root);
+                    //Log.d("User Potential Friends", "Potential friend List:" + potentialFriendList);
+                    //DisplayFindFriends(root);
 
                 };
+                Log.d("User Potential Friends", "Potential friend List:" + potentialFriendList);
+                DisplayFindFriends(root);
             }
 
             @Override
@@ -242,5 +244,6 @@ public class FriendsFragment extends Fragment {
 
             }
         });
+        adapter.notifyDataSetChanged();
     }
 }
