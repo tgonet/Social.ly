@@ -168,7 +168,7 @@ public class FriendsFragment extends Fragment {
 
 
         //adapter for the potential friends' details
-        adapter = new FriendsAdapter(getActivity(), R.layout.fragment_home_addfriend, potentialFriendList);
+        adapter = new FriendsAdapter(getContext(), R.layout.fragment_home_addfriend, potentialFriendList);
         SwipeFlingAdapterView swipeContainer = (SwipeFlingAdapterView) v.findViewById(R.id.frame);
 
         //implementing the swipe function of the frames

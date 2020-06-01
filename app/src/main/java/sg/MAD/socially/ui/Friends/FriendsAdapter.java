@@ -22,8 +22,8 @@ import sg.MAD.socially.User;
 
 public class FriendsAdapter extends ArrayAdapter<User> {
 
-    public FriendsAdapter(Activity activity, int resourceId, ArrayList<User> User){
-        super(activity, resourceId, User);
+    public FriendsAdapter(Context context, int resourceId, ArrayList<User> User){
+        super(context, resourceId, User);
     }
     public View getView(int position, View convertView, ViewGroup parent){
         User user = getItem(position);
