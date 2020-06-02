@@ -25,7 +25,7 @@ import sg.MAD.socially.R;
 
 public class ExploreFragment extends Fragment {
 
-    RecyclerView recyclerview_id;
+    RecyclerView recyclerView;
     List<String> interest;
     List<Integer> images;
     ExploreAdapter adapter;
@@ -38,7 +38,7 @@ public class ExploreFragment extends Fragment {
                 ViewModelProviders.of(this).get(ExploreViewModel.class);
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerview_id);
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerview_id);
 
         interest = new ArrayList<>();
         images = new ArrayList<>();
@@ -69,8 +69,8 @@ public class ExploreFragment extends Fragment {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
-        recyclerview_id.setLayoutManager(gridLayoutManager);
-        recyclerview_id.setAdapter(adapter);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(adapter);
 
         return root;
     }

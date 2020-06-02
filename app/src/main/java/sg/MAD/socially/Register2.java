@@ -194,7 +194,7 @@ public class Register2 extends AppCompatActivity {
 
     private void openImage(){
         Intent intent = new Intent();
-        intent.setType("imagez/*");
+        intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, IMAGE_REQUEST);
     }

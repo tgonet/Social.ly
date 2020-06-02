@@ -24,6 +24,7 @@
     <string name="short_description">Short Description</string>
     <string name="nickname">Nickname</string>
     <string name="interest">Interest</string>
+    <string name="create_activity">Create Activity</string>
 
 
 </resources>
