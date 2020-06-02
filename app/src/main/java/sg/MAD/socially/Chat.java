@@ -36,5 +36,4 @@ public class Chat {
     public void setMessage(String message) {
         this.message = message;
     }
-
 }
