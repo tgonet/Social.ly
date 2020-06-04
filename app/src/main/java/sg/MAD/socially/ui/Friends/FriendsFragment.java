@@ -50,16 +50,11 @@ public class FriendsFragment extends Fragment {
     ArrayList<User> potentialFriendList;
 
     View root;
+
+    SwipeFlingAdapterView swipeContainer;
     /*
-    ImageView profile_pic;
-    ImageView profilepic;
-    TextView name;
-    TextView friendCount;
-    TextView DateOfBirth;
-    TextView ShortDesc;
     Button notFriend;
     Button addFriend;
-    hii
      */
     FriendsAdapter adapter;
 
@@ -71,6 +66,13 @@ public class FriendsFragment extends Fragment {
                 ViewModelProviders.of(this).get(FriendsViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        FriendList = new ArrayList<>();
+        PendingFriendList = new ArrayList<>();
+        potentialFriendList = new ArrayList<>();
+
+        adapter = new FriendsAdapter(getContext(), R.layout.fragment_home_addfriend, potentialFriendList);
+        swipeContainer = (SwipeFlingAdapterView) root.findViewById(R.id.frame);
+
         /*getting Current User Details */
 
         //Current User ID:
@@ -78,60 +80,15 @@ public class FriendsFragment extends Fragment {
         Log.d("Current UserId", "" + currentUserId);
 
         //Current User Friends and Pending Friends:
-        ref = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId);
-        Log.d("Current User","Pending Friends");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FriendList = new ArrayList<>();
-                PendingFriendList = new ArrayList<>();
-                User user = dataSnapshot.getValue(User.class);
-                friends = user.getFriends();
-                pendingFriends = user.getPendingFriends();
-
-                //Current User FriendList
-                if (!friends.isEmpty()){
-                    if (friends.contains(",")) {
-                        String[] friendList = friends.split(",");
-                        for (String i : friendList) {
-                            FriendList.add(i);
-                        }
-                    }
-                    else{
-                        FriendList.add(friends);
-                    }
-                }
-                Log.d("Current User", "FriendsList: " + FriendList);
-
-                //Current User PendingFriendList
-                if (!pendingFriends.isEmpty()) {
-                    if (pendingFriends.contains(",")) {
-                        String[] pendingFriendList = pendingFriends.split(",");
-                        for (String i : pendingFriendList) {
-                            PendingFriendList.add(i);
-                        }
-                    }
-                    else {
-                        PendingFriendList.add(pendingFriends);
-                    }
-                }
-                Log.d("Current User", "PendingFriendsList: " + PendingFriendList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         /* Getting all users details */
 
         //userList
         Log.d("getUsers","Method used");
         userList = new ArrayList<>();
-        ref1 = FirebaseDatabase.getInstance().getReference("Users");
+        ref = FirebaseDatabase.getInstance().getReference("Users");
 
-        ref1.addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren())
@@ -139,27 +96,59 @@ public class FriendsFragment extends Fragment {
                     User user = snapshot.getValue(User.class);
                     userList.add(user);
                     Log.d("User List display list", String.valueOf(userList));
-                    //Potential Friends: Populate the frame layout
-                    potentialFriendList = new ArrayList<>();
+                    if (user.getId() == currentUserId){
+                        friends = user.getFriends();
+                        pendingFriends = user.getPendingFriends();
 
-                    for (User u: userList) {
-                        //if (FriendList.contains(u.getId()) == false && !currentUserId.equals(u.getId())) {
-                            potentialFriendList.add(u);
-                        //}
+                        //Current User FriendList
+                        if (!friends.isEmpty()){
+                            if (friends.contains(",")) {
+                                String[] friendList = friends.split(",");
+                                for (String i : friendList) {
+                                    FriendList.add(i);
+                                }
+                            }
+                            else{
+                                FriendList.add(friends);
+                            }
+                        }
+                        Log.d("Current User", "FriendsList: " + FriendList);
+
+                        //Current User PendingFriendList
+                        if (!pendingFriends.isEmpty()) {
+                            if (pendingFriends.contains(",")) {
+                                String[] pendingFriendList = pendingFriends.split(",");
+                                for (String i : pendingFriendList) {
+                                    PendingFriendList.add(i);
+                                }
+                            }
+                            else {
+                                PendingFriendList.add(pendingFriends);
+                            }
+                        }
+                        Log.d("Current User", "PendingFriendsList: " + PendingFriendList);
                     }
+                    //Potential Friends: Populate the frame layout
                     //adapter.notifyDataSetChanged();
                     //Log.d("User Potential Friends", "Potential friend List:" + potentialFriendList);
                     //DisplayFindFriends(root);
-
                 };
+                potentialFriendList.clear();
+
+                for (User u: userList) {
+                    if (FriendList.contains(u.getId()) == false && !currentUserId.equals(u.getId())) {
+                        potentialFriendList.add(u);
+                    }
+                }
                 Log.d("User Potential Friends", "Potential friend List:" + potentialFriendList);
-                DisplayFindFriends(root);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+        DisplayFindFriends(root);
         return root;
     }
 
@@ -170,10 +159,9 @@ public class FriendsFragment extends Fragment {
 
 
         //adapter for the potential friends' details
-        adapter = new FriendsAdapter(getContext(), R.layout.fragment_home_addfriend, potentialFriendList);
-        SwipeFlingAdapterView swipeContainer = (SwipeFlingAdapterView) v.findViewById(R.id.frame);
 
         //implementing the swipe function of the frames
+        //adapter.notifyDataSetChanged();
         swipeContainer.setAdapter(adapter);
         Log.d("Adapter", "Adapter set!" + adapter);
         swipeContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -201,7 +189,8 @@ public class FriendsFragment extends Fragment {
                     for (String i : pending) {
                         pendingFriendList.add(i);
                     }
-                } else if (pendingfriends != "") {
+                }
+                else if (pendingfriends != "") {
                     pendingFriendList.add(pendingfriends);
                 }
 
@@ -214,23 +203,71 @@ public class FriendsFragment extends Fragment {
                         Log.d("getFriendList", "friendList: " + friendList);
                     }
                 }
+
                 else if (!friend.isEmpty()) {
                     friendList.add(friend);
                 }
-                if (friendList.size() != 0) {
-                    boolean isPendingFriend = false;
-                    for (String i : PendingFriendList) {
-                        if (i == userId) {
-                            FriendList.add(i);
-                            friendList.add(currentUserId);
-                            pendingFriendList.remove(i);
-                            isPendingFriend = true;
-                            break;
+
+                boolean isPendingFriend = true;
+                for (String i : PendingFriendList) {
+                    if (i == userId) {
+                        FriendList.add(i);
+                        friendList.add(currentUserId);
+                        PendingFriendList.remove(i);
+                        isPendingFriend = false;
+                        break;
+                    }
+                }
+                if (isPendingFriend == true) {
+                    pendingFriendList.add(currentUserId);
+                    pendingfriends ="";
+                    for (String i: pendingFriendList){
+                        int count = 0;
+                        if (count <= pendingFriendList.size() - 1) {
+                            pendingfriends += i + ",";
                         }
+                        else{
+                            pendingfriends += i;
+                        }
+                        count++;
+                        Log.d("Other user list", i + "added to friendList");
                     }
-                    if (isPendingFriend != true) {
-                        pendingFriendList.add(currentUserId);
+                    ref1 = FirebaseDatabase.getInstance().getReference();
+                    ref1.child("Users").child(userId).child("PendingFriends").setValue(pendingfriends);
+                    Log.d("Other user list", pendingfriends);
+                }
+                else{
+                    friend ="";
+                    for (String i: friendList){
+                        int count = 0;
+                        if (count <= friendList.size() - 1) {
+                            friend += i + ",";
+                        }
+                        else{
+                            friend += i;
+                        }
+                        Log.d("Other user list", i + "added to friendList");
+                        count++;
                     }
+                    ref1 = FirebaseDatabase.getInstance().getReference();
+                    ref1.child("Users").child(userId).child("Friends").setValue(friend);
+                    Log.d("Other user list", friend);
+
+
+                    friends ="";
+                    for (String i: FriendList){
+                        int count = 0;
+                        if (count <= FriendList.size() - 1) {
+                            friend += i + ",";
+                        }
+                        else{
+                            friend += i;
+                        }
+                        Log.d("Current user list", i + "added to friendList");
+                        count++;
+                    }
+                    ref1.child("Users").child(currentUserId).child("Friends").setValue(friends);
+                    Log.d("Current user list", friends);
                 }
             }
 
@@ -244,6 +281,5 @@ public class FriendsFragment extends Fragment {
 
             }
         });
-        adapter.notifyDataSetChanged();
     }
 }
