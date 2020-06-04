@@ -15,6 +15,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class UserAdapter  extends RecyclerView.Adapter<UserAdapter.MyViewHolder>{
     List<User> Users;
     Context mContext;
@@ -64,6 +66,7 @@ public class UserAdapter  extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, Message.class);
                 intent.putExtra("userid",user.getId());
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });

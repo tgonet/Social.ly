@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class NewChat extends AppCompatActivity {
 
     DatabaseReference reference;
+    DatabaseReference reference1;
     FirebaseUser user;
     ArrayList<User> FriendList;
     ArrayList<String> FriendListID;
@@ -42,9 +43,6 @@ public class NewChat extends AppCompatActivity {
         FriendListID = new ArrayList<>();
 
         Display();
-
-
-
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
 
@@ -74,9 +72,9 @@ public class NewChat extends AppCompatActivity {
         });
        // Log.d("Check", FriendListID.get(0));
 
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference1 = FirebaseDatabase.getInstance().getReference("Users");
 
-        reference.addValueEventListener(new ValueEventListener() {
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FriendList.clear();
@@ -90,8 +88,9 @@ public class NewChat extends AppCompatActivity {
 
                 }
                 adapter.notifyDataSetChanged();
-            }
+                Log.d("Friendlistid", String.valueOf(FriendListID));
 
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
