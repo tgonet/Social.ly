@@ -39,6 +39,9 @@ public class FriendsFragment extends Fragment {
 
     DatabaseReference ref;
     DatabaseReference ref1;
+    DatabaseReference ref2;
+    DatabaseReference ref3;
+    DatabaseReference ref4;
 
     String currentUserId;
     ArrayList<String> FriendList;
@@ -184,28 +187,34 @@ public class FriendsFragment extends Fragment {
                 String pendingfriends = user.getPendingFriends();
                 ArrayList<String> pendingFriendList = new ArrayList<>();
 
-                if (pendingfriends.contains(",")) {
-                    String[] pending = pendingfriends.split(",");
-                    for (String i : pending) {
-                        pendingFriendList.add(i);
+                if (!pendingfriends.isEmpty()) {
+                    if (pendingfriends.contains(",")) {
+                        String[] pending = pendingfriends.split(",");
+                        for (String i : pending) {
+                            pendingFriendList.add(i);
+                        }
+                    }
+                    else {
+                        pendingFriendList.add(pendingfriends);
                     }
                 }
-                else if (pendingfriends != "") {
-                    pendingFriendList.add(pendingfriends);
-                }
+
+                Log.d("pendingFriendList",String.valueOf(PendingFriendList));
+                Log.d("pendingFriendList",String.valueOf(pendingFriendList));
 
                 String friend = user.getFriends();
                 ArrayList<String> friendList = new ArrayList<>();
-                if (friend.contains(",")) {
-                    String[] friends = friend.split(",");
-                    for (String i : friendList) {
-                        friendList.add(i);
-                        Log.d("getFriendList", "friendList: " + friendList);
+                if (!friend.isEmpty()) {
+                    if (friend.contains(",")) {
+                        String[] friends = friend.split(",");
+                        for (String i : friends) {
+                            friendList.add(i);
+                            Log.d("getFriendList", "friendList: " + friendList);
+                        }
                     }
-                }
-
-                else if (!friend.isEmpty()) {
-                    friendList.add(friend);
+                    else {
+                        friendList.add(friend);
+                    }
                 }
 
                 boolean isPendingFriend = true;
@@ -215,18 +224,20 @@ public class FriendsFragment extends Fragment {
                         friendList.add(currentUserId);
                         PendingFriendList.remove(i);
                         isPendingFriend = false;
+                        Log.d("Hi it works i guess", "TEST");
                         break;
                     }
+                    Log.d("TEST", "for loop works");
                 }
+                Log.d("isPendingFriend value", String.valueOf(isPendingFriend));
                 if (isPendingFriend == true) {
                     pendingFriendList.add(currentUserId);
-                    pendingfriends ="";
-                    for (String i: pendingFriendList){
+                    pendingfriends = "";
+                    for (String i : pendingFriendList) {
                         int count = 0;
-                        if (count <= pendingFriendList.size() - 1) {
-                            pendingfriends += i + ",";
-                        }
-                        else{
+                        if (count >= pendingFriendList.size() - 1) {
+                            pendingfriends += "," + i;
+                        } else {
                             pendingfriends += i;
                         }
                         count++;
@@ -237,11 +248,27 @@ public class FriendsFragment extends Fragment {
                     Log.d("Other user list", pendingfriends);
                 }
                 else{
+                    PendingFriendList.add(currentUserId);
+                    pendingFriends = "";
+                    for (String i : PendingFriendList) {
+                        int count = 0;
+                        if (count >= PendingFriendList.size() - 1) {
+                            pendingFriends += "," + i;
+                        } else {
+                            pendingFriends += i;
+                        }
+                        count++;
+                        Log.d("Other user list", i + "added to friendList");
+                    }
+                    ref2 = FirebaseDatabase.getInstance().getReference();
+                    ref2.child("Users").child(userId).child("PendingFriends").setValue(pendingfriends);
+                    Log.d("Other user list", pendingfriends);
+
                     friend ="";
                     for (String i: friendList){
                         int count = 0;
-                        if (count <= friendList.size() - 1) {
-                            friend += i + ",";
+                        if (count >= friendList.size() - 1) {
+                            friend += "," + i;
                         }
                         else{
                             friend += i;
@@ -249,16 +276,16 @@ public class FriendsFragment extends Fragment {
                         Log.d("Other user list", i + "added to friendList");
                         count++;
                     }
-                    ref1 = FirebaseDatabase.getInstance().getReference();
-                    ref1.child("Users").child(userId).child("Friends").setValue(friend);
+                    ref3 = FirebaseDatabase.getInstance().getReference();
+                    ref3.child("Users").child(userId).child("Friends").setValue(friend);
                     Log.d("Other user list", friend);
 
 
                     friends ="";
                     for (String i: FriendList){
                         int count = 0;
-                        if (count <= FriendList.size() - 1) {
-                            friend += i + ",";
+                        if (count >= FriendList.size() - 1) {
+                            friend += "," + i;
                         }
                         else{
                             friend += i;
@@ -266,7 +293,8 @@ public class FriendsFragment extends Fragment {
                         Log.d("Current user list", i + "added to friendList");
                         count++;
                     }
-                    ref1.child("Users").child(currentUserId).child("Friends").setValue(friends);
+                    ref4 = FirebaseDatabase.getInstance().getReference();
+                    ref4.child("Users").child(currentUserId).child("Friends").setValue(friends);
                     Log.d("Current user list", friends);
                 }
             }
