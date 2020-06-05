@@ -2,12 +2,18 @@
     <string name="app_name">Social.ly</string>
 
     <string-array name="Sports">
-        <item>Home</item>
-        <item>Work</item>
+        <item>Gaming</item>
         <item>Sports</item>
-        <item>Food</item>
-        <item>Others</item>
+        <item>Eating</item>
+        <item>Music</item>
+        <item>Art and Design</item>
+        <item>Reading</item>
+        <item>Cooking</item>
+        <item>Dancing</item>
+        <item>Photography</item>
+        <item>Volunteering</item>
     </string-array>
+
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_home">Friends</string>
     <string name="title_explore">Explore</string>

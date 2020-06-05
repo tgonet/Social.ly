@@ -70,7 +70,7 @@
         android:textSize="20sp"/>
 
     <EditText
-        android:id="@+id/new_activity"
+        android:id="@+id/new_activity_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" />
@@ -134,7 +134,7 @@
         android:inputType="date"/>
 
     <Button
-        android:id="@+id/Register_register2"
+        android:id="@+id/Create_activity_button"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"

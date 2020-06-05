@@ -146,7 +146,7 @@ public class FriendsFragment extends Fragment {
 
                 //Populating currPotentialFriendList
                 for (User u: allUsersList) {
-                    if (currFriendList.contains(u.getId()) == false && !currentUserId.equals(u.getId())) {
+                    if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId())) {
                         currPotentialFriendList.add(u);
                     }
                 }
