@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,7 +30,7 @@ public class Conversation extends AppCompatActivity {
     FirebaseUser fuser;
     DatabaseReference reference;
 
-    private List<String> UsersList;
+    private List<String> UserstringidList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +43,28 @@ public class Conversation extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();  //Logged in user
-        UsersList = new ArrayList<>();
+        UserstringidList = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UsersList.clear();
+                UserstringidList.clear();
 
+                //Extract the userid of whoever this user texted
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
 
-                    if(chat.getSender().equals(fuser.getUid())){  //Check if this message belongs to the logged in user which he is the sender
-                        UsersList.add(chat.getReceiver());
+                    //Check if this message belongs to the logged in user which he is the sender
+                    if(chat.getSender().equals(fuser.getUid())){
+                        //Gets the userid of the person he is texting
+                        UserstringidList.add(chat.getReceiver());
                     }
-                    if(chat.getReceiver().equals(fuser.getUid())){  //Check if this message belongs to the logged in user which he is the receiver
-                        UsersList.add(chat.getSender());
+
+                    //Check if this message belongs to the logged in user which he is the receiver
+                    if(chat.getReceiver().equals(fuser.getUid())){
+                        //Gets the userid of the person he receive text from
+                        UserstringidList.add(chat.getSender());
                     }
                 }
                 readChats();
@@ -91,11 +96,11 @@ public class Conversation extends AppCompatActivity {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
 
-                    for(String id : UsersList){
+                    for(String id : UserstringidList){
                         if(user.getId().equals(id)){
                             if(User.size() != 0){  //As the list is empty so there is no worry about displaying the same user twice
                                 for(User user1 : User){
-                                    if(!user.getId().equals(user1.getId())){  //Check if user is already in the User list
+                                    if(!user1.getId().equals(id)){  //Check if user is already in the User list
                                         User.add(user);
                                     }
                                 }

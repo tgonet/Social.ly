@@ -37,6 +37,7 @@ public class NewChat extends AppCompatActivity {
         setContentView(R.layout.activity_new_chat);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
         FriendList = new ArrayList<>();
         rv = findViewById(R.id.rv_newchat);
         rv.setLayoutManager(new GridLayoutManager(this,3));
@@ -44,14 +45,15 @@ public class NewChat extends AppCompatActivity {
 
         Display();
 
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
-
-        reference.addValueEventListener(new ValueEventListener() {
+        //Retreive the friendlist of the current user
+        reference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 FriendListID = new ArrayList<>();
                 String friendliststring = user.getFriends();
+                //Check if the friendlist has any string inside as long
+                // as the string is not empty there is at least 1 friend
                 if(friendliststring.length() > 2){
                     if(friendliststring.contains(",")){
                         String[] friendList = friendliststring.split(",");
@@ -70,11 +72,8 @@ public class NewChat extends AppCompatActivity {
 
             }
         });
-       // Log.d("Check", FriendListID.get(0));
 
-        reference1 = FirebaseDatabase.getInstance().getReference("Users");
-
-        reference1.addValueEventListener(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FriendList.clear();
@@ -88,8 +87,6 @@ public class NewChat extends AppCompatActivity {
 
                 }
                 adapter.notifyDataSetChanged();
-                Log.d("Friendlistid", String.valueOf(FriendListID));
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -100,6 +97,7 @@ public class NewChat extends AppCompatActivity {
         rv.setAdapter(adapter);
     }
 
+    //Resize the new activity to make it look like a popup
     public void Display() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

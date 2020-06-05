@@ -61,13 +61,15 @@ public class Message extends AppCompatActivity {
         send = findViewById(R.id.send);
 
         rv = findViewById(R.id.rv_message);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager((getApplicationContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager((this));
         linearLayoutManager.setStackFromEnd(true);  //populate the recyclerview from the bottom instead
         rv.setLayoutManager(linearLayoutManager);
 
         intent = getIntent();
-        final String userid = intent.getStringExtra("userid");  //Retreive the userid of the person that the user selected
+        //Retreive the userid of the person that the user selected
+        final String userid = intent.getStringExtra("userid");
         fuser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference();
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,21 +81,20 @@ public class Message extends AppCompatActivity {
                 else{
                     Toast.makeText(Message.this,"Error in sending message",Toast.LENGTH_SHORT).show();
                 }
-                message.setText(""); //setting the message textbox back to empty
+                message.setText("");
             }
         });
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);  //Retreive the details of the person the user selected
 
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.child("Users").child(userid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getName());  //Retreive the name of the person and display it at the top to show user who he is chatting with
-                if(user.getImageURL().equals("default")){   //retrieve profile pic of friend and display it
+                if(user.getImageURL().equals("default")){
                     profile_pic.setImageResource(R.mipmap.ic_launcher);
                 }
                 else{
-                    Glide.with(Message.this).load(user.getImageURL()).into(profile_pic); //set/resize image of profile pic
+                    //set/resize image of profile pic
+                    Glide.with(Message.this).load(user.getImageURL()).into(profile_pic);
                 }
                 readMessage(fuser.getUid(),userid,user.getImageURL());
             }
@@ -105,34 +106,32 @@ public class Message extends AppCompatActivity {
         });
     }
     private void sendMessage(String sender,String receiver,String message){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
         HashMap<String, Object> hashmap = new HashMap<>();
         hashmap.put("sender",sender);
         hashmap.put("receiver",receiver);
         hashmap.put("message",message);
 
-        reference.child("Chats").push().setValue(hashmap);  //upload the current message to firebase
+        //upload the current message to firebase
+        reference.child("Chats").push().setValue(hashmap);
     }
     private void readMessage(final String myid, final String userid, final String imageurl){
         chatList = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
+
+        reference.child("Chats").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
+                    //Checks if this message is send between the 2 users
                     if(chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){    //CHecks if this message is send between the 2 users
+                            chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
                         chatList.add(chat);
                     }
-
-                    messageadapter = new MessageAdapter(chatList,Message.this,imageurl);
+                    messageadapter = new MessageAdapter(chatList,Message.this);
                     rv.setAdapter(messageadapter);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
