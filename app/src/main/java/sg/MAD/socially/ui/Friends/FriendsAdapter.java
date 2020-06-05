@@ -39,18 +39,21 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         TextView dob = (TextView) convertView.findViewById(R.id.addfriend_dob);
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
 
-        name.setText("Name: " + user.getName());
+        name.setText(user.getName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
-        Log.d("Get user", "Image URL: " + user.getImageURL());
         String userFriends = user.getFriends();
         int friends = 0;
         String[] friendList = userFriends.split(",");
         friends =friendList.length;
+        if (friends > 1){
+            friendCount.setText(friends + " friends");
+        }
+        else{
+            friendCount.setText(friends + " friend");
+        }
 
-        friendCount.setText("Friends:" + friends);
-
-        dob.setText("Date of Birth" + user.getDOB());
-        desc.setText("Short Description of me: " + user.getShortDesc());
+        dob.setText("Date of Birth: \t" + user.getDOB());
+        desc.setText(user.getShortDesc());
 
         return convertView;
 

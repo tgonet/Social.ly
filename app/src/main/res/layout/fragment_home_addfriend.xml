@@ -2,25 +2,31 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:layout_gravity="center">
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        app:cardCornerRadius="4dp"
         android:elevation="2dp"
-        android:id="@+id/cardView">
+        app:cardCornerRadius="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/addfriend_profilepic"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                app:civ_border_color="#00FFFFFF"
+                app:civ_border_overlay="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -29,9 +35,12 @@
                 android:id="@+id/addfriend_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="44dp"
+                android:includeFontPadding="false"
                 android:textAlignment="viewEnd"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.485"
                 app:layout_constraintStart_toEndOf="@+id/addfriend_profilepic"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Name" />
@@ -42,47 +51,68 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="@+id/addfriend_profilepic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/addfriend_profilepic"
                 app:layout_constraintTop_toBottomOf="@+id/addfriend_name" />
 
             <TextView
-                android:id="@+id/addfriend_dob"
+                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
+                android:text="Short Description"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/addfriend_dob"
+                app:layout_constraintTop_toBottomOf="@+id/addfriend_dob" />
+
+            <TextView
+                android:id="@+id/addfriend_dob"
+                android:layout_width="108dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addfriend_profilepic" />
+                app:layout_constraintTop_toBottomOf="@+id/addfriend_profilepic"
+                app:layout_constraintVertical_chainStyle="spread" />
 
             <TextView
                 android:id="@+id/addfriend_shortdesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addfriend_dob" />
+                app:layout_constraintStart_toStartOf="@+id/textView8"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Interests"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/addfriend_shortdesc"
+                app:layout_constraintTop_toBottomOf="@+id/addfriend_shortdesc" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:id="@+id/item_swipe_left_indicator"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_margin="10dp"
-        android:alpha="0"
-        android:background="#A5F" />
+        <View
+            android:id="@+id/item_swipe_left_indicator"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:alpha="0"
+            android:background="#A5F" />
 
-    <View
-        android:id="@+id/item_swipe_right_indicator"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="right"
-        android:layout_margin="10dp"
-        android:alpha="0"
-        android:background="#5AF" />
+        <View
+            android:id="@+id/item_swipe_right_indicator"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:alpha="0"
+            android:background="#5AF" />
     </androidx.cardview.widget.CardView>
 </FrameLayout>
