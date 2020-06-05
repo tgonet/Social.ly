@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".CreateActivityFragment"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:paddingRight="20dp"
+    tools:context=".CreateActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:text="@string/profile_picture"
+            android:text="Header Image"
             android:textSize="20sp" />
 
         <ImageButton
@@ -52,14 +52,20 @@
 
     </LinearLayout>
 
-
-
+    <Spinner
+        android:id="@+id/interest_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:prompt="@string/interest_prompt"
+        android:entries="@array/interest_array"
+        ></Spinner>
 
     <TextView
         android:id="@+id/activity_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:text="Activity Name"
         android:textSize="20sp"/>
 
