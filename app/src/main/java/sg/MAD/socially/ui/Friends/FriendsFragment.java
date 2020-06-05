@@ -249,44 +249,31 @@ public class FriendsFragment extends Fragment {
                 // If yes, isPendingFriend is false.
                 // If no, isPendingFriend is true.
 
-                boolean isPendingFriend = true;
-                if (isPendingFriend){
-                    for (String i : currPendingFriendList) {
-                        //Mutual
-                        if (i == userId) {
-                            currFriendList.add(i);
-                            friendList.add(currentUserId);
-                            currPendingFriendList.remove(i);
-                            isPendingFriend = false;
-                            break;
-                        }
-                    }
+                if(currPendingFriendList.contains(userId)){
+                        currFriendList.add(userId);
+                        friendList.add(currentUserId);
+                        currPendingFriendList.remove(userId);
                 }
-
-                //Not mutual yet
-                if (isPendingFriend) {
-                    //Change display user's pendingFriendList
+                else{
                     pendingFriendList.add(currentUserId);
-                    //Ensure that there is no duplicates of Id
-                    String newpendingFriends = "";
+                    pendingFriends = "";
                     for (String i : pendingFriendList) {
                         int count = 0;
                         if (count != 0) {
-                            newpendingFriends += "," + i;
+                            pendingFriends += "," + i;
                         }
                         else {
-                            newpendingFriends += i;
+                            pendingFriends += i;
                         }
                         count++;
                     }
+                }
                     //Firebase: Update display users' pendingFriends
                     ref1 = FirebaseDatabase.getInstance().getReference();
-                    ref1.child("Users").child(userId).child("PendingFriends").setValue(newpendingFriends);
-                    Log.d("Other user list", newpendingFriends);
+                    ref1.child("Users").child(userId).child("PendingFriends").setValue(pendingFriends);
+                    Log.d("Other user list", pendingFriends);
                 }
 
-                //Mutual
-                else{
 
                     /* DISPLAY USER */
 
