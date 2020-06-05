@@ -26,49 +26,4 @@
 
      </com.lorentzos.flingswipe.SwipeFlingAdapterView>
 
-     <com.google.android.material.floatingactionbutton.FloatingActionButton
-         android:id="@+id/addfriend_no"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:clickable="true"
-         app:backgroundTint="#E6E8E3"
-         app:layout_constraintEnd_toStartOf="@+id/addfriend_yes"
-         app:layout_constraintHorizontal_bias="0.5"
-         app:layout_constraintHorizontal_chainStyle="spread"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="@+id/addfriend_yes"
-         app:srcCompat="@android:drawable/ic_delete" />
-
-     <com.google.android.material.floatingactionbutton.FloatingActionButton
-         android:id="@+id/addfriend_yes"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginBottom="16dp"
-         android:clickable="true"
-         app:backgroundTint="#72D676"
-         app:layout_constraintBottom_toBottomOf="@+id/frame"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.5"
-         app:layout_constraintStart_toEndOf="@+id/addfriend_no"
-         app:rippleColor="#C6F1A4"
-         app:srcCompat="?android:attr/textCheckMark" />
-
-     <TextView
-         android:id="@+id/textView9"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Maybe Next Time..."
-         app:layout_constraintEnd_toEndOf="@+id/addfriend_no"
-         app:layout_constraintStart_toStartOf="@+id/addfriend_no"
-         app:layout_constraintTop_toBottomOf="@+id/addfriend_no" />
-
-     <TextView
-         android:id="@+id/textView10"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Let's Be Friends!"
-         app:layout_constraintEnd_toEndOf="@+id/addfriend_yes"
-         app:layout_constraintStart_toStartOf="@+id/addfriend_yes"
-         app:layout_constraintTop_toBottomOf="@+id/addfriend_yes" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

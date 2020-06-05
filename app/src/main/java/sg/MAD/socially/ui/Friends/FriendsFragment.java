@@ -249,102 +249,89 @@ public class FriendsFragment extends Fragment {
                 // If yes, isPendingFriend is false.
                 // If no, isPendingFriend is true.
 
-                boolean isPendingFriend = true;
-                if (isPendingFriend){
-                    for (String i : currPendingFriendList) {
-                        //Mutual
-                        if (i == userId) {
-                            currFriendList.add(i);
-                            friendList.add(currentUserId);
-                            currPendingFriendList.remove(i);
-                            isPendingFriend = false;
-                            break;
-                        }
-                    }
-                }
-
-                //Not mutual yet
-                if (isPendingFriend) {
-                    //Change display user's pendingFriendList
-                    pendingFriendList.add(currentUserId);
-                    //Ensure that there is no duplicates of Id
-                    String newpendingFriends = "";
-                    for (String i : pendingFriendList) {
-                        int count = 0;
-                        if (count != 0) {
-                            newpendingFriends += "," + i;
-                        }
-                        else {
-                            newpendingFriends += i;
-                        }
-                        count++;
-                    }
-                    //Firebase: Update display users' pendingFriends
-                    ref1 = FirebaseDatabase.getInstance().getReference();
-                    ref1.child("Users").child(userId).child("PendingFriends").setValue(newpendingFriends);
-                    Log.d("Other user list", newpendingFriends);
-                }
-
-                //Mutual
-                else{
+                if(currPendingFriendList.contains(userId))
+                {
+                    currFriendList.add(userId);
+                    friendList.add(currentUserId);
+                    currPendingFriendList.remove(userId);
 
                     /* DISPLAY USER */
 
                     //Change display user's friendList (Add current user's Id)
-                    String newfriends =""; //Ensure that there is no duplicates of Id
+                    friend = ""; //Ensure that there is no duplicates of Id
+                    int count = 0;
                     for (String i: friendList){
-                        int count = 0;
                         if (count != 0) {
-                            newfriends += "," + i;
+                            friend += "," + i;
                         }
                         else{
-                            newfriends += i;
+                            friend += i;
                         }
                         Log.d("Other user list", i + "added to friendList");
                         count++;
                     }
                     //Firebase: Update display users' pendingFriends
                     ref2 = FirebaseDatabase.getInstance().getReference();
-                    ref2.child("Users").child(userId).child("Friends").setValue(newfriends);
-                    Log.d("Other user list", newfriends);
-
+                    ref2.child("Users").child(userId).child("Friends").setValue(friend);
+                    Log.d("Other user list", friend);
 
                     /* CURRENT USER */
 
                     //Change current user's pendingFriendList (Remove display user's Id)
-                    String newcurrPendingFriends = ""; //Ensure that there is no duplicates of Id
+                    currPendingFriends = ""; //Ensure that there is no duplicates of Id
+                    int count1 = 0;
                     for (String i : currPendingFriendList) {
-                        int count = 0;
-                        if (count != 0) {
-                            newcurrPendingFriends += "," + i;
+                        if (count1 != 0) {
+                            currPendingFriends += "," + i;
                         } else {
-                            newcurrPendingFriends += i;
+                            currPendingFriends += i;
                         }
-                        count++;
+                        count1++;
                         Log.d("Current user list", i + "added to friendList");
                     }
+
                     //Firebase: Update current users' pendingFriends
                     ref3 = FirebaseDatabase.getInstance().getReference();
-                    ref3.child("Users").child(currentUserId).child("PendingFriends").setValue(newcurrPendingFriends);
-                    Log.d("Current user list", newcurrPendingFriends);
+                    ref3.child("Users").child(currentUserId).child("PendingFriends").setValue(currPendingFriends);
+                    Log.d("Current user list", currPendingFriends);
 
                     //Change current user's FriendList (Remove display user's Id)
-                    String newcurrFriends =""; //Ensure that there is no duplicates of Id
+                    currFriends =""; //Ensure that there is no duplicates of Id
+                    int count2 = 0;
                     for (String i: currFriendList){
-                        int count = 0;
-                        if (count != 0) {
-                            newcurrFriends += "," + i;
+                        if (count2 != 0) {
+                            currFriends += "," + i;
                         }
                         else{
-                            newcurrFriends += i;
+                            currFriends += i;
                         }
                         Log.d("Current user list", i + "added to friendList");
-                        count++;
+                        count2++;
                     }
                     //Firebase: Update display current users' Friends
                     ref4 = FirebaseDatabase.getInstance().getReference();
-                    ref4.child("Users").child(currentUserId).child("Friends").setValue(newcurrFriends);
-                    Log.d("Current user list", newcurrFriends);
+                    ref4.child("Users").child(currentUserId).child("Friends").setValue(currFriends);
+                    Log.d("Current user list", currFriends);
+
+                }
+                else
+                {
+                    pendingFriendList.add(currentUserId);
+                    pendingFriends = "";
+                    int count3 = 0;
+                    for (String i : pendingFriendList)
+                    {
+                        if (count3 != 0) {
+                            pendingFriends += "," + i;
+                        } else {
+                            pendingFriends += i;
+                        }
+                        count3++;
+                    }
+                    //Firebase: Update display users' pendingFriends
+                    ref1 = FirebaseDatabase.getInstance().getReference();
+                    ref1.child("Users").child(userId).child("PendingFriends").setValue(pendingFriends);
+                    Log.d("Other user list", pendingFriends);
                 }
             }
 

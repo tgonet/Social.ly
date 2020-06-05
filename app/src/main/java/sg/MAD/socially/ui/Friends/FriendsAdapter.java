@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Text;
 
@@ -38,6 +39,8 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         TextView friendCount = (TextView) convertView.findViewById(R.id.addfriend_friendcount);
         TextView dob = (TextView) convertView.findViewById(R.id.addfriend_dob);
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
+        FloatingActionButton addFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_yes);
+        FloatingActionButton notFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_no);
 
         name.setText(user.getName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
@@ -55,7 +58,14 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         dob.setText("Date of Birth: \t" + user.getDOB());
         desc.setText(user.getShortDesc());
 
-        return convertView;
+        addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //FriendsFragment.class.getMethod(DisplayFindFriends())
+            }
+        });
 
+
+        return convertView;
     }
 }
