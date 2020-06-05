@@ -422,7 +422,7 @@ else it will through error*/
 
                     if(cameraPermission && readExternalFile)
                     {
-                        // write your logic here
+
                     } else {
                         Snackbar.make(Register2.this.findViewById(android.R.id.content),
                                 "Please Grant Permissions to upload profile photo",
