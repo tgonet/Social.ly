@@ -31,15 +31,12 @@ public class UserAdapter  extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
         public TextView username;
         public ImageView profilepic;
 
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             username = itemView.findViewById(R.id.username);
             profilepic = itemView.findViewById(R.id.profilepic);
         }
     }
-
 
     @NonNull
     @Override

@@ -66,6 +66,9 @@ public class GridFriendAdapter extends RecyclerView.Adapter<GridFriendAdapter.My
                 Intent intent = new Intent(mContext, Message.class);
                 intent.putExtra("userid",user.getId());
                 mContext.startActivity(intent);
+                //Make sure the user doesnt go back to the
+                // select friend to talk to activity when he press the back button
+                ((NewChat)mContext).finish();
             }
         });
     }
