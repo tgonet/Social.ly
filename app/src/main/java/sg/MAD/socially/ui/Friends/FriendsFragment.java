@@ -146,7 +146,7 @@ public class FriendsFragment extends Fragment {
 
                 //Populating currPotentialFriendList
                 for (User u: allUsersList) {
-                    if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId())) {
+                    if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId()) && !u.getPendingFriends().contains(currentUserId)) {
                         currPotentialFriendList.add(u);
                     }
                 }
@@ -248,12 +248,13 @@ public class FriendsFragment extends Fragment {
                 //Check if the adding of friends is mutual.
                 // If yes, isPendingFriend is false.
                 // If no, isPendingFriend is true.
-
-                if(currPendingFriendList.contains(userId))
+                Log.d("pendingFriends", pendingFriendList.toString());
+                Log.d("pendingFriends", String.valueOf(pendingFriendList.toString().contains(currentUserId)));
+                if (pendingFriendList.contains(currentUserId))
                 {
                     currFriendList.add(userId);
                     friendList.add(currentUserId);
-                    currPendingFriendList.remove(userId);
+                    pendingFriendList.remove(currentUserId);
 
                     /* DISPLAY USER */
 
