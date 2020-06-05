@@ -45,15 +45,15 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         name.setText(user.getName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
         String userFriends = user.getFriends();
-        int friends = 0;
         String[] friendList = userFriends.split(",");
-        friends =friendList.length;
+        int friends =friendList.length;
         if (friends > 1){
             friendCount.setText(friends + " friends");
         }
         else{
             friendCount.setText(friends + " friend");
         }
+
 
         dob.setText("Date of Birth: \t" + user.getDOB());
         desc.setText(user.getShortDesc());

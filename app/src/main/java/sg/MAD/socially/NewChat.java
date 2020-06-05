@@ -54,7 +54,7 @@ public class NewChat extends AppCompatActivity {
                 String friendliststring = user.getFriends();
                 //Check if the friendlist has any string inside as long
                 // as the string is not empty there is at least 1 friend
-                if(friendliststring.length() > 2){
+                if(!friendliststring.isEmpty()){
                     if(friendliststring.contains(",")){
                         String[] friendList = friendliststring.split(",");
                         for(String i : friendList){

@@ -1,5 +1,7 @@
 package sg.MAD.socially;
 
+import java.util.ArrayList;
+
 public class User {
 
     String Id;
@@ -14,7 +16,8 @@ public class User {
 
     public User(){}
 
-    public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email, String friends, String pendingfriends) {
+    public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email,
+                String friends, String pendingfriends) {
         Id = id;
         ImageURL = imageURL;
         NickName = nickName;
