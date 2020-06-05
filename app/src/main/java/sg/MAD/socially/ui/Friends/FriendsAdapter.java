@@ -58,6 +58,12 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         dob.setText("Date of Birth: \t" + user.getDOB());
         desc.setText(user.getShortDesc());
 
+        addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //FriendsFragment.class.getMethod(DisplayFindFriends())
+            }
+        });
 
 
         return convertView;

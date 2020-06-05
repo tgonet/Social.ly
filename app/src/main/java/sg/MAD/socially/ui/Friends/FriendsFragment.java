@@ -259,8 +259,8 @@ public class FriendsFragment extends Fragment {
 
                     //Change display user's friendList (Add current user's Id)
                     friend = ""; //Ensure that there is no duplicates of Id
+                    int count = 0;
                     for (String i: friendList){
-                        int count = 0;
                         if (count != 0) {
                             friend += "," + i;
                         }
@@ -279,14 +279,14 @@ public class FriendsFragment extends Fragment {
 
                     //Change current user's pendingFriendList (Remove display user's Id)
                     currPendingFriends = ""; //Ensure that there is no duplicates of Id
+                    int count1 = 0;
                     for (String i : currPendingFriendList) {
-                        int count = 0;
-                        if (count != 0) {
+                        if (count1 != 0) {
                             currPendingFriends += "," + i;
                         } else {
                             currPendingFriends += i;
                         }
-                        count++;
+                        count1++;
                         Log.d("Current user list", i + "added to friendList");
                     }
 
@@ -297,16 +297,16 @@ public class FriendsFragment extends Fragment {
 
                     //Change current user's FriendList (Remove display user's Id)
                     currFriends =""; //Ensure that there is no duplicates of Id
+                    int count2 = 0;
                     for (String i: currFriendList){
-                        int count = 0;
-                        if (count != 0) {
+                        if (count2 != 0) {
                             currFriends += "," + i;
                         }
                         else{
                             currFriends += i;
                         }
                         Log.d("Current user list", i + "added to friendList");
-                        count++;
+                        count2++;
                     }
                     //Firebase: Update display current users' Friends
                     ref4 = FirebaseDatabase.getInstance().getReference();
@@ -318,15 +318,15 @@ public class FriendsFragment extends Fragment {
                 {
                     pendingFriendList.add(currentUserId);
                     pendingFriends = "";
+                    int count3 = 0;
                     for (String i : pendingFriendList)
                     {
-                        int count = 0;
-                        if (count != 0) {
+                        if (count3 != 0) {
                             pendingFriends += "," + i;
                         } else {
                             pendingFriends += i;
                         }
-                        count++;
+                        count3++;
                     }
                     //Firebase: Update display users' pendingFriends
                     ref1 = FirebaseDatabase.getInstance().getReference();
