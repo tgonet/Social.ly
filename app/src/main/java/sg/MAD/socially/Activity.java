@@ -26,12 +26,12 @@ public class Activity {
         this.permission = permission;
     }
 
-    public String getAct_pic() {
+    public String getAct_picture() {
         return act_picture;
     }
 
-    public void setAct_pic(String act_pic) {
-        this.act_picture = act_pic;
+    public void setAct_picture(String act_picture) {
+        this.act_picture = act_picture;
     }
 
     public String getProfile_image() {

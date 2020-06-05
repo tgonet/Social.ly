@@ -43,6 +43,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -196,7 +197,7 @@ public class Register2 extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {   //Checks if current task is completed
                             if(task.isSuccessful()){
-                                uploadImage();
+                                uploadImage(Name);
                                 Intent intent = new Intent(Register2.this,MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
@@ -253,7 +254,7 @@ public class Register2 extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage(){
+    private void uploadImage(String Name){
         if(imageUri == null) {
             //For updating default Image
             String urlDefault = "https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/profile-placeholder.png?alt=media&token=de632eea-3125-44fb-af7d-a883a82d107c";
@@ -305,6 +306,22 @@ public class Register2 extends AppCompatActivity {
                 }
             });
         }
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(Name)
+                .setPhotoUri(Uri.parse(mUri))
+                .build();
+
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        firebaseUser.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Checck", "User profile updated.");
+                        }
+                    }
+                });
     }/*
         else{
             Toast.makeText(Register2.this,"No image selected",Toast.LENGTH_SHORT).show();
@@ -344,8 +361,8 @@ public class Register2 extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
 
-/*Put this log with check if data is null or not
-else it will through error*/
+        /*Put this log with check if data is null or not
+        else it will through error*/
 
         // Log.v("TESTINGGGGGGGG", " ReqC " + requestCode + " ResC" + resultCode + " Data " + data + " " + data.getData());
 

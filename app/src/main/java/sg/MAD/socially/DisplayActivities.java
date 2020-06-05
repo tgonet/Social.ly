@@ -1,6 +1,9 @@
 package sg.MAD.socially;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +25,7 @@ public class DisplayActivities extends AppCompatActivity {
     DatabaseReference reference;
     ArrayList<Activity> list;
     DisplayActivitiesAdapter adapter;
+    Button Createacticitybtn;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -30,20 +34,30 @@ public class DisplayActivities extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Createacticitybtn = findViewById(R.id.button_create_activity);
+        list = new ArrayList<>();
 
-        list = new ArrayList<Activity>();
+        Createacticitybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DisplayActivities.this,CreateActivity.class));
+            }
+        });
 
-        reference = FirebaseDatabase.getInstance().getReference().child("Activity");
+        list = new ArrayList<>();
+        String activity = getIntent().getStringExtra("activity");
+
+        reference = FirebaseDatabase.getInstance().getReference().child("Activity").child(activity);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list.clear();
                 for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
                 {
                     Activity a = dataSnapshot1.getValue(Activity.class);
                     list.add(a);
                 }
-                adapter = new DisplayActivitiesAdapter(DisplayActivities.this, list);
-                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -51,6 +65,9 @@ public class DisplayActivities extends AppCompatActivity {
                 Toast.makeText(DisplayActivities.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        adapter = new DisplayActivitiesAdapter(DisplayActivities.this, list);
+        recyclerView.setAdapter(adapter);
 
     }
 }
