@@ -35,6 +35,7 @@ public class DisplayActivities extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Createacticitybtn = findViewById(R.id.button_create_activity);
+        list = new ArrayList<>();
 
         Createacticitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,13 +51,13 @@ public class DisplayActivities extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list.clear();
                 for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
                 {
                     Activity a = dataSnapshot1.getValue(Activity.class);
                     list.add(a);
                 }
-                adapter = new DisplayActivitiesAdapter(DisplayActivities.this, list);
-                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -64,6 +65,9 @@ public class DisplayActivities extends AppCompatActivity {
                 Toast.makeText(DisplayActivities.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        adapter = new DisplayActivitiesAdapter(DisplayActivities.this, list);
+        recyclerView.setAdapter(adapter);
 
     }
 }

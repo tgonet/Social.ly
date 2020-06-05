@@ -2,6 +2,7 @@ package sg.MAD.socially;
 
 import android.content.Context;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,7 +44,10 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
         holder.act_desc.setText(activities.get(position).getAct_desc());
         holder.act_date.setText(activities.get(position).getAct_date());
 
-        Picasso.get().load(activities.get(position).getProfile_image()).into(holder.profile_image);
+        Picasso.get().load(activities.get(position).getAct_picture()).fit() .into(holder.act_picture);
+        Picasso.get().load(activities.get(position).getProfile_image()).resize(600, 200) // resizes the image to these dimensions (in pixel)
+                .centerInside() .into(holder.profile_image);
+
     }
 
     @Override

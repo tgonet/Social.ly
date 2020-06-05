@@ -26,7 +26,7 @@
         <activity android:name=".Message" />
         <activity android:name=".MainActivity" />
         <activity android:name=".DisplayActivities" />
-
+        <activity android:name=".CreateActivity" />
         <activity
             android:name=".Register2"
             android:parentActivityName=".Register" />
