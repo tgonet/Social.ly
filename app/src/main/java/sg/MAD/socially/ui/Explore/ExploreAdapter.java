@@ -1,7 +1,6 @@
 package sg.MAD.socially.ui.Explore;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import sg.MAD.socially.ActivitiesFragment;
-import sg.MAD.socially.MainActivity;
 import sg.MAD.socially.R;
 
 public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHolder> {
@@ -24,11 +19,9 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
     List<String> interest;
     List<Integer> images;
     LayoutInflater inflater;
-    Context Ctx;
 
-    public ExploreAdapter(Context ctx, List<String> title, List<Integer> images) {
-        Ctx = ctx;
-        this.interest = title;
+    public ExploreAdapter(Context ctx, List<String> interest, List<Integer> images) {
+        this.interest = interest;
         this.images = images;
         this.inflater = LayoutInflater.from(ctx);
     }
@@ -50,6 +43,7 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
 
     @Override
     public int getItemCount() {
+
         return interest.size();
     }
 
@@ -67,11 +61,10 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ActivitiesFragment nextfrag = new ActivitiesFragment();
-                    FragmentManager fm = ((MainActivity)Ctx).getSupportFragmentManager();
-                    fm.beginTransaction().add(R.id.nav_host_fragment,nextfrag).commit();
+                    //need to bring to activity page for specific interest
                 }
             });
+
         }
     }
 

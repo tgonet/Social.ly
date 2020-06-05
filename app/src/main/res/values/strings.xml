@@ -26,5 +26,18 @@
     <string name="interest">Interest</string>
     <string name="create_activity">Create Activity</string>
 
+    <string name="interest_prompt">Select an interest</string>
 
+    <string-array name="interest_array">
+        <item>Gaming</item>
+        <item>Sports</item>
+        <item>Eating</item>
+        <item>Music</item>
+        <item>Art and Design</item>
+        <item>Reading</item>
+        <item>Cooking</item>
+        <item>Dancing</item>
+        <item>Photography</item>
+        <item>Volunteering</item>
+    </string-array>
 </resources>
