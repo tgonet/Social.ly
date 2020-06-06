@@ -1,6 +1,8 @@
 package sg.MAD.socially;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivitiesAdapter.MyViewHolder> {
@@ -60,6 +63,8 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
         TextView Name_register, act_location, act_time, activity_name, act_desc, act_date;
         ImageView act_picture, profile_image;
 
+        View v;
+
         public MyViewHolder (View itemView)
         {
             super (itemView);
@@ -72,6 +77,21 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
 
             act_picture = (ImageView) itemView.findViewById(R.id.act_picture);
             profile_image = (ImageView) itemView.findViewById(R.id.profile_image);
+
+            v = itemView;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected", (Serializable) activities.get(getAdapterPosition()));
+
+                    Intent intent = new Intent(v.getContext(), DisplaySelectedActivity.class);
+                    intent.putExtras(bundle);
+                    v.getContext().startActivity(new Intent(v.getContext(), DisplaySelectedActivity.class));
+
+                }
+            });
 
         }
     }

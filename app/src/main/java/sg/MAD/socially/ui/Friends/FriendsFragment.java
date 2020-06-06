@@ -343,7 +343,6 @@ public class FriendsFragment extends Fragment {
                             View alertView = LayoutInflater.from(v.getContext()).inflate(R.layout.fragment_home_alert, null);
                             ImageView currUserPic = (ImageView) alertView.findViewById(R.id.newfriend_user);
                             Uri getCurrUserPic = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
-                            Log.d("Current user", getCurrUserPic.toString());
                             Glide.with(alertView).load(getCurrUserPic).into(currUserPic);
 
                             ImageView otherUserPic = (ImageView) alertView.findViewById(R.id.newfriend_friend);
