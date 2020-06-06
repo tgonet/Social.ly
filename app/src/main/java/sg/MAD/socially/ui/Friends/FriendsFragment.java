@@ -102,6 +102,7 @@ public class FriendsFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                allUsersList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //Populating each user in allUsersList
                     User user = snapshot.getValue(User.class);
@@ -137,7 +138,9 @@ public class FriendsFragment extends Fragment {
                 for (User u : allUsersList) {
                     if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId())
                             && !u.getPendingFriends().contains(currentUserId)) {
+                        Log.d("Check", String.valueOf(u.getPendingFriends().contains(currentUserId)));
                         currPotentialFriendList.add(u);
+                        Log.d("Potential friend", u.getName());
                     }
                 }
                 Log.d("User Potential Friends", "Potential friend List:" + currPotentialFriendList);
@@ -252,7 +255,6 @@ public class FriendsFragment extends Fragment {
 
                     //Check if user is current user by Id
                     Log.d("Current user", currentUserId);
-                    Log.d("Check user", String.valueOf(u.getId() == currentUserId));
                     Log.d("Check user", String.valueOf(u.getId().equals(currentUserId)));
                     if (u.getId().equals(currentUserId)) {
                         String currPendingFriends = u.getPendingFriends();
