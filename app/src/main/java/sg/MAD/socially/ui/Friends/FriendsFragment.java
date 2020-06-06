@@ -1,5 +1,8 @@
 package sg.MAD.socially.ui.Friends;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -152,17 +155,11 @@ public class FriendsFragment extends Fragment {
         //buttons to accept or reject
         addFriend = root.findViewById(R.id.addfriend_yes);
         notFriend = root.findViewById(R.id.addfriend_no);
-/*
-        addFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
- */
+
         return root;
     }
 
-    public void DisplayFindFriends(View v) {
+    public void DisplayFindFriends(final View v) {
         //Set adapter to the swipe function to display each card (consisting of potential friend details)
         swipeContainer.setAdapter(adapter);
         Log.d("Adapter", "Adapter set!" + adapter);
@@ -230,7 +227,7 @@ public class FriendsFragment extends Fragment {
                 final ArrayList<String> currPendingFriendList = new ArrayList<>();
 
                 reference = FirebaseDatabase.getInstance().getReference("Users");
-                reference.addValueEventListener(new ValueEventListener() {
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -274,6 +271,24 @@ public class FriendsFragment extends Fragment {
                             currFriendList.add(userId);
                             friendList.add(currentUserId);
                             currPendingFriendList.remove(userId);
+
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            //View alertView = LayoutInflater.from(v.getContext()).inflate();
+                            alert.setTitle("New Friend added!")
+                                    .setPositiveButton("Say Hello!", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //Intent intent
+                                        }
+                                    })
+                                    .setNegativeButton("Sweet!", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .setView(v);
+                            alert.show();
 
                             /* DISPLAY USER */
 
@@ -372,47 +387,3 @@ public class FriendsFragment extends Fragment {
         });
     }
 }
-        /*
-        public ArrayList<String> getCurrPendingFriendsList(@NotNull final SimpleCallback finishCallback) {
-
-            reference = FirebaseDatabase.getInstance().getReference("Users");
-            reference.addValueEventListener(new ValueEventListener()
-            {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        //Populating each user in allUsersList
-                        User u = snapshot.getValue(User.class);
-
-                        //Check if user is current user by Id
-                        Log.d("Current user", currentUserId);
-                        Log.d("Check user", String.valueOf(u.getId() == currentUserId));
-                        Log.d("Check user", String.valueOf(u.getId().equals(currentUserId)));
-                        if (u.getId().equals(currentUserId)) {
-                            String currPendingFriends = u.getPendingFriends();
-
-                            //Populate Current User PendingFriendList
-                            Log.d("Empty String", String.valueOf(!currPendingFriends.isEmpty()));
-                            if (!currPendingFriends.isEmpty()) {
-                                //More than 1 friend
-                                if (currPendingFriends.contains(",")) {
-                                    String[] pendingFriendList = currPendingFriends.split(",");
-                                    for (String i : pendingFriendList) {
-                                        currPendingFriendList.add(i);
-                                    }
-                                }
-                                //1 friend
-                                else {
-                                    currPendingFriendList.add(currPendingFriends);
-                                }
-                            }
-                            finishCallback.callback(dataSnapshot.hasChild(String.valueOf(currFriendList)));
-                            break;
-                        }
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        */
