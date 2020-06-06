@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/amaranth"
         android:gravity="center_horizontal"
         android:text="Welcome to Social.ly"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -42,6 +43,7 @@
         android:gravity="center_horizontal"
         android:text="Your new best friends are  just a few taps away"
         app:layout_constraintBottom_toTopOf="@+id/Register_Start"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -50,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="@color/colorAccent"
         android:text="Register"
         app:layout_constraintBottom_toTopOf="@+id/Login_Start"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
@@ -62,6 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="#FFFFFF"
         android:text="Login"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="@+id/Register_Start"
@@ -84,12 +88,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="277dp"
+        android:layout_height="69dp"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
