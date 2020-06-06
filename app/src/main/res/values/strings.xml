@@ -31,6 +31,7 @@
     <string name="nickname">Nickname</string>
     <string name="interest">Interest</string>
     <string name="create_activity">Create Activity</string>
+    <string name="im_interested">I am Interested!</string>
 
     <string name="interest_prompt">Select an interest</string>
 
