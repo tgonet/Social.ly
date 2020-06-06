@@ -35,14 +35,16 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.addfriend_name);
+        TextView nickname = (TextView) convertView.findViewById(R.id.addfriend_nickname);
         ImageView image = (ImageView) convertView.findViewById(R.id.addfriend_profilepic);
         TextView friendCount = (TextView) convertView.findViewById(R.id.addfriend_friendcount);
-        TextView dob = (TextView) convertView.findViewById(R.id.addfriend_dob);
+        //TextView dob = (TextView) convertView.findViewById(R.id.addfriend_dob);
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
         FloatingActionButton addFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_yes);
         FloatingActionButton notFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_no);
 
         name.setText(user.getName());
+        nickname.setText("aka " + user.getNickName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
         String userFriends = user.getFriends();
         String[] friendList = userFriends.split(",");
@@ -55,12 +57,13 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         }
 
 
-        dob.setText("Date of Birth: \t" + user.getDOB());
+        //dob.setText("Date of Birth: \t" + user.getDOB());
         desc.setText(user.getShortDesc());
 
         addFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //FriendsFragment.class.getMethod(DisplayFindFriends())
             }
         });
