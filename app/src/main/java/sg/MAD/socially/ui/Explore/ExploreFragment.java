@@ -38,7 +38,7 @@ public class ExploreFragment extends Fragment {
                 ViewModelProviders.of(this).get(ExploreViewModel.class);
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.recyclerview_id);
+        recyclerView = root.findViewById(R.id.recyclerview_id);
 
         interest = new ArrayList<>();
         images = new ArrayList<>();
