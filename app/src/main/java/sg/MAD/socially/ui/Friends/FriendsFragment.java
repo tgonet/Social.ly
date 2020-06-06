@@ -33,6 +33,7 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 
 import sg.MAD.socially.Conversation;
+import sg.MAD.socially.Message;
 import sg.MAD.socially.NewChat;
 import sg.MAD.socially.R;
 import sg.MAD.socially.User;
@@ -139,7 +140,7 @@ public class FriendsFragment extends Fragment {
 
                 //Populating currPotentialFriendList
                 for (User u : allUsersList) {
-                    if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId()) && !u.getPendingFriends().contains(currentUserId)) {
+                    if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId()) && !u.getPendingFriends().contains(u.getId())) {
                         currPotentialFriendList.add(u);
                     }
                 }
@@ -337,20 +338,20 @@ public class FriendsFragment extends Fragment {
 
                             //Create Alert Message
                             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+
                             View alertView = LayoutInflater.from(v.getContext()).inflate(R.layout.fragment_home_alert, null);
-
-                            ImageView currUserPic = (ImageView) v.findViewById(R.id.addfriend_profilepic);
+                            ImageView currUserPic = (ImageView) alertView.findViewById(R.id.newfriend_user);
                             Uri getCurrUserPic = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
-                            Glide.with(v.getContext()).load(getCurrUserPic).into(currUserPic);
-
-                            Glide.with(v.getContext()).load(user.getImageURL()).into(currUserPic);
+                            Glide.with(alertView).load(getCurrUserPic).into(currUserPic);
+                            ImageView otherUserPic = (ImageView) alertView.findViewById(R.id.newfriend_friend);
+                            Glide.with(alertView).load(user.getImageURL()).into(otherUserPic);
 
                             alert.setTitle("You have a new friend!")
-                                    .setMessage(user.getName() + "and you are now friends. Click the \"Say hello\" button to start a new conversation!")
+                                    .setMessage(user.getName() + " and you are now friends. Click the \"Say hello\" button to start a new conversation!")
                                     .setPositiveButton("Say Hello!", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(getContext(), NewChat.class);
+                                            Intent intent = new Intent(getContext(), Message.class);
                                             startActivity(intent);
                                         }
                                     })
