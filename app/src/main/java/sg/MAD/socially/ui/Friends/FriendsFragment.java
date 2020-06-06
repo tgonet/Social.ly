@@ -140,7 +140,8 @@ public class FriendsFragment extends Fragment {
 
                 //Populating currPotentialFriendList
                 for (User u : allUsersList) {
-                    if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId()) && !u.getPendingFriends().contains(u.getId())) {
+                    if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId())
+                            && !u.getPendingFriends().contains(currentUserId)) {
                         currPotentialFriendList.add(u);
                     }
                 }
@@ -190,7 +191,7 @@ public class FriendsFragment extends Fragment {
             public void onRightCardExit(Object o) {
                 //Instantiating the displayed user as an object
                 final User user = (User) o;
-
+                Log.d("Right Swipe", user.getId());
                 // getting displayed users' details
                 final String userId = user.getId();
                 String pendingFriends = user.getPendingFriends();
@@ -342,7 +343,9 @@ public class FriendsFragment extends Fragment {
                             View alertView = LayoutInflater.from(v.getContext()).inflate(R.layout.fragment_home_alert, null);
                             ImageView currUserPic = (ImageView) alertView.findViewById(R.id.newfriend_user);
                             Uri getCurrUserPic = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+                            Log.d("Current user", getCurrUserPic.toString());
                             Glide.with(alertView).load(getCurrUserPic).into(currUserPic);
+
                             ImageView otherUserPic = (ImageView) alertView.findViewById(R.id.newfriend_friend);
                             Glide.with(alertView).load(user.getImageURL()).into(otherUserPic);
 
@@ -352,6 +355,7 @@ public class FriendsFragment extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             Intent intent = new Intent(getContext(), Message.class);
+                                            intent.putExtra("userid", userId);
                                             startActivity(intent);
                                         }
                                     })
