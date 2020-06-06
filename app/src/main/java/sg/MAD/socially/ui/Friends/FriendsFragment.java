@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +32,8 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 
+import sg.MAD.socially.Conversation;
+import sg.MAD.socially.NewChat;
 import sg.MAD.socially.R;
 import sg.MAD.socially.User;
 
@@ -272,23 +277,6 @@ public class FriendsFragment extends Fragment {
                             friendList.add(currentUserId);
                             currPendingFriendList.remove(userId);
 
-                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                            //View alertView = LayoutInflater.from(v.getContext()).inflate();
-                            alert.setTitle("New Friend added!")
-                                    .setPositiveButton("Say Hello!", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            //Intent intent
-                                        }
-                                    })
-                                    .setNegativeButton("Sweet!", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    })
-                                    .setView(v);
-                            alert.show();
 
                             /* DISPLAY USER */
 
@@ -341,12 +329,42 @@ public class FriendsFragment extends Fragment {
                                 Log.d("Current user list", i + "added to friendList");
                                 count2++;
                             }
+
                             //Firebase: Update display current users' Friends
                             ref4 = FirebaseDatabase.getInstance().getReference();
                             ref4.child("Users").child(currentUserId).child("Friends").setValue(newcurrFriends);
                             Log.d("Current user list", newcurrFriends);
 
-                        } else {
+                            //Create Alert Message
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            View alertView = LayoutInflater.from(v.getContext()).inflate(R.layout.fragment_home_alert, null);
+
+                            ImageView currUserPic = (ImageView) v.findViewById(R.id.addfriend_profilepic);
+                            Uri getCurrUserPic = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+                            Glide.with(v.getContext()).load(getCurrUserPic).into(currUserPic);
+
+                            Glide.with(v.getContext()).load(user.getImageURL()).into(currUserPic);
+
+                            alert.setTitle("You have a new friend!")
+                                    .setMessage(user.getName() + "and you are now friends. Click the \"Say hello\" button to start a new conversation!")
+                                    .setPositiveButton("Say Hello!", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(getContext(), NewChat.class);
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .setNegativeButton("Sweet!", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .setView(alertView);
+                            alert.show();
+
+                        }
+                        else {
                             pendingFriendList.add(currentUserId);
                             String newpendingFriends = "";
                             int count3 = 0;

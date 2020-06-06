@@ -86,12 +86,12 @@
                 app:layout_constraintBottom_toTopOf="@+id/addfriend_shortdesc"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addfriend_profilepic"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintVertical_chainStyle="spread" />
 
             <TextView
                 android:id="@+id/addfriend_shortdesc"
                 android:layout_width="wrap_content"
-                android:layout_height="57dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toTopOf="@+id/textView7"
