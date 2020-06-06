@@ -82,6 +82,8 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
     private static final int CAMERA_REQUEST_CODE = 1;
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
+    DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +102,11 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
         addressList = new ArrayList<>();
 
+        //Check for runtime permissions Above 6.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermission();
+        }
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.interest_array, android.R.layout.simple_spinner_item);
@@ -109,18 +116,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         Interest.setAdapter(adapter);
 
         //Gets the selected interest
-        Interest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                interest = parent.getItemAtPosition(position).toString();
-                Toast.makeText(CreateActivity.this, interest, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        Interest.setOnItemSelectedListener(this);
 
         //Retrieve logged in user details
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -132,7 +128,6 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                 //Adds data to firebase
                 CreateBtn();
                 //Does not allow users to come back to this activity
-                finish();
             }
         });
 
@@ -191,7 +186,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
                 //Allows users to select a date
-                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateActivity.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(CreateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         int y = year;
@@ -216,7 +211,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                 int mMinute = c.get(Calendar.MINUTE);
 
                 //Allow users to select a time
-                TimePickerDialog timePickerDialog = new TimePickerDialog(CreateActivity.this,
+                timePickerDialog = new TimePickerDialog(CreateActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
 
                             @Override
@@ -249,7 +244,9 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         String location = Location.getText().toString();
         String time = Time.getText().toString();
         String date = Date.getText().toString();
-        if (activityname.isEmpty() || desc.isEmpty() || location.isEmpty() || time.isEmpty() || date.isEmpty()) {
+        Log.d("date", date);
+        Log.d("time",time);
+        if (!activityname.isEmpty() || !desc.isEmpty() || !location.isEmpty() || !time.isEmpty() || !date.isEmpty()) {
 
             //Puts the data into a hashmap
             HashMap<String, String> hashMap = new HashMap<>();
@@ -272,6 +269,9 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                         //Uploads image into firebase storage
                         uploadImage();
                         Toast.makeText(getBaseContext(), "Activity created", Toast.LENGTH_SHORT).show();
+                        finish();
+                        timePickerDialog.dismiss();
+                        datePickerDialog.dismiss();
                     }
                     else {
                         Toast.makeText(getBaseContext(), "Activity failed to be created", Toast.LENGTH_SHORT).show();
@@ -324,7 +324,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
     private void uploadImage() {
         if (imageUri == null) {
             //For updating default Image
-            String urlDefault = "https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/profile-placeholder.png?alt=media&token=de632eea-3125-44fb-af7d-a883a82d107c";
+            String urlDefault = "https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/activity-placeholder.jpg?alt=media&token=53e5cecf-9759-49a7-b72c-fbed2ec9e2fd";
             //Updates the activity in firebase to have a default image
             reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).child(reference.getKey());
             HashMap<String, Object> map = new HashMap<>();
@@ -501,7 +501,8 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+        interest = parent.getItemAtPosition(position).toString();
+        Toast.makeText(CreateActivity.this, interest, Toast.LENGTH_SHORT).show();
     }
 
     @Override

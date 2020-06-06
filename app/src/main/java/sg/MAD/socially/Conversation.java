@@ -48,6 +48,7 @@ public class Conversation extends AppCompatActivity {
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
         UserstringidList = new ArrayList<>();
+        User = new ArrayList<>();
 
         //Retrieve the userid that the user messages
         reference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -59,11 +60,13 @@ public class Conversation extends AppCompatActivity {
                 //Extract the userid of whoever this user texted
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
+
                     //Check if this message belongs to the logged in user which he is the sender
                     if (chat.getSender().equals(fuser.getUid())) {
                         //Gets the userid of the person he is texting
                         UserstringidList.add(chat.getReceiver());
                     }
+
                     //Check if this message belongs to the logged in user which he is the receiver
                     if (chat.getReceiver().equals(fuser.getUid())) {
                         //Gets the userid of the person he receive text from
@@ -93,7 +96,7 @@ public class Conversation extends AppCompatActivity {
 
 
     private void DisplayCurrentChats() {
-        User = new ArrayList<>();
+
         reference = FirebaseDatabase.getInstance().getReference("Users");
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -106,6 +109,7 @@ public class Conversation extends AppCompatActivity {
 
                     for (String id : UserstringidList) {
                         if (user.getId().equals(id)) {
+
                             //As the list is empty so there is no worry about displaying the same user twice
                             if (User.size() != 0) {
                                 for (User user1 : User) {

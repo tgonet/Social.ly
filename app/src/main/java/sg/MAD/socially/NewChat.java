@@ -59,17 +59,21 @@ public class NewChat extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 FriendListID = new ArrayList<>();
-                String friendliststring = user.getFriends();
-                //Check if the friendlist has any string inside as long
-                // as the string is not empty there is at least 1 friend
-                if (!friendliststring.isEmpty()) {
-                    if (friendliststring.contains(",")) {
-                        String[] friendList = friendliststring.split(",");
-                        for (String i : friendList) {
-                            FriendListID.add(i);
+
+                //Check if user has friends
+                if(user.getFriends() != null){
+                    String friendliststring = user.getFriends();
+                    //Check if the friendlist has any string inside as long
+                    // as the string is not empty there is at least 1 friend
+                    if (!friendliststring.isEmpty()) {
+                        if (friendliststring.contains(",")) {
+                            String[] friendList = friendliststring.split(",");
+                            for (String i : friendList) {
+                                FriendListID.add(i);
+                            }
+                        } else {
+                            FriendListID.add(friendliststring);
                         }
-                    } else {
-                        FriendListID.add(friendliststring);
                     }
                 }
             }
