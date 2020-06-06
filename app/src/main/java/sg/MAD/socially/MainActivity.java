@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+/*
         ChatButton = findViewById(R.id.Chat);
         ChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, Conversation.class));
 
             }
-        });
+        });*/
     }
 }
