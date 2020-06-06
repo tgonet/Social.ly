@@ -62,6 +62,8 @@ public class Message extends AppCompatActivity {
         message = findViewById(R.id.messaage);
         send = findViewById(R.id.send);
 
+        chatList = new ArrayList<>();
+
         //Instantiates the adapter and telling it to display vertically
         rv = findViewById(R.id.rv_message);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((this));
@@ -100,6 +102,7 @@ public class Message extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                username.setText(user.getName());
                 if (user.getImageURL().equals("default")) {
                     profile_pic.setImageResource(R.mipmap.ic_launcher);
                 } else {
@@ -108,7 +111,7 @@ public class Message extends AppCompatActivity {
                 }
 
                 //Displays all the messages between both users
-                readMessage(fuser.getUid(), userid, user.getImageURL());
+                readMessage(fuser.getUid(), userid);
             }
 
             @Override
@@ -128,8 +131,8 @@ public class Message extends AppCompatActivity {
         reference.child("Chats").push().setValue(hashmap);
     }
 
-    private void readMessage(final String myid, final String userid, final String imageurl) {
-        chatList = new ArrayList<>();
+    private void readMessage(final String myid, final String userid) {
+        //chatList = new ArrayList<>();
 
         //Populates the chatlist
         reference.child("Chats").addValueEventListener(new ValueEventListener() {

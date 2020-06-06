@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
@@ -54,9 +55,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -68,6 +71,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
     Spinner Interest;
     FirebaseUser user;
     DatabaseReference reference;
+    ArrayList<Address> addressList;
     String interest = "Gaming";
     String mUri;
     String imageFilePath;
@@ -92,6 +96,8 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         Gallerybtn = findViewById(R.id.Gallery_select_Createactivity);
         Camerabtn = findViewById(R.id.Camera_Createactivity);
 
+
+        addressList = new ArrayList<>();
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.interest_array, android.R.layout.simple_spinner_item);
@@ -138,7 +144,8 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             }
         });
 
-        //Geocoder geocoder
+        final Geocoder geocoder = new Geocoder(this);
+
         Location.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -152,7 +159,14 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                try {
+                    addressList = (ArrayList<Address>) geocoder.getFromLocationName(Location.getText().toString(),6);
+                    if(addressList.size() != 0){
+                        Log.d("test",addressList.get(0).toString());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
