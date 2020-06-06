@@ -84,11 +84,11 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("selected", (Serializable) activities.get(getAdapterPosition()));
+                    bundle.putSerializable("selected", activities.get(getAdapterPosition()));
 
                     Intent intent = new Intent(v.getContext(), DisplaySelectedActivity.class);
                     intent.putExtras(bundle);
-                    v.getContext().startActivity(new Intent(v.getContext(), DisplaySelectedActivity.class));
+                    v.getContext().startActivity(intent);
 
                 }
             });

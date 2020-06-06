@@ -1,6 +1,8 @@
 package sg.MAD.socially;
 
-public class Activity {
+import java.io.Serializable;
+
+public class Activity implements Serializable {
     private String act_picture;
     private String profile_image;
     private String Name_register;
