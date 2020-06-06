@@ -2,16 +2,20 @@ package sg.MAD.socially;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -23,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,24 +62,24 @@ import java.util.Locale;
 
 public class CreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    EditText ActivityName,Desc,Location,Time,Date;
+    EditText ActivityName, Desc, Location, Time, Date;
     Button Createactivitybtn;
-    ImageButton Camerabtn,Gallerybtn;
+    ImageButton Camerabtn, Gallerybtn;
     Spinner Interest;
     FirebaseUser user;
     DatabaseReference reference;
-    String interest  = "Gaming";
+    String interest = "Gaming";
     String mUri;
     String imageFilePath;
     private StorageTask uploadTask;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReferenceFromUrl("gs://socially-943f3.appspot.com");
-    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+    public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     private static final int CAMERA_REQUEST_CODE = 1;
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
 
@@ -133,12 +138,31 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             }
         });
 
+        //Geocoder geocoder
+        Location.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         Date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Pick data using data picker*/
                 Calendar c = Calendar.getInstance();
-                int mYear ;
-                int mMonth ;
+                int mYear;
+                int mMonth;
                 int mDay;
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
@@ -147,24 +171,51 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                 DatePickerDialog datePickerDialog = new DatePickerDialog(CreateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        int y=year;
+                        int y = year;
                         /*Calender object starts month with 0 so month+1 is needed to get current month*/
-                        int m=month+1;
-                        int d=dayOfMonth;
+                        int m = month + 1;
+                        int d = dayOfMonth;
                         /*set date to edit text*/
-                        Date.setText(d+"/"+ m +"/" + year);
+                        Date.setText(d + "/" + m + "/" + y);
                     }
                 }, mYear, mMonth, mDay);
 
                 /*If you want to use minimum date to select from put setMinData(with the date)*/
                 /*setMaxDate() is you dialog show the max date System.currentTimeMillis() is for current date*/
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 datePickerDialog.show();
+            }
+        });
+
+        Time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int mHour = c.get(Calendar.HOUR_OF_DAY);
+                int mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(CreateActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                if (minute == 0) {
+                                    Time.setText(hourOfDay + ":" + minute + "0");
+                                } else {
+                                    Time.setText(hourOfDay + ":" + minute);
+                                }
+
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
             }
         });
     }
 
-    private void CreateBtn(){
+    private void CreateBtn() {
         String activityname = ActivityName.getText().toString();
         String desc = Desc.getText().toString();
         String location = Location.getText().toString();
@@ -173,49 +224,48 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("activity_name", activityname);
-        hashMap.put("act_desc",desc);
+        hashMap.put("act_desc", desc);
         hashMap.put("profile_image", user.getPhotoUrl().toString());
         hashMap.put("act_location", location);
-        hashMap.put("act_time",time);
-        hashMap.put("act_date",date);
-        hashMap.put("Name_register",user.getDisplayName());
-        hashMap.put("Interest",interest);
-
+        hashMap.put("act_time", time);
+        hashMap.put("act_date", date);
+        hashMap.put("Name_register", user.getDisplayName());
+        hashMap.put("Interest", interest);
 
         reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push();
         reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     uploadImage(user.getDisplayName());
-                    Toast.makeText(getBaseContext(),"Activity created",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getBaseContext(),"Activity failed to be created",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Activity created", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Activity failed to be created", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void openImage(){
+    private void openImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, IMAGE_REQUEST);
 
     }
+
     //Capture Image from camera and  getting  as a file path
-    public void openCamera(){
+    public void openCamera() {
         try {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            if(cameraIntent.resolveActivity(getPackageManager()) != null){
+            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
                 File photoFile = null;
-                try{
+                try {
                     photoFile = createImageFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if(photoFile != null){
+                if (photoFile != null) {
                     Uri photoURI = FileProvider.getUriForFile(CreateActivity.this, "sg.MAD.socially.provider", photoFile);
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                             photoURI);
@@ -223,30 +273,29 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                             CAMERA_REQUEST_CODE);
                 }
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private String getFileExtension(Uri uri){
+    private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getBaseContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage(final String Name){
-        if(imageUri == null) {
+    private void uploadImage(final String Name) {
+        if (imageUri == null) {
             //For updating default Image
             String urlDefault = "https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/profile-placeholder.png?alt=media&token=de632eea-3125-44fb-af7d-a883a82d107c";
             reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).child(Name);
-            HashMap<String,Object> map = new HashMap<>();
-            map.put("act_picture",urlDefault);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("act_picture", urlDefault);
             reference.updateChildren(map);
-            Log.w("Successful","upload"+urlDefault);
+            Log.w("Successful", "upload" + urlDefault);
 
             //imageUri = Uri.parse("content://com.android.providers.media.documents/document/image%3A672111");
-        }else {
+        } else {
 
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "."
                     + getFileExtension(imageUri));
@@ -270,7 +319,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
                         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Activity").child(interest).child(reference.getKey());
                         HashMap<String, Object> map = new HashMap<>();
-                        map.put("act_picture",mUri);
+                        map.put("act_picture", mUri);
                         reference1.updateChildren(map);
                     } else {
                         Toast.makeText(CreateActivity.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -285,11 +334,12 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             });
         }
     }
+
     public String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
@@ -299,6 +349,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             }
         }
     }
+
     //Creating Image file after getting captured from camera
     private File createImageFile() throws IOException {
         String timeStamp =
@@ -307,44 +358,45 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         String imageFileName = "IMG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        File image = File.createTempFile(imageFileName,        ".jpg",  storageDir  );
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         imageFilePath = image.getAbsolutePath();
-        imageUri=Uri.fromFile(image);
+        imageUri = Uri.fromFile(image);
 
         return image;
     }
 
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         /*Put this log with check if data is null or not
         else it will through error*/
 
         // Log.v("TESTINGGGGGGGG", " ReqC " + requestCode + " ResC" + resultCode + " Data " + data + " " + data.getData());
 
-        if(requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             //Gallery Button
             imageUri = data.getData();
-            Toast.makeText(CreateActivity.this,"Gallery Upload: " + imageUri , Toast.LENGTH_SHORT).show();
-            if(uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(CreateActivity.this,"Gallery Upload in progress: " + imageUri ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(CreateActivity.this, "Gallery Upload: " + imageUri, Toast.LENGTH_SHORT).show();
+            if (uploadTask != null && uploadTask.isInProgress()) {
+                Toast.makeText(CreateActivity.this, "Gallery Upload in progress: " + imageUri, Toast.LENGTH_SHORT).show();
             }
         }
 
-        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             //Camera Button
             //imageUri = Uri.parse(getRealPathFromURI(Uri.parse(String.valueOf(data.getData()))));
 
             /*If you want to display image to any imageview then put your code here*/
 
-            if(uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(CreateActivity.this,"Camera Image Upload in progress",Toast.LENGTH_SHORT).show();
+            if (uploadTask != null && uploadTask.isInProgress()) {
+                Toast.makeText(CreateActivity.this, "Camera Image Upload in progress", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
+
     //Check for runtime permissions
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -384,6 +436,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             }
         }
     }
+
     //Request permissions
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -395,8 +448,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                     boolean cameraPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean readExternalFile = grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
-                    if(cameraPermission && readExternalFile)
-                    {
+                    if (cameraPermission && readExternalFile) {
 
                     } else {
                         Snackbar.make(CreateActivity.this.findViewById(android.R.id.content),
@@ -429,3 +481,5 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
     }
 }
+
+

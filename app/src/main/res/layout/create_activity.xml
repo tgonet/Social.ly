@@ -115,7 +115,10 @@
         android:id="@+id/new_acttime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
+        android:hint="12:00"
         android:inputType="time"/>
 
     <TextView
@@ -130,7 +133,11 @@
         android:id="@+id/new_actdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
         android:ems="10"
+        android:hint="01/12/2000"
         android:inputType="date"/>
 
     <Button

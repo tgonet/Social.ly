@@ -24,7 +24,6 @@ import java.util.ArrayList;
 public class NewChat extends AppCompatActivity {
 
     DatabaseReference reference;
-    DatabaseReference reference1;
     FirebaseUser user;
     ArrayList<User> FriendList;
     ArrayList<String> FriendListID;
@@ -36,16 +35,25 @@ public class NewChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_chat);
 
+        //Getting logged in user details
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //setting the path to reference to in firebase
         reference = FirebaseDatabase.getInstance().getReference("Users");
+
         FriendList = new ArrayList<>();
-        rv = findViewById(R.id.rv_newchat);
-        rv.setLayoutManager(new GridLayoutManager(this,3));
         FriendListID = new ArrayList<>();
 
+        //Instantiates the adapter and telling it to display in a grid layout
+        rv = findViewById(R.id.rv_newchat);
+        rv.setLayoutManager(new GridLayoutManager(this, 3));
+        adapter = new GridFriendAdapter(FriendList, this);
+        rv.setAdapter(adapter);
+
+        //Resize the new activity to make it look like a popup
         Display();
 
-        //Retreive the friendlist of the current user
+        //Retrieve the friendlist of the current user
         reference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -54,14 +62,13 @@ public class NewChat extends AppCompatActivity {
                 String friendliststring = user.getFriends();
                 //Check if the friendlist has any string inside as long
                 // as the string is not empty there is at least 1 friend
-                if(!friendliststring.isEmpty()){
-                    if(friendliststring.contains(",")){
+                if (!friendliststring.isEmpty()) {
+                    if (friendliststring.contains(",")) {
                         String[] friendList = friendliststring.split(",");
-                        for(String i : friendList){
+                        for (String i : friendList) {
                             FriendListID.add(i);
                         }
-                    }
-                    else{
+                    } else {
                         FriendListID.add(friendliststring);
                     }
                 }
@@ -73,31 +80,30 @@ public class NewChat extends AppCompatActivity {
             }
         });
 
+        //Adding the users to the friendlist to be displayed in the gridlayout
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FriendList.clear();
 
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
-
-                    if(FriendListID.contains(user.getId())){
+                    //Check if user is already in the list
+                    if (FriendListID.contains(user.getId())) {
                         FriendList.add(user);
                     }
-
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-        adapter = new GridFriendAdapter(FriendList,this);
-        rv.setAdapter(adapter);
     }
 
-    //Resize the new activity to make it look like a popup
+
     public void Display() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -105,6 +111,7 @@ public class NewChat extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
+        //Width is .9 times of normal size and height is .65 times of normal size
         getWindow().setLayout((int) (width * .9), (int) (height * .65));
     }
 }

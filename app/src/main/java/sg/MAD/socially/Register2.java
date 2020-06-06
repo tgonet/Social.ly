@@ -254,7 +254,7 @@ public class Register2 extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage(String Name){
+    private void uploadImage(final String Name){
         if(imageUri == null) {
             //For updating default Image
             String urlDefault = "https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/profile-placeholder.png?alt=media&token=de632eea-3125-44fb-af7d-a883a82d107c";
@@ -288,6 +288,21 @@ public class Register2 extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString();
 
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(Name)
+                                .setPhotoUri(Uri.parse(mUri))
+                                .build();
+
+                        FirebaseUser firebaseUser = auth.getCurrentUser();
+                        firebaseUser.updateProfile(profileUpdates)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("Checck", "User profile updated.");
+                                        }
+                                    }
+                                });
                         FirebaseUser fuser = auth.getCurrentUser();
                         reference = FirebaseDatabase.getInstance().getReference("Users").child((fuser.getUid()));
                         HashMap<String, Object> map = new HashMap<>();
@@ -306,22 +321,6 @@ public class Register2 extends AppCompatActivity {
                 }
             });
         }
-
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(Name)
-                .setPhotoUri(Uri.parse(mUri))
-                .build();
-
-        FirebaseUser firebaseUser = auth.getCurrentUser();
-        firebaseUser.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("Checck", "User profile updated.");
-                        }
-                    }
-                });
     }/*
         else{
             Toast.makeText(Register2.this,"No image selected",Toast.LENGTH_SHORT).show();
@@ -361,8 +360,8 @@ public class Register2 extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
 
-        /*Put this log with check if data is null or not
-        else it will through error*/
+/*Put this log with check if data is null or not
+else it will through error*/
 
         // Log.v("TESTINGGGGGGGG", " ReqC " + requestCode + " ResC" + resultCode + " Data " + data + " " + data.getData());
 
