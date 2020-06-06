@@ -49,7 +49,7 @@ public class Conversation extends AppCompatActivity {
 
         UserstringidList = new ArrayList<>();
 
-        //Retreive the userid that the user messages
+        //Retrieve the userid that the user messages
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
