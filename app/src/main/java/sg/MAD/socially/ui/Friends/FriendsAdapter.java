@@ -38,7 +38,7 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         TextView nickname = (TextView) convertView.findViewById(R.id.addfriend_nickname);
         ImageView image = (ImageView) convertView.findViewById(R.id.addfriend_profilepic);
         TextView friendCount = (TextView) convertView.findViewById(R.id.addfriend_friendcount);
-        //TextView dob = (TextView) convertView.findViewById(R.id.addfriend_dob);
+        TextView interests = (TextView) convertView.findViewById(R.id.addfriend_interests);
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
         FloatingActionButton addFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_yes);
         FloatingActionButton notFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_no);
@@ -47,24 +47,28 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         nickname.setText("aka " + user.getNickName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
         String userFriends = user.getFriends();
-        String[] friendList = userFriends.split(",");
-        int friends =friendList.length;
-        if (friends > 1){
-            friendCount.setText(friends + " friends");
-        }
-        else{
-            friendCount.setText(friends + " friend");
-        }
 
-
-        //dob.setText("Date of Birth: \t" + user.getDOB());
+        int friends = 0;
+        if (!userFriends.isEmpty()) {
+            //More than 1 friend
+            if (userFriends.contains(",")) {
+                String[] friendList = userFriends.split(",");
+                friends = friendList.length;
+            }
+            //1 friend
+            else {
+                friends = 1;
+            }
+        }
+        friendCount.setText(friends + " friends");
+        interests.setText(user.getInterest());
         desc.setText(user.getShortDesc());
 
         addFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //FriendsFragment.class.getMethod(DisplayFindFriends())
+                //FriendsFragment.class.("SwipeRight", )
             }
         });
 
