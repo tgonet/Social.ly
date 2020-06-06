@@ -42,6 +42,7 @@
         android:gravity="center_horizontal"
         android:text="Your new best friends are  just a few taps away"
         app:layout_constraintBottom_toTopOf="@+id/Register_Start"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
