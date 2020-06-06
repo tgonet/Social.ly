@@ -75,7 +75,6 @@ public class Register2 extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReferenceFromUrl("gs://socially-943f3.appspot.com");
     public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
-
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask uploadTask;
@@ -348,20 +347,20 @@ public class Register2 extends AppCompatActivity {
         String imageFileName = "IMG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        File image = File.createTempFile(imageFileName,        ".jpg",  storageDir  );
+        File image = File.createTempFile(imageFileName,".jpg",  storageDir);
 
         imageFilePath = image.getAbsolutePath();
-        imageUri=Uri.fromFile(image);
-
+        imageUri = Uri.fromFile(image);
         return image;
+
     }
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
 
-/*Put this log with check if data is null or not
-else it will through error*/
+        /*Put this log with check if data is null or not
+        else it will through error*/
 
         // Log.v("TESTINGGGGGGGG", " ReqC " + requestCode + " ResC" + resultCode + " Data " + data + " " + data.getData());
 
@@ -370,7 +369,7 @@ else it will through error*/
             imageUri = data.getData();
             Toast.makeText(Register2.this,"Gallery Upload: " + imageUri , Toast.LENGTH_SHORT).show();
             if(uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(Register2.this,"Gallery Upload in progress: " + imageUri ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(Register2.this,"Gallery Upload In Progress: " + imageUri ,Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -386,7 +385,7 @@ else it will through error*/
 
         }
     }
-    //Check for runtime permissions
+    //Check if camera
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(Register2.this,
@@ -395,25 +394,10 @@ else it will through error*/
                             Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                if (ActivityCompat.shouldShowRequestPermissionRationale
-                        (Register2.this, Manifest.permission.READ_EXTERNAL_STORAGE) ||
-                        ActivityCompat.shouldShowRequestPermissionRationale
-                                (Register2.this, Manifest.permission.CAMERA)) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale (Register2.this, Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale (Register2.this, Manifest.permission.CAMERA)) {
 
-                    Snackbar.make(Register2.this.findViewById(android.R.id.content),
-                            "Please Grant Permissions to upload profile photo",
-                            Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                    Toast.makeText(Register2.this,"Please enable camera permissions",Toast.LENGTH_SHORT).show();
 
-                                    requestPermissions(
-                                            new String[]{Manifest.permission
-                                                    .READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
-                                            PERMISSIONS_MULTIPLE_REQUEST);
-                                }
-
-                            }).show();
                 } else {
                     requestPermissions(
                             new String[]{Manifest.permission
@@ -440,20 +424,7 @@ else it will through error*/
                     {
 
                     } else {
-                        Snackbar.make(Register2.this.findViewById(android.R.id.content),
-                                "Please Grant Permissions to upload profile photo",
-                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                            requestPermissions(
-                                                    new String[]{Manifest.permission
-                                                            .READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
-                                                    PERMISSIONS_MULTIPLE_REQUEST);
-                                        }
-                                    }
-                                }).show();
+                        Toast.makeText(Register2.this,"Please enable upload image permissions",Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
