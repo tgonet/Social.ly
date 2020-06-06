@@ -13,11 +13,12 @@ public class User {
     String Email;
     String Friends;
     String PendingFriends;
+    String Interest;
 
     public User(){}
 
     public User(String id, String imageURL, String nickName, String DOB, String name, String shortDesc, String email,
-                String friends, String pendingfriends) {
+                String friends, String pendingfriends, String interest) {
         Id = id;
         ImageURL = imageURL;
         NickName = nickName;
@@ -27,6 +28,7 @@ public class User {
         Email = email;
         Friends = friends;
         PendingFriends = pendingfriends;
+        Interest = interest;
     }
 
 
@@ -100,5 +102,13 @@ public class User {
 
     public void setPendingFriends(String pendingFriends) {
         PendingFriends = pendingFriends;
+    }
+
+    public String getInterest() {
+        return Interest;
+    }
+
+    public void setInterest(String interest) {
+        Interest = interest;
     }
 }

@@ -110,6 +110,15 @@
                 app:layout_constraintStart_toStartOf="@+id/addfriend_shortdesc"
                 app:layout_constraintTop_toBottomOf="@+id/addfriend_shortdesc" />
 
+            <TextView
+                android:id="@+id/addfriend_interests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addfriend_no"
                 android:layout_width="wrap_content"
