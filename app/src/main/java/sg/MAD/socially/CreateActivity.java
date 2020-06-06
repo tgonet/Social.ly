@@ -87,25 +87,28 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
 
+        //Instantiates the views
         ActivityName = findViewById(R.id.new_activity_name);
         Desc = findViewById(R.id.new_desc);
         Location = findViewById(R.id.new_actlocation);
         Time = findViewById(R.id.new_acttime);
         Date = findViewById(R.id.new_actdate);
         Interest = findViewById(R.id.interest_activity);
+        Createactivitybtn = findViewById(R.id.Create_activity_button);
         Gallerybtn = findViewById(R.id.Gallery_select_Createactivity);
         Camerabtn = findViewById(R.id.Camera_Createactivity);
 
-
         addressList = new ArrayList<>();
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.interest_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
+        // Set spinner adapter
         Interest.setAdapter(adapter);
 
+        //Gets the selected interest
         Interest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -119,20 +122,25 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             }
         });
 
+        //Retrieve logged in user details
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        Createactivitybtn = findViewById(R.id.Create_activity_button);
+        //Set the button to respond to onclick
         Createactivitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Adds data to firebase
                 CreateBtn();
+                //Does not allow users to come back to this activity
                 finish();
             }
         });
 
+        //Set the button to respond to onclick
         Gallerybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Opens gallery
                 openImage();
             }
         });
@@ -140,10 +148,12 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         Camerabtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Opens camera
                 openCamera();
             }
         });
 
+        //Used to search for address of entered location
         final Geocoder geocoder = new Geocoder(this);
 
         Location.addTextChangedListener(new TextWatcher() {
@@ -160,20 +170,18 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    addressList = (ArrayList<Address>) geocoder.getFromLocationName(Location.getText().toString(),6);
-                    if(addressList.size() != 0){
-                        Log.d("test",addressList.get(0).toString());
-                    }
+                    //Retrieve addresses of location of similar names
+                    addressList = (ArrayList<Address>) geocoder.getFromLocationName(Location.getText().toString(), 6);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
 
+        //Sets onclick for the date dialog
         Date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Pick data using data picker*/
                 Calendar c = Calendar.getInstance();
                 int mYear;
                 int mMonth;
@@ -182,25 +190,24 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
+                //Allows users to select a date
                 DatePickerDialog datePickerDialog = new DatePickerDialog(CreateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         int y = year;
-                        /*Calender object starts month with 0 so month+1 is needed to get current month*/
                         int m = month + 1;
                         int d = dayOfMonth;
-                        /*set date to edit text*/
                         Date.setText(d + "/" + m + "/" + y);
                     }
                 }, mYear, mMonth, mDay);
 
-                /*If you want to use minimum date to select from put setMinData(with the date)*/
-                /*setMaxDate() is you dialog show the max date System.currentTimeMillis() is for current date*/
+                //Set the selection to only allow future dates
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 datePickerDialog.show();
             }
         });
 
+        //Sets onclick for the date dialog
         Time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,21 +215,27 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                 int mHour = c.get(Calendar.HOUR_OF_DAY);
                 int mMinute = c.get(Calendar.MINUTE);
 
-                // Launch Time Picker Dialog
+                //Allow users to select a time
                 TimePickerDialog timePickerDialog = new TimePickerDialog(CreateActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
 
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-
-                                if (minute == 0) {
+                                //Adds the 0 behind the min or hour to make it 00
+                                if (minute == 0 && hourOfDay == 0 ){
+                                    Time.setText(hourOfDay  + "0" + ":" + minute + "0");
+                                }
+                                else if(hourOfDay == 0){
+                                    Time.setText(hourOfDay  + "0" + ":" + minute);
+                                }
+                                else if (minute == 0) {
                                     Time.setText(hourOfDay + ":" + minute + "0");
-                                } else {
+                                }
+                                else{
                                     Time.setText(hourOfDay + ":" + minute);
                                 }
-
-                            }
+                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
             }
@@ -230,34 +243,45 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     private void CreateBtn() {
+        //Retrieve the input text
         String activityname = ActivityName.getText().toString();
         String desc = Desc.getText().toString();
         String location = Location.getText().toString();
         String time = Time.getText().toString();
         String date = Date.getText().toString();
+        if (activityname.isEmpty() || desc.isEmpty() || location.isEmpty() || time.isEmpty() || date.isEmpty()) {
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("activity_name", activityname);
-        hashMap.put("act_desc", desc);
-        hashMap.put("profile_image", user.getPhotoUrl().toString());
-        hashMap.put("act_location", location);
-        hashMap.put("act_time", time);
-        hashMap.put("act_date", date);
-        hashMap.put("Name_register", user.getDisplayName());
-        hashMap.put("Interest", interest);
+            //Puts the data into a hashmap
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("activity_name", activityname);
+            hashMap.put("act_desc", desc);
+            hashMap.put("profile_image", user.getPhotoUrl().toString());
+            hashMap.put("act_location", location);
+            hashMap.put("act_time", time);
+            hashMap.put("act_date", date);
+            hashMap.put("Name_register", user.getDisplayName());
+            hashMap.put("Interest", interest);
 
-        reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push();
-        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    uploadImage(user.getDisplayName());
-                    Toast.makeText(getBaseContext(), "Activity created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getBaseContext(), "Activity failed to be created", Toast.LENGTH_SHORT).show();
+            //Address of the firebase i am pushing data into
+            reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push();
+            //Pushing of data
+            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        //Uploads image into firebase storage
+                        uploadImage();
+                        Toast.makeText(getBaseContext(), "Activity created", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getBaseContext(), "Activity failed to be created", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Do not leave any fields empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void openImage() {
@@ -265,7 +289,6 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, IMAGE_REQUEST);
-
     }
 
     //Capture Image from camera and  getting  as a file path
@@ -298,21 +321,21 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage(final String Name) {
+    private void uploadImage() {
         if (imageUri == null) {
             //For updating default Image
             String urlDefault = "https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/profile-placeholder.png?alt=media&token=de632eea-3125-44fb-af7d-a883a82d107c";
-            reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).child(Name);
+            //Updates the activity in firebase to have a default image
+            reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).child(reference.getKey());
             HashMap<String, Object> map = new HashMap<>();
             map.put("act_picture", urlDefault);
             reference.updateChildren(map);
             Log.w("Successful", "upload" + urlDefault);
-
-            //imageUri = Uri.parse("content://com.android.providers.media.documents/document/image%3A672111");
-        } else {
-
+        }
+        else {
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "."
                     + getFileExtension(imageUri));
+            //Upload to firebase
             uploadTask = fileReference.putFile(imageUri);
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
@@ -327,12 +350,13 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-
+                        //Getting the url in firebase storage
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString();
-
+                        //Address to the location of where this activity is stored
                         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Activity").child(interest).child(reference.getKey());
                         HashMap<String, Object> map = new HashMap<>();
+                        //Url of the image is put into firebase
                         map.put("act_picture", mUri);
                         reference1.updateChildren(map);
                     } else {
@@ -384,11 +408,6 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*Put this log with check if data is null or not
-        else it will through error*/
-
-        // Log.v("TESTINGGGGGGGG", " ReqC " + requestCode + " ResC" + resultCode + " Data " + data + " " + data.getData());
-
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             //Gallery Button
             imageUri = data.getData();
@@ -399,11 +418,6 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         }
 
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            //Camera Button
-            //imageUri = Uri.parse(getRealPathFromURI(Uri.parse(String.valueOf(data.getData()))));
-
-            /*If you want to display image to any imageview then put your code here*/
-
             if (uploadTask != null && uploadTask.isInProgress()) {
                 Toast.makeText(CreateActivity.this, "Camera Image Upload in progress", Toast.LENGTH_SHORT).show();
             }
@@ -445,8 +459,8 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                                     .READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                             PERMISSIONS_MULTIPLE_REQUEST);
                 }
-            } else {
-                // write your logic code if permission already granted
+            }
+            else {
             }
         }
     }
