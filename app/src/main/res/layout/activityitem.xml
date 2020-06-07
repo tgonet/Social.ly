@@ -44,7 +44,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="Name"
-                    android:textSize="20dp"></TextView>
+                    android:textSize="20dp"
+                    android:fontFamily="sans-serif-medium"></TextView>
 
                 <TextView
                     android:id="@+id/act_location"
@@ -54,7 +55,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="Location"
-                    android:textSize="17dp"></TextView>
+                    android:textSize="17dp"
+                    android:fontFamily="sans-serif-light"></TextView>
 
                 <TextView
                     android:id="@+id/act_date"
@@ -64,7 +66,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="Date"
-                    android:textSize="17dp"></TextView>
+                    android:textSize="17dp"
+                    android:fontFamily="sans-serif-light"></TextView>
 
                 <TextView
                     android:id="@+id/act_time"
@@ -74,7 +77,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="Time"
-                    android:textSize="17dp"></TextView>
+                    android:textSize="17dp"
+                    android:fontFamily="sans-serif-light"></TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -89,7 +93,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:text="Activity Name"
-                    android:textSize="25dp"></TextView>
+                    android:textSize="25dp"
+                    android:fontFamily="sans-serif-black"></TextView>
 
                 <TextView
                     android:id="@+id/act_desc"
@@ -97,8 +102,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
                     android:text="Description"
-                    android:textSize="20dp">
-
+                    android:textSize="20dp"
+                    android:fontFamily="sans-serif-light">
                 </TextView>
 
 

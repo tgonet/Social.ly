@@ -15,7 +15,6 @@
         android:layout_marginRight="5dp"
         android:background="@drawable/secondary_button"
         android:textStyle="bold"
-
         android:text="+ Create Activity" />
 
     <androidx.recyclerview.widget.RecyclerView
