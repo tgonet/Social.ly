@@ -77,8 +77,7 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="Time"
-                    android:textSize="17dp"
-                    ></TextView>
+                    android:textSize="17dp"></TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -91,19 +90,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="5dp"
                     android:text="Activity Name"
-                    android:textSize="25dp"
-                    ></TextView>
+                    android:textSize="25dp"></TextView>
 
                 <TextView
                     android:id="@+id/act_desc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
+                    android:layout_marginEnd="5dp"
                     android:text="Description"
-                    android:textSize="18dp"
-                    >
-                </TextView>
+                    android:textSize="18dp"></TextView>
 
 
             </LinearLayout>

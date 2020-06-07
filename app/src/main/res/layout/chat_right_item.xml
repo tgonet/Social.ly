@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:background="@drawable/background_right"
+            android:fontFamily="@font/roboto"
             android:padding="8dp"
             android:text="TextView"
             android:textColor="#000000"

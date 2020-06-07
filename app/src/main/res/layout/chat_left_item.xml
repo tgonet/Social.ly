@@ -14,7 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_toEndOf="@+id/profile_image_chatitem"
         android:background="@drawable/background_left"
         android:padding="8dp"
         android:text="TextView"

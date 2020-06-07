@@ -100,7 +100,8 @@
 
     <Button
         android:id="@+id/Back_login"
-        android:layout_width="349dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
@@ -114,7 +115,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Login_login"
         app:layout_constraintVertical_bias="0.018" />
