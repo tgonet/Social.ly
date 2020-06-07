@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundColor"
+    android:overScrollMode="always"
+    android:scrollbarAlwaysDrawHorizontalTrack="false"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarStyle="insideInset"
     tools:context=".Message">
 
     <androidx.appcompat.widget.Toolbar
@@ -47,12 +51,16 @@
     <EditText
         android:id="@+id/messaage"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="50dp"
+        android:background="#FDFDFD"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:minHeight="51dp"
+        android:scrollbars="vertical" />
 
     <ImageButton
         android:id="@+id/send"
@@ -60,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        android:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/send" />
 
 </RelativeLayout>
