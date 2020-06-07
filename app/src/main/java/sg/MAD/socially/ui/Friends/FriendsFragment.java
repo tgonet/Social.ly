@@ -149,6 +149,7 @@ public class FriendsFragment extends Fragment {
 
                 //Updates the users displayed
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -168,6 +169,8 @@ public class FriendsFragment extends Fragment {
         swipeContainer.setAdapter(adapter);
         Log.d("Adapter", "Adapter set!" + adapter);
 
+        final TextView noNewUsers = (TextView) v.findViewById(R.id.addfriends_none);
+
         //Set a FlingListener to respond to the action based on direction of swipe
         swipeContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             //This method is executed on every swipe
@@ -176,6 +179,9 @@ public class FriendsFragment extends Fragment {
                 Log.d("Find Friends", "Removed object");
                 currPotentialFriendList.remove(0);//so that the user can see the next card
                 adapter.notifyDataSetChanged();
+                if (currPotentialFriendList.isEmpty()){
+                    noNewUsers.setText("There's no one left.\nWhy not chat with your new friends? ");
+                }
             }
 
             //Swipe LEFT: Maybe Next Time...

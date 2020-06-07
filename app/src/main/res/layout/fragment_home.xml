@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.Friends.FriendsFragment">
 
+     <TextView
+         android:id="@+id/addfriends_none"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:gravity="center"
+         app:layout_constraintBottom_toBottomOf="@+id/frame"
+         app:layout_constraintEnd_toEndOf="@+id/frame"
+         app:layout_constraintHorizontal_bias="0.428"
+         app:layout_constraintStart_toStartOf="@+id/frame"
+         app:layout_constraintTop_toTopOf="@+id/frame" />
+
      <com.lorentzos.flingswipe.SwipeFlingAdapterView
          android:id="@+id/frame"
          android:layout_width="0dp"
@@ -14,7 +25,6 @@
          android:layout_marginTop="16dp"
          android:layout_marginEnd="16dp"
          android:layout_marginBottom="16dp"
-         android:background="@color/white"
          app:layout_constraintBottom_toBottomOf="parent"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.502"
