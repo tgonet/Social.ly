@@ -41,14 +41,14 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) { //display data at their specified position
         holder.interests.setText(interest.get(position));
         holder.interestImage.setImageResource(images.get(position));
 
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount() { //shows data for the number of interests
 
         return interest.size();
     }

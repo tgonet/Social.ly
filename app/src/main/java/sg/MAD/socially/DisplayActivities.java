@@ -31,12 +31,12 @@ public class DisplayActivities extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_activities);
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this)); //instantiates adapter to display as recylcerview
         Createacticitybtn = findViewById(R.id.button_create_activity);
         list = new ArrayList<>();
 
+        //bring user to create activity
         Createacticitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,20 +44,21 @@ public class DisplayActivities extends AppCompatActivity {
             }
         });
 
-        list = new ArrayList<>();
+        list = new ArrayList<>(); //create array list to store activities
         String activity = getIntent().getStringExtra("activity");
 
+        //retrieve activities
         reference = FirebaseDatabase.getInstance().getReference().child("Activity").child(activity);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                list.clear();
+                list.clear(); //clear underlying list
                 for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
                 {
                     Activity a = dataSnapshot1.getValue(Activity.class);
-                    list.add(a);
+                    list.add(a); //add activities retrieved from firebase into arraylist
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged(); //notify that new activities are added in
             }
 
             @Override

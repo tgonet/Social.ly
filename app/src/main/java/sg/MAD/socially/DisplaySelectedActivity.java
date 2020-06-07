@@ -42,6 +42,7 @@ ImageView selected_profile_image;
         selected_act_picture = (ImageView) findViewById(R.id.selected_act_picture);
         selected_profile_image = (ImageView) findViewById(R.id.selected_profile_image);
 
+        //display data of selected activity
         selected_Name_register.setText(selected.getName_register());
         selected_act_location.setText(selected.getAct_location());
         selected_act_time.setText(selected.getAct_time());

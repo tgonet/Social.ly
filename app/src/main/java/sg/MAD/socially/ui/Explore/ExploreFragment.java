@@ -40,10 +40,11 @@ public class ExploreFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.recyclerview_id);
 
+        //create arraylist to store interests and images
         interest = new ArrayList<>();
         images = new ArrayList<>();
 
-        interest.add("Gaming");
+        interest.add("Gaming"); //add items into interest list
         interest.add("Sports");
         interest.add("Eating");
         interest.add("Music");
@@ -54,7 +55,7 @@ public class ExploreFragment extends Fragment {
         interest.add("Photography");
         interest.add("Volunteering");
 
-        images.add(R.drawable.gaming);
+        images.add(R.drawable.gaming); //add images to images list
         images.add(R.drawable.sports);
         images.add(R.drawable.eating);
         images.add(R.drawable.music);
@@ -69,7 +70,7 @@ public class ExploreFragment extends Fragment {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
-        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutManager(gridLayoutManager); //set layout of content as grid + recycler view
         recyclerView.setAdapter(adapter);
 
         return root;
