@@ -39,11 +39,8 @@ This activity allows users to create an activity based on the given fields.
 ![CreateActivity Activity](Images/Screenshot_20200607_132852_sg.MAD.socially.jpg)
 
 This activity allows users to view the interests. By clicking on any of the interests, users are brought to the display activities page.
-![ExploreFrgament](Images/Screenshot (166).png)
 
 This activity allows users to view the activities created by users of the specific interest they clicked on previously. By clicking on the activity, users will be brought to the display selected activity page.
-![DisplayActivities_Activity](Images/Screenshot (167).png)
 
 This activity allows the user to view the details of the activity they selected clearly.
 (Not implemented yet: The user can click on the button to communicate with the creater of the activity if he or she is interested in joining the activity)
-![DisplaySelectedActivity_Activity](Images/Screenshot (168).png)
