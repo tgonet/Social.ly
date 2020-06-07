@@ -11,7 +11,7 @@ MingZhe: Chat, Conversation, CreateActivity, GridFriendAdapter, Message, Message
 
 Aw Joey: User, FriendsAdapter, FriendsFragment, FriendsViewModel
 
-Terris:
+Terris: Register.java, Register2.Java, Login.Java, Start.Java
 
 #### Layout file
 
@@ -21,7 +21,7 @@ MingZhe: Activity_conversation.xml, Activity_message, Activity_NewChat.xml, chat
 
 Aw Joey: fragment_home.xml, fragment_home_addfriend.xml, fragment_home_alert.xml
 
-Terris:
+Terris: activity_login.xml, activity_register.xml, activity_register2.xml, toolbar.xml,topmenu.xml
 
 
 ## Relevant appendices
