@@ -116,6 +116,6 @@ public class NewChat extends AppCompatActivity {
         int height = dm.heightPixels;
 
         //Width is .9 times of normal size and height is .65 times of normal size
-        getWindow().setLayout((int) (width * .9), (int) (height * .65));
+        getWindow().setLayout((int) (width * .9), (int) (height * .6));
     }
 }
