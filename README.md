@@ -37,14 +37,17 @@ This activity welcomes our users and shows them a welcome message along with a s
 
 ### Register (1/2)
 This activity is the first out of two steps to registering in this app. This screen lets users to enter their name, email, password and birth date. The user is not allowed to proceed to the next step without putting in all the information
+
 ![Register Activity](/Images/Register.JPG)
 
 ### Register (2/2)
 This activity is the second out of two steps to registering in this app. This screen allows users to personalize their profile by uploading their profile image (either taking a picture or uploading an image from the gallery), their nickname, interest, and short description. Upon pressing register, the application uploads the information from the first and second screen to firebase and creates the profile and automatically logs them in.
+
 ![Register2 Screen](/Images/Register2.JPG)
 
 ### Toolbar
 The toolbar replaces the default App bar to give us more customization on the design. This toolbar gives users the option to chat or log out of the app.
+
 ![ToolBar](/Images/Toolbar.JPG)
 
 ### Add Friend
