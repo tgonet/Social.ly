@@ -3,6 +3,10 @@
 Team members: Aw Joey(s10196528), Yukie Ang(s10195775), Terris Ng(s10197829), Tan Ming Zhe(S10193694)
 
 ## Roles and contribution:
+Ming Zhe - Lead Developer
+Joey - Lead Developer
+Terris - Lead Designer
+Yukie - Lead Developer
 
 ### Class file
 Yukie: ExploreAdapter.java, ExploreFragment.java, DisplayActivities, DisplayActivitiesAdapter, DisplaySelectedActivity, Activity
@@ -25,6 +29,22 @@ Terris: activity_login.xml, activity_register.xml, activity_register2.xml, toolb
 
 
 ## Relevant appendices
+
+### Welcome Screen
+This activity welcomes our users and shows them a welcome message along with a short description of what our app is about. This activity allows the user to register or login.
+![Welcome Activity](Images/Login.JPG)
+
+### Register (1/2)
+This activity is the first out of two steps to registering in this app. This screen lets users to enter their name, email, password and birth date. The user is not allowed to proceed to the next step without putting in all the information
+![Register Activity](/Images/Register.JPG)
+
+### Register (2/2)
+This activity is the second out of two steps to registering in this app. This screen allows users to personalize their profile by uploading their profile image (either taking a picture or uploading an image from the gallery), their nickname, interest, and short description. Upon pressing register, the application uploads the information from the first and second screen to firebase and creates the profile and automatically logs them in.
+![Register2 Screen](/Images/Register2.JPG)
+
+### Toolbar
+The toolbar replaces the default App bar to give us more customization on the design. This toolbar gives users the option to chat or log out of the app.
+![ToolBar](/Images/Toolbar.JPG)
 
 ### Add Friend
 This fragment displays many users, each in a card. Upon swiping the card, another user will be displayed.
