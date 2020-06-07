@@ -27,7 +27,7 @@ Terris:
 Relevant appendices
 
 This activity allows the logged in user to see who he has chat with.The button "Start a new chat" allows users to start the NewChat activity.By clicking on a friend, user will be brought to the message activity.
-![Conversation Activity](Images/Screenshot_20200607_132748_sg.MAD.socially.jpg)
+![Conversation Activity](Images/Screenshot_20200607_161231_sg.MAD.socially.jpg)
 
 This activty will allow users to select a friend to start a conversation. By clicking on a friend the user will be brought to the message activity. 
 ![Newchat Activity](Images/Screenshot_20200607_123317_sg.MAD.socially.jpg)
