@@ -92,14 +92,14 @@ public class FriendsFragment extends Fragment {
         adapter = new FriendsAdapter(getContext(), R.layout.fragment_home_addfriend, currPotentialFriendList);
         swipeContainer = (SwipeFlingAdapterView) root.findViewById(R.id.frame);
 
-        /*getting Current User Details */
+        /*Getting All Users and Current User Details from Firebase */
 
         //Current User ID:
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.d("Current UserId", "" + currentUserId);
 
-        //Firebase: Populate allUsersList
-        // Use id to get current user's friends and pending friends
+        //Populate allUsersList
+        // Use id to get current user's friends
         ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -131,12 +131,12 @@ public class FriendsFragment extends Fragment {
                         Log.d("Current User", "FriendsList: " + currFriendList);
                     }
                     Log.d("All Users: ", String.valueOf(allUsersList));
-                };
+                }
 
                 //Clearing list so that there are no duplicates of a user
                 currPotentialFriendList.clear();
 
-                //Populating currPotentialFriendList
+                //Populating currPotentialFriendList for the cards
                 for (User u : allUsersList) {
                     if (!currFriendList.contains(u.getId()) && !currentUserId.equals(u.getId())
                             && !u.getPendingFriends().contains(currentUserId)) {
@@ -174,7 +174,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void removeFirstObjectInAdapter() {
                 Log.d("Find Friends", "Removed object");
-                currPotentialFriendList.remove(0);
+                currPotentialFriendList.remove(0);//so that the user can see the next card
                 adapter.notifyDataSetChanged();
             }
 
@@ -188,7 +188,7 @@ public class FriendsFragment extends Fragment {
             public void onRightCardExit(Object o) {
                 //Instantiating the displayed user as an object
                 final User user = (User) o;
-                SwipeRight(user, v);
+                SwipeRight(user, v); //Pass in the displayed user that is swiped right and View v to SwipeRight method
             }
 
 
@@ -206,6 +206,7 @@ public class FriendsFragment extends Fragment {
 
     public void SwipeRight(final User user, final View v) {
         Log.d("Right Swipe", user.getId());
+
         // getting displayed users' details
         final String userId = user.getId();
         String pendingFriends = user.getPendingFriends();
@@ -215,7 +216,7 @@ public class FriendsFragment extends Fragment {
         final ArrayList<String> pendingFriendList = new ArrayList<>();
         final ArrayList<String> friendList = new ArrayList<>();
 
-        //Populating pendingFriendList
+        //Populating pendingFriendList only when it is not empty
         if (!pendingFriends.isEmpty()) {
             //More than 1 friend
             if (pendingFriends.contains(",")) {
@@ -230,7 +231,7 @@ public class FriendsFragment extends Fragment {
             }
         }
 
-        //Populating FriendList
+        //Populating FriendList only when it is not empty
         if (!friend.isEmpty()) {
             //More than 1 friend
             if (friend.contains(",")) {
@@ -245,6 +246,8 @@ public class FriendsFragment extends Fragment {
                 friendList.add(friend);
             }
         }
+
+        //Instantiating the ArrayList of current user's PendingFriends
         final ArrayList<String> currPendingFriendList = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -252,41 +255,35 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    //Populating each user in allUsersList
+
                     User u = snapshot.getValue(User.class);
 
-                    //Check if user is current user by Id
-                    Log.d("Current user", currentUserId);
-                    Log.d("Check user", String.valueOf(u.getId().equals(currentUserId)));
+                    //Check if User u is the current user by Id
                     if (u.getId().equals(currentUserId)) {
                         String currPendingFriends = u.getPendingFriends();
 
-                        //Populate Current User PendingFriendList
-                        Log.d("Empty String", String.valueOf(!currPendingFriends.isEmpty()));
+                        //Populate Current User PendingFriendList only if it is not empty
                         if (!currPendingFriends.isEmpty()) {
                             //More than 1 friend
                             if (currPendingFriends.contains(",")) {
                                 String[] pendingFriendList = currPendingFriends.split(",");
                                 for (String i : pendingFriendList) {
                                     currPendingFriendList.add(i);
+                                    Log.d("Current User", "Pending Friend: " + i);
                                 }
                             }
                             //1 friend
                             else {
                                 currPendingFriendList.add(currPendingFriends);
+                                Log.d("Current User", "Pending Friend: " + currPendingFriends);
                             }
                         }
                     }
                 }
 
-                Log.d("Current User", "PendingFriendsList: " + currPendingFriendList);
-
                 //Check if the adding of friends is mutual.
-                // If yes, isPendingFriend is false.
-                // If no, isPendingFriend is true.
-                Log.d("pendingFriends", currPendingFriendList.toString());
-                Log.d("pendingFriends", String.valueOf(currPendingFriendList.toString().contains(userId)));
-                Log.d("Display user id", userId);
+
+                // If yes, currPendingFriendList.contains(userId) is true
                 if (currPendingFriendList.contains(userId)) {
                     currFriendList.add(userId);
                     friendList.add(currentUserId);
@@ -296,7 +293,7 @@ public class FriendsFragment extends Fragment {
                     /* DISPLAY USER */
 
                     //Change display user's friendList (Add current user's Id)
-                    String newfriend = ""; //Ensure that there is no duplicates of Id
+                    String newfriend = "";
                     int count = 0;
                     for (String i : friendList) {
                         if (count != 0) {
@@ -307,6 +304,7 @@ public class FriendsFragment extends Fragment {
                         Log.d("Other user list", i + "added to friendList");
                         count++;
                     }
+
                     //Firebase: Update display users' pendingFriends
                     ref2 = FirebaseDatabase.getInstance().getReference();
                     ref2.child("Users").child(userId).child("Friends").setValue(newfriend);
@@ -315,7 +313,7 @@ public class FriendsFragment extends Fragment {
                     /* CURRENT USER */
 
                     //Change current user's pendingFriendList (Remove display user's Id)
-                    String newcurrPendingFriends = ""; //Ensure that there is no duplicates of Id
+                    String newcurrPendingFriends = "";
                     int count1 = 0;
                     for (String i : currPendingFriendList) {
                         if (count1 != 0) {
@@ -332,8 +330,8 @@ public class FriendsFragment extends Fragment {
                     ref3.child("Users").child(currentUserId).child("PendingFriends").setValue(newcurrPendingFriends);
                     Log.d("Current user list", newcurrPendingFriends);
 
-                    //Change current user's FriendList (Remove display user's Id)
-                    String newcurrFriends = ""; //Ensure that there is no duplicates of Id
+                    //Change current user's FriendList (Add display user's Id)
+                    String newcurrFriends = "";
                     int count2 = 0;
                     for (String i : currFriendList) {
                         if (count2 != 0) {
@@ -350,20 +348,23 @@ public class FriendsFragment extends Fragment {
                     ref4.child("Users").child(currentUserId).child("Friends").setValue(newcurrFriends);
                     Log.d("Current user list", newcurrFriends);
 
-                    //Create Alert Message
+                    //Create Alert Message for current user to start chatting with display user
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
+                    /* Custom View */
                     View alertView = LayoutInflater.from(v.getContext()).inflate(R.layout.fragment_home_alert, null);
 
+                    //Add current user profile picture
                     ImageView currUserPic = (ImageView) alertView.findViewById(R.id.newfriend_user);
                     String getCurrUserPic = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
                     Glide.with(alertView).load(getCurrUserPic).into(currUserPic);
 
+                    //Add display user profile picture
                     ImageView otherUserPic = (ImageView) alertView.findViewById(R.id.newfriend_friend);
                     Glide.with(alertView).load(user.getImageURL()).into(otherUserPic);
 
                     TextView alertMsg = (TextView) alertView.findViewById(R.id.newfriend_msg);
-                    alertMsg.setText(user.getName() + " and you are now friends. Click the \"Say hello\" button to start a new conversation!");
+                    alertMsg.setText(user.getName() + " and you are now friends. Click the \"Say Hello\" button to start a new conversation!");
 
 
                     alert.setTitle("You have a new friend!")
@@ -383,8 +384,11 @@ public class FriendsFragment extends Fragment {
                             })
                             .setView(alertView);
                     alert.show();
+                }
 
-                } else {
+                // If no, currPendingFriendList.contains(userId) is false
+                else {
+                    //Add current user to display users' pendingFriends
                     pendingFriendList.add(currentUserId);
                     String newpendingFriends = "";
                     int count3 = 0;
@@ -396,10 +400,13 @@ public class FriendsFragment extends Fragment {
                         }
                         count3++;
                     }
+
                     //Firebase: Update display users' pendingFriends
                     ref1 = FirebaseDatabase.getInstance().getReference();
                     ref1.child("Users").child(userId).child("PendingFriends").setValue(newpendingFriends);
                     Log.d("Other user list", newpendingFriends);
+
+                    Toast.makeText(v.getContext(), "You are added to " + user.getName() + "'s pending friend list", Toast.LENGTH_SHORT).show();
                 }
             }
 
