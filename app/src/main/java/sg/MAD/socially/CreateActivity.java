@@ -149,7 +149,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         });
 
         //Used to search for address of entered location
-        final Geocoder geocoder = new Geocoder(this);
+        //final Geocoder geocoder = new Geocoder(this);
 
         Location.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,12 +164,12 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
             @Override
             public void afterTextChanged(Editable s) {
-                try {
+                /*try {
                     //Retrieve addresses of location of similar names
                     addressList = (ArrayList<Address>) geocoder.getFromLocationName(Location.getText().toString(), 6);
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
@@ -502,7 +502,6 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         interest = parent.getItemAtPosition(position).toString();
-        Toast.makeText(CreateActivity.this, interest, Toast.LENGTH_SHORT).show();
     }
 
     @Override

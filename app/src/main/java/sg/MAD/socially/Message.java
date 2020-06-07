@@ -6,9 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -36,7 +39,7 @@ public class Message extends AppCompatActivity {
     EditText message;
     ImageButton send;
     RecyclerView rv;
-    List<Chat> chatList;
+    ArrayList<Chat> chatList;
 
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -93,6 +96,7 @@ public class Message extends AppCompatActivity {
                 } else {
                     Toast.makeText(Message.this, "Error in sending message", Toast.LENGTH_SHORT).show();
                 }
+
                 message.setText("");
             }
         });
@@ -107,7 +111,7 @@ public class Message extends AppCompatActivity {
                     profile_pic.setImageResource(R.mipmap.ic_launcher);
                 } else {
                     //Set/resize image of profile pic
-                    Glide.with(Message.this).load(user.getImageURL()).into(profile_pic);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_pic);
                 }
 
                 //Displays all the messages between both users
@@ -149,6 +153,7 @@ public class Message extends AppCompatActivity {
                 }
                 //Displays the newly updated messages
                 messageadapter.notifyDataSetChanged();
+                showNewEntry(rv, chatList);
             }
 
             @Override
@@ -156,5 +161,14 @@ public class Message extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void showNewEntry(RecyclerView rv, ArrayList<Chat> data){
+        //scroll to the last item of the recyclerview
+        rv.scrollToPosition(data.size() - 1);
+
+        //auto hide keyboard after entry
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(rv.getWindowToken(), 0);
     }
 }
