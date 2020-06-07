@@ -4,6 +4,7 @@
     android:layout_width="170dp"
     android:layout_height="200dp"
     android:layout_columnWeight="1"
+    android:layout_margin="5dp"
     cardview:cardCornerRadius="4dp">
 
     <LinearLayout
