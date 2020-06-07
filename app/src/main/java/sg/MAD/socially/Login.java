@@ -41,7 +41,7 @@ public class Login extends AppCompatActivity {
                 String email = Email.getText().toString();
 
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {  //Prevent a login attempt if fields are empty
-                    Toast.makeText(Login.this, "All fields required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
                 } else {
                     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
