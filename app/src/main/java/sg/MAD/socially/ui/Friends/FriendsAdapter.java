@@ -37,7 +37,6 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         }
 
         //Instantiating the contents in each card by referencing to the resource id
-        TextView name = (TextView) convertView.findViewById(R.id.addfriend_name);
         TextView nickname = (TextView) convertView.findViewById(R.id.addfriend_nickname);
         ImageView image = (ImageView) convertView.findViewById(R.id.addfriend_profilepic);
         TextView friendCount = (TextView) convertView.findViewById(R.id.addfriend_friendcount);
@@ -45,8 +44,7 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
 
         //setting the user details to each content
-        name.setText(user.getName());
-        nickname.setText("aka " + user.getNickName());
+        nickname.setText(user.getNickName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
         String userFriends = user.getFriends();
 

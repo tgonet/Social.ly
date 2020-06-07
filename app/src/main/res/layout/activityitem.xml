@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="TIME:"
-            android:textSize="8sp"
+            android:textSize="12sp"
             cardview:layout_constraintStart_toStartOf="@+id/act_date"
             cardview:layout_constraintTop_toBottomOf="@+id/act_date" />
 
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="DATE:"
-            android:textSize="8sp"
+            android:textSize="12sp"
             cardview:layout_constraintStart_toStartOf="@+id/act_location"
             cardview:layout_constraintTop_toBottomOf="@+id/act_location" />
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="LOCATION:"
-            android:textSize="8sp"
+            android:textSize="12sp"
             cardview:layout_constraintStart_toStartOf="@+id/Name_register"
             cardview:layout_constraintTop_toBottomOf="@+id/Name_register" />
 
@@ -62,7 +62,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:text="CREATED BY:"
-            android:textSize="8sp"
+            android:textSize="12sp"
             cardview:layout_constraintStart_toStartOf="@+id/profile_image"
             cardview:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
@@ -84,7 +84,7 @@
             android:layout_marginTop="4dp"
             android:gravity="center"
             android:text="Name"
-            android:textSize="14sp"
+            android:textSize="18sp"
             cardview:layout_constraintStart_toStartOf="@+id/textView13"
             cardview:layout_constraintTop_toBottomOf="@+id/textView13"></TextView>
 
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Location"
-            android:textSize="14sp"
+            android:textSize="18sp"
             cardview:layout_constraintStart_toStartOf="@+id/textView17"
             cardview:layout_constraintTop_toBottomOf="@+id/textView17"></TextView>
 
@@ -105,7 +105,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Date"
-            android:textSize="14sp"
+            android:textSize="18sp"
             cardview:layout_constraintStart_toStartOf="@+id/textView16"
             cardview:layout_constraintTop_toBottomOf="@+id/textView16"></TextView>
 
@@ -117,7 +117,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Time"
-            android:textSize="14sp"
+            android:textSize="18sp"
             cardview:layout_constraintStart_toStartOf="@+id/textView15"
             cardview:layout_constraintTop_toBottomOf="@+id/textView15"></TextView>
 
@@ -128,7 +128,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:text="Activity Name"
-            android:textSize="25dp"
+            android:textSize="24sp"
             cardview:layout_constraintStart_toEndOf="@+id/profile_image"
             cardview:layout_constraintTop_toBottomOf="@+id/act_picture"></TextView>
 
