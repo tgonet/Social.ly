@@ -126,15 +126,15 @@
                 <Button
                     android:id="@+id/interested_button"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:text="@string/im_interested"
                     android:background="@drawable/primary_button"
                     android:shadowColor="#31FFFFFF"
                     android:shadowRadius="0"
-                    android:textColor="#FFFFFF"/>
+                    android:text="@string/im_interested"
+                    android:textColor="#FFFFFF" />
 
 
             </LinearLayout>
