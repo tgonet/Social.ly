@@ -32,7 +32,7 @@ Terris: activity_login.xml, activity_register.xml, activity_register2.xml, toolb
 
 ### Welcome Screen
 This activity welcomes our users and shows them a welcome message along with a short description of what our app is about. This activity allows the user to register or login.
-![Welcome Activity](Images/Start.JPG)
+![Welcome Activity](/Images/Start.JPG)
 
 ### Register (1/2)
 This activity is the first out of two steps to registering in this app. This screen lets users to enter their name, email, password and birth date. The user is not allowed to proceed to the next step without putting in all the information
