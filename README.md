@@ -77,13 +77,13 @@ This activity allows users to create an activity based on the given fields.
 
 ### Explore
 This fragment allows users to view the different interests on the app. By clicking on any of the interests, users will be brought to the display activities activity.
-![ExploreFrgament](Images/Screenshot%20(166).png)
+![ExploreFrgament](Images/Screenshot_1591544326.png)
 
 ### Display Activities
 This activity allows users to view activities that users created for each interest. If users are interested, they can click on the activity.
-![DisplayActivities_Activity](Images/Screenshot%20(167).png)
+![DisplayActivities_Activity](Images/Screenshot_1591544332.png)
 
 ### Display Selected Activity
 This activity allows user to view the activity they selected. 
 (Not implemented yet: Button allows interested user to communicate with user who created the selected activity)
-![DisplaySelectedActivity_Activity](Images/Screenshot%20(168).png)
+![DisplaySelectedActivity_Activity](Images/Screenshot_1591544338.png)
