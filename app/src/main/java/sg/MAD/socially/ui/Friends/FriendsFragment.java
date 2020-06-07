@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.net.Uri;
 
@@ -29,6 +30,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -88,7 +91,6 @@ public class FriendsFragment extends Fragment {
         //Setting up the adapter and external library for each card (i.e. user)
         adapter = new FriendsAdapter(getContext(), R.layout.fragment_home_addfriend, currPotentialFriendList);
         swipeContainer = (SwipeFlingAdapterView) root.findViewById(R.id.frame);
-
 
         /*getting Current User Details */
 
@@ -352,15 +354,19 @@ public class FriendsFragment extends Fragment {
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
                     View alertView = LayoutInflater.from(v.getContext()).inflate(R.layout.fragment_home_alert, null);
+
                     ImageView currUserPic = (ImageView) alertView.findViewById(R.id.newfriend_user);
-                    Uri getCurrUserPic = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+                    String getCurrUserPic = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
                     Glide.with(alertView).load(getCurrUserPic).into(currUserPic);
 
                     ImageView otherUserPic = (ImageView) alertView.findViewById(R.id.newfriend_friend);
                     Glide.with(alertView).load(user.getImageURL()).into(otherUserPic);
 
+                    TextView alertMsg = (TextView) alertView.findViewById(R.id.newfriend_msg);
+                    alertMsg.setText(user.getName() + " and you are now friends. Click the \"Say hello\" button to start a new conversation!");
+
+
                     alert.setTitle("You have a new friend!")
-                            .setMessage(user.getName() + " and you are now friends. Click the \"Say hello\" button to start a new conversation!")
                             .setPositiveButton("Say Hello!", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
