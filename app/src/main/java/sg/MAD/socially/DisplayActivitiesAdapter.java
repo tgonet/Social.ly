@@ -39,7 +39,7 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) { //display data at their specific position
         holder.Name_register.setText(activities.get(position).getName_register());
         holder.act_location.setText(activities.get(position).getAct_location());
         holder.act_time.setText(activities.get(position).getAct_time());
@@ -47,6 +47,7 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
         holder.act_desc.setText(activities.get(position).getAct_desc());
         holder.act_date.setText(activities.get(position).getAct_date());
 
+        //load image
         Picasso.get().load(activities.get(position).getAct_picture()).into(holder.act_picture);
         Picasso.get().load(activities.get(position).getProfile_image()).resize(600, 200) // resizes the image to these dimensions (in pixel)
                 .centerInside() .into(holder.profile_image);
@@ -65,7 +66,7 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
 
         View v;
 
-        public MyViewHolder (View itemView)
+        public MyViewHolder (View itemView) //items inside each viewholder
         {
             super (itemView);
             Name_register = (TextView) itemView.findViewById(R.id.Name_register);
@@ -80,6 +81,7 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
 
             v = itemView;
 
+            //bring user to page that displays the selected activity
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
