@@ -42,6 +42,8 @@ This activity allows users to view the interests. By clicking on any of the inte
 ![ExploreFrgament](Images/Screenshot%20(166).png)
 
 This activity allows users to view the activities created by users of the specific interest they clicked on previously. By clicking on the activity, users will be brought to the display selected activity page.
+![DisplayActivities_Activity](Images/Screenshot%20(167).png)
 
 This activity allows the user to view the details of the activity they selected clearly.
 (Not implemented yet: The user can click on the button to communicate with the creater of the activity if he or she is interested in joining the activity)
+![DisplaySelectedActivity_Activity](Images/Screenshot%20(168).png)
