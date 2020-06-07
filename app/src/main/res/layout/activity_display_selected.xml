@@ -50,7 +50,7 @@
                         android:gravity="center"
                         android:text="Name"
                         android:textSize="30dp"
-                        android:fontFamily="sans-serif-black"></TextView>
+                        ></TextView>
                 </LinearLayout>
 
             </LinearLayout>
@@ -69,7 +69,7 @@
                     android:layout_marginRight="30dp"
                     android:text="Activity Name"
                     android:textSize="25dp"
-                    android:fontFamily="sans-serif-smallcaps"></TextView>
+                    ></TextView>
 
                 <TextView
                     android:id="@+id/selected_act_desc"
@@ -80,7 +80,7 @@
                     android:layout_marginRight="30dp"
                     android:text="Description"
                     android:textSize="20dp"
-                    android:fontFamily="sans-serif-light">
+                    >
 
                 </TextView>
 
@@ -101,7 +101,7 @@
                     android:gravity="center"
                     android:text="Location"
                     android:textSize="17dp"
-                    android:fontFamily="sans-serif-smallcaps"></TextView>
+                    ></TextView>
 
                 <TextView
                     android:id="@+id/selected_act_date"
@@ -111,7 +111,7 @@
                     android:layout_marginTop="7dp"
                     android:text="Date"
                     android:textSize="17dp"
-                    android:fontFamily="sans-serif-smallcaps"></TextView>
+                    ></TextView>
 
                 <TextView
                     android:id="@+id/selected_act_time"
@@ -121,7 +121,7 @@
                     android:layout_marginTop="7dp"
                     android:text="Time"
                     android:textSize="17dp"
-                    android:fontFamily="sans-serif-smallcaps"></TextView>
+                    ></TextView>
 
                 <Button
                     android:id="@+id/interested_button"
