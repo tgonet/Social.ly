@@ -24,6 +24,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import sg.MAD.socially.ui.Friends.FriendsFragment;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageButton ChatButton;
@@ -36,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.Logout:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, Start.class));
+                Intent intent = new Intent(MainActivity.this, Start.class);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

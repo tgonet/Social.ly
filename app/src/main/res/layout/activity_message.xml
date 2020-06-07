@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAE2E2"
+    android:background="@color/colorBackgroundColor"
     tools:context=".Message">
 
     <androidx.appcompat.widget.Toolbar
@@ -33,6 +33,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="25dp"
             android:text="TextView"
+            android:textColor="#ffffff"
             android:textSize="18sp" />
     </androidx.appcompat.widget.Toolbar>
 

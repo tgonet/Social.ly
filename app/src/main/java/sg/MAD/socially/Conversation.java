@@ -2,6 +2,7 @@ package sg.MAD.socially;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,13 +20,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Conversation extends AppCompatActivity {
 
     private RecyclerView rv;
     private UserAdapter adapter;
     ArrayList<User> User;
+    Set<String> Finaluserstringlist;
     Button user_button;
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -50,6 +54,13 @@ public class Conversation extends AppCompatActivity {
         UserstringidList = new ArrayList<>();
         User = new ArrayList<>();
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Chats");
+
+        adapter = new UserAdapter(User, getBaseContext());
+        rv.setAdapter(adapter);
+
         //Retrieve the userid that the user messages
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
@@ -73,7 +84,8 @@ public class Conversation extends AppCompatActivity {
                         UserstringidList.add(chat.getSender());
                     }
                 }
-
+                //Keep only unique userid as some will be repeated
+                Finaluserstringlist = new LinkedHashSet<>(UserstringidList);
                 //Retrieve all the details of user that has a chat record with user
                 DisplayCurrentChats();
             }
@@ -103,29 +115,16 @@ public class Conversation extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User.clear();
-
+                //Populates the Userlist
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
-
-                    for (String id : UserstringidList) {
+                    for (String id : Finaluserstringlist) {
                         if (user.getId().equals(id)) {
-
-                            //As the list is empty so there is no worry about displaying the same user twice
-                            if (User.size() != 0) {
-                                for (User user1 : User) {
-                                    //Check if user is already in the User list
-                                    if (!user1.getId().equals(id)) {
-                                        User.add(user);
-                                    }
-                                }
-                            } else {
-                                User.add(user);
-                            }
+                            User.add(user);
                         }
                     }
                 }
-                adapter = new UserAdapter(User, getBaseContext());
-                rv.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
 
             @Override

@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Add Activity"
+        android:textColor="@color/colorPrimary"
         android:textSize="30sp" />
 
     <LinearLayout
@@ -29,26 +30,28 @@
             android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:text="Header Image"
+            android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
+
 
         <ImageButton
             android:id="@+id/Camera_Createactivity"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
             android:contentDescription="@string/take_photo"
             android:foregroundGravity="left"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
+            android:background="@drawable/camera_button" />
 
         <ImageButton
             android:id="@+id/Gallery_select_Createactivity"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="#00FFFFFF"
             android:contentDescription="@string/image_gallery"
             android:foregroundGravity="left"
-            android:src="@android:drawable/ic_menu_gallery" />
+            android:background="@drawable/gallery_button" />
 
     </LinearLayout>
 
@@ -67,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Activity Name"
-        android:textSize="20sp"/>
+        />
 
     <EditText
         android:id="@+id/new_activity_name"
@@ -81,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Description"
-        android:textSize="20sp"/>
+        />
 
     <EditText
         android:id="@+id/new_desc"
@@ -95,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Location"
-        android:textSize="20sp"/>
+        />
 
     <EditText
         android:id="@+id/new_actlocation"
@@ -109,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Time"
-        android:textSize="20sp"/>
+        />
 
     <EditText
         android:id="@+id/new_acttime"
@@ -127,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Date"
-        android:textSize="20sp"/>
+        />
 
     <EditText
         android:id="@+id/new_actdate"
@@ -143,8 +146,14 @@
     <Button
         android:id="@+id/Create_activity_button"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/create_activity" />
+        android:text="@string/create_activity"
+        android:background="@drawable/primary_button"
+        android:shadowColor="#31FFFFFF"
+        android:shadowRadius="0"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
 </LinearLayout>
