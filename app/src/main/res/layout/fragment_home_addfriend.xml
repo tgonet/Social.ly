@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:fontFamily="sans-serif-smallcaps"
+                android:fontFamily="sans-serif-medium"
                 android:text="ABOUT"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -93,6 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toTopOf="@+id/textView7"
                 app:layout_constraintStart_toStartOf="@+id/textView8"
@@ -103,8 +104,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="Interests"
+                android:fontFamily="sans-serif-medium"
+                android:text="INTERESTS"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/addfriend_shortdesc"
@@ -119,33 +120,52 @@
                 app:layout_constraintStart_toStartOf="@+id/textView7"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Swipe Left"
+                app:layout_constraintBottom_toTopOf="@+id/addfriend_no"
+                app:layout_constraintEnd_toEndOf="@+id/addfriend_no"
+                app:layout_constraintStart_toStartOf="@+id/addfriend_no" />
+
+            <ImageView
                 android:id="@+id/addfriend_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:clickable="true"
                 app:backgroundTint="#E6E8E3"
                 app:layout_constraintBottom_toTopOf="@+id/textView9"
                 app:layout_constraintEnd_toStartOf="@+id/addfriend_yes"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/crossmark" />
+                app:srcCompat="@drawable/home_swipeleft" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Swipe Right"
+                app:layout_constraintBottom_toTopOf="@+id/addfriend_yes"
+                app:layout_constraintEnd_toEndOf="@+id/addfriend_yes"
+                app:layout_constraintStart_toStartOf="@+id/addfriend_yes" />
+
+            <ImageView
                 android:id="@+id/addfriend_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:clickable="true"
                 app:backgroundTint="#E6E8E3"
                 app:layout_constraintBottom_toTopOf="@+id/textView10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/addfriend_no"
                 app:rippleColor="#C6F1A4"
-                app:srcCompat="@drawable/checkmark" />
+                app:srcCompat="@drawable/home_swiperight" />
 
             <TextView
                 android:id="@+id/textView9"

@@ -40,8 +40,6 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         TextView friendCount = (TextView) convertView.findViewById(R.id.addfriend_friendcount);
         TextView interests = (TextView) convertView.findViewById(R.id.addfriend_interests);
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
-        FloatingActionButton addFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_yes);
-        FloatingActionButton notFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_no);
 
         name.setText(user.getName());
         nickname.setText("aka " + user.getNickName());
@@ -63,14 +61,6 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         friendCount.setText(friends + " friends");
         interests.setText(user.getInterest());
         desc.setText(user.getShortDesc());
-
-        addFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //FriendsFragment.class.("SwipeRight", )
-            }
-        });
 
 
         return convertView;
