@@ -1,1 +1,26 @@
+Team members: Yukie Ang(s10195775), Aw Joey(s10196528),Terris Ng(s10197829),Tan Ming Zhe(s10193694)
+
+Team member contributions:
+
+Java files
+
+Yukie:
+
+Aw Joey:
+
+Terris:
+
+Ming Zhe: Chat,Conversation,CreateActivity,GridFriendAdapter,Message,MessageAdapter,NewChat,UserAdapter
+
+Layout xml files
+
+Yukie:
+
+Aw Joey:
+
+Terris:
+
+Ming Zhe: activity.conversation, activity_message, activity_newchat, chat_lefy_item,chat_right_item,gridfrienditem,useritem
+
+
 
