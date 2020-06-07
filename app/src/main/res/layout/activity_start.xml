@@ -44,7 +44,7 @@
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
-        android:text="Your new best friends are  just a few taps away"
+        android:text="Your new best friends are just a few taps away"
         android:textColor="#222222"
 
         app:layout_constraintBottom_toTopOf="@+id/Register_Start"
