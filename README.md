@@ -5,7 +5,7 @@ Team members: Aw Joey(s10196528), Yukie Ang(s10195775), Terris Ng(s10197829), Ta
 ## Roles and contribution:
 
 ### Class file
-Yukie: ExploreAdapter.java, ExploreFragment.java, DisplayActivities, DisplayActivitiesAdapter, DisplaySelectedActivity
+Yukie: ExploreAdapter.java, ExploreFragment.java, DisplayActivities, DisplayActivitiesAdapter, DisplaySelectedActivity, Activity
 
 MingZhe: Chat, Conversation, CreateActivity, GridFriendAdapter, Message, MessageAdapter, NewChat, Useradapter
 
@@ -50,3 +50,16 @@ This activity allows user to send a message to a friend and read the message sen
 ### Create an Activity
 This activity allows users to create an activity based on the given fields.
 ![CreateActivity Activity](Images/Screenshot_20200607_132852_sg.MAD.socially.jpg)
+
+### Explore
+This fragment allows users to view the different interests on the app. By clicking on any of the interests, users will be brought to the display activities activity.
+![ExploreFrgament](Images/Screenshot%20(166).png)
+
+### Display Activities
+This activity allows users to view activities that users created for each interest. If users are interested, they can click on the activity.
+![DisplayActivities_Activity](Images/Screenshot%20(167).png)
+
+### Display Selected Activity
+This activity allows user to view the activity they selected. 
+(Not implemented yet: Button allows interested user to communicate with user who created the selected activity)
+![DisplaySelectedActivity_Activity](Images/Screenshot%20(168).png)
