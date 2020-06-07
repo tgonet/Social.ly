@@ -264,6 +264,22 @@ public class Register2 extends AppCompatActivity {
             reference.updateChildren(map);
             Log.w("Successful","upload"+urlDefault);
 
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(Name)
+                    .setPhotoUri(Uri.parse(urlDefault))
+                    .build();
+
+            FirebaseUser firebaseUser = auth.getCurrentUser();
+            firebaseUser.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("Checck", "User profile updated.");
+                            }
+                        }
+                    });
+
             //imageUri = Uri.parse("content://com.android.providers.media.documents/document/image%3A672111");
         }else {
 
@@ -287,21 +303,7 @@ public class Register2 extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString();
 
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(Name)
-                                .setPhotoUri(Uri.parse(mUri))
-                                .build();
 
-                        FirebaseUser firebaseUser = auth.getCurrentUser();
-                        firebaseUser.updateProfile(profileUpdates)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d("Checck", "User profile updated.");
-                                        }
-                                    }
-                                });
                         FirebaseUser fuser = auth.getCurrentUser();
                         reference = FirebaseDatabase.getInstance().getReference("Users").child((fuser.getUid()));
                         HashMap<String, Object> map = new HashMap<>();
