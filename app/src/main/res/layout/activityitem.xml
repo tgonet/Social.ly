@@ -90,7 +90,6 @@
                     android:id="@+id/activity_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:text="Activity Name"
                     android:textSize="25dp"
@@ -102,7 +101,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
                     android:text="Description"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     >
                 </TextView>
 
