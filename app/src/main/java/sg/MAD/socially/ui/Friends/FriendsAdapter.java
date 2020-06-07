@@ -27,22 +27,24 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         super(context, resourceId, User);
     }
     public View getView(int position, View convertView, ViewGroup parent){
+        //position of user in the swipe cards
         User user = getItem(position);
 
         Log.d("Adapter", "getView " + position + " ");
+        //this is the view for each user card
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_home_addfriend, parent, false);
         }
 
+        //Instantiating the contents in each card by referencing to the resource id
         TextView name = (TextView) convertView.findViewById(R.id.addfriend_name);
         TextView nickname = (TextView) convertView.findViewById(R.id.addfriend_nickname);
         ImageView image = (ImageView) convertView.findViewById(R.id.addfriend_profilepic);
         TextView friendCount = (TextView) convertView.findViewById(R.id.addfriend_friendcount);
         TextView interests = (TextView) convertView.findViewById(R.id.addfriend_interests);
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
-        FloatingActionButton addFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_yes);
-        FloatingActionButton notFriend = (FloatingActionButton) convertView.findViewById(R.id.addfriend_no);
 
+        //setting the user details to each content
         name.setText(user.getName());
         nickname.setText("aka " + user.getNickName());
         Glide.with(convertView.getContext()).load(user.getImageURL()).into(image);
@@ -64,15 +66,7 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         interests.setText(user.getInterest());
         desc.setText(user.getShortDesc());
 
-        addFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //FriendsFragment.class.("SwipeRight", )
-            }
-        });
-
-
+        //return the details in a card view
         return convertView;
     }
 }
