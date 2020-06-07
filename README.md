@@ -2,48 +2,51 @@
 
 Team members: Aw Joey(s10196528), Yukie Ang(s10195775), Terris Ng(s10197829), Tan Ming Zhe(S10193694)
 
-Roles and contribution:
+## Roles and contribution:
 
-Class file
-Yukie: ExploreAdapter.java,ExploreFragment.java, DisplayActivities, DisplayActivitiesAdapter, DisplaySelectedActivity
+### Class file
+Yukie: ExploreAdapter.java,ExploreFragment.java,
 
 MingZhe: Chat, Conversation, CreateActivity, GridFriendAdapter, Message, MessageAdapter, NewChat, Useradapter
 
-Aw Joey:
+Aw Joey: User, FriendsAdapter, FriendsFragment, FriendsViewModel
 
 Terris:
 
-Layout file
+#### Layout file
 
-Yukie: activityitem.xml, activity_display_selected.xml, display_activities.xml, fragment_explore.xml, interestitem.xml
+Yukie: 
 
 MingZhe: Activity_conversation.xml, Activity_message, Activity_NewChat.xml, chat_left.xml, chat_right.xml,gridfrienditem.xml,useritem.xml
 
-Aw Joey:
+Aw Joey: fragment_home.xml, fragment_home_addfriend.xml, fragment_home_alert.xml
 
 Terris:
 
 
-Relevant appendices
+## Relevant appendices
 
+### Add Friend
+This fragment displays many users, each in a card. Upon swiping the card, another user will be displayed.
+
+By swiping left, the previous user will be removed and another user will be displayed.
+
+By swiping right, one of the two events will occur.
+- Event 1: If the displayed user has added the current user as a friend, the displayed user will be removed from the current user's pending friend list, and the displayed user will be added to the current user's friend list and vice versa. An alert message will be displayed. By clicking the "Say Hello" button, the user will be brought to the Message activity.
+- Event 2: If the displayed user has not added the current user as a friend,  the current user will be added to the displayed user's pending friend list. A toast message will appear, stating that the current user is added to the displayed user's pending friend list.
+
+### Conversations
 This activity allows the logged in user to see who he has chat with.The button "Start a new chat" allows users to start the NewChat activity.By clicking on a friend, user will be brought to the message activity.
 ![Conversation Activity](Images/Screenshot_20200607_132748_sg.MAD.socially.jpg)
 
-This activty will allow users to select a friend to start a conversation. By clicking on a friend the user will be brought to the message activity. 
+### New Chat
+This activity will allow users to select a friend to start a conversation. By clicking on a friend the user will be brought to the message activity. 
 ![Newchat Activity](Images/Screenshot_20200607_161231_sg.MAD.socially.jpg)
 
+### Message
 This activity allows user to send a message to a friend and read the message send by this friend.
 ![Message Activity](Images/Screenshot_20200607_132832_sg.MAD.socially.jpg)
 
+### Create an Activity
 This activity allows users to create an activity based on the given fields.
 ![CreateActivity Activity](Images/Screenshot_20200607_132852_sg.MAD.socially.jpg)
-
-This activity allows users to view the interests. By clicking on any of the interests, users are brought to the display activities page.
-![ExploreFrgament](Images/Screenshot%20(166).png)
-
-This activity allows users to view the activities created by users of the specific interest they clicked on previously. By clicking on the activity, users will be brought to the display selected activity page.
-![DisplayActivities_Activity](Images/Screenshot%20(167).png)
-
-This activity allows the user to view the details of the activity they selected clearly.
-(Not implemented yet: The user can click on the button to communicate with the creater of the activity if he or she is interested in joining the activity)
-![DisplaySelectedActivity_Activity](Images/Screenshot%20(168).png)
