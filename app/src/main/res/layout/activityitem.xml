@@ -47,12 +47,13 @@
 
         <ImageView
             android:id="@+id/act_picture"
-            android:layout_width="386dp"
+            android:layout_width="0dp"
             android:layout_height="109dp"
             android:background="#2d2d2d"
             android:scaleType="centerCrop"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp"></ImageView>
+            cardview:layout_constraintEnd_toEndOf="parent"
+            cardview:layout_constraintStart_toStartOf="parent"
+            cardview:layout_constraintTop_toTopOf="parent"></ImageView>
 
 
         <TextView
@@ -68,9 +69,9 @@
 
         <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="24dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="68dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
@@ -94,7 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Location"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            cardview:layout_constraintEnd_toEndOf="@+id/profile_image"
             cardview:layout_constraintStart_toStartOf="@+id/textView17"
             cardview:layout_constraintTop_toBottomOf="@+id/textView17"></TextView>
 
@@ -105,7 +107,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Date"
-            android:textSize="18sp"
+            android:textSize="14sp"
             cardview:layout_constraintStart_toStartOf="@+id/textView16"
             cardview:layout_constraintTop_toBottomOf="@+id/textView16"></TextView>
 
@@ -117,18 +119,20 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Time"
-            android:textSize="18sp"
+            android:textSize="14sp"
             cardview:layout_constraintStart_toStartOf="@+id/textView15"
             cardview:layout_constraintTop_toBottomOf="@+id/textView15"></TextView>
 
         <TextView
             android:id="@+id/activity_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_width="222dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:text="Activity Name"
             android:textSize="24sp"
+            cardview:layout_constraintEnd_toEndOf="parent"
             cardview:layout_constraintStart_toEndOf="@+id/profile_image"
             cardview:layout_constraintTop_toBottomOf="@+id/act_picture"></TextView>
 
@@ -137,10 +141,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:text="Description"
             android:textSize="14sp"
-            cardview:layout_constraintEnd_toEndOf="@+id/act_picture"
+            cardview:layout_constraintEnd_toEndOf="parent"
             cardview:layout_constraintStart_toStartOf="@+id/activity_name"
             cardview:layout_constraintTop_toBottomOf="@+id/activity_name"></TextView>
 
