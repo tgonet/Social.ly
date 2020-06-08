@@ -2,6 +2,10 @@
 
 Team members: Aw Joey(s10196528), Yukie Ang(s10195775), Terris Ng(s10197829), Tan Ming Zhe(S10193694)
 
+## Description
+This application is created to allow its users to make new friends.This application is similar to dating applications but the purpose of this application is for users to bring people of similar interest together and join activites created by other users.
+
+
 ## Roles and contribution:
 Ming Zhe - Lead Developer
 Joey - Lead Developer
