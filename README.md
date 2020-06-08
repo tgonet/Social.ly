@@ -31,6 +31,19 @@ Aw Joey: fragment_home.xml, fragment_home_addfriend.xml, fragment_home_alert.xml
 
 Terris: activity_login.xml, activity_register.xml, activity_register2.xml, toolbar.xml,topmenu.xml
 
+## Concepts Implemented
+1. Responsive layout
+2. Firebase Database
+3. Sign Up
+4. Sign in
+5. System Permissions
+6. Camera
+7. Multimedia
+8. Activity, Fragment
+9. Intent
+10. Toast
+11. Dialog
+12. Recyclerview
 
 ## Relevant appendices
 
