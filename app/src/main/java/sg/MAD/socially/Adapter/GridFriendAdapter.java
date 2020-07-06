@@ -1,4 +1,4 @@
-package sg.MAD.socially;
+package sg.MAD.socially.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import sg.MAD.socially.Message;
+import sg.MAD.socially.NewChat;
+import sg.MAD.socially.R;
+import sg.MAD.socially.Class.User;
 
 public class GridFriendAdapter extends RecyclerView.Adapter<GridFriendAdapter.MyViewHolder> {
 

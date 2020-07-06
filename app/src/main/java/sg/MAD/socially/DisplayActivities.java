@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import sg.MAD.socially.Adapter.DisplayActivitiesAdapter;
+import sg.MAD.socially.Class.Activity;
+
 public class DisplayActivities extends AppCompatActivity {
 
     RecyclerView recyclerView;

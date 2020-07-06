@@ -1,25 +1,20 @@
 package sg.MAD.socially.ui.Friends;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import sg.MAD.socially.R;
-import sg.MAD.socially.User;
+import sg.MAD.socially.Class.User;
 
 public class FriendsAdapter extends ArrayAdapter<User> {
 

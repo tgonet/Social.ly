@@ -1,4 +1,4 @@
-package sg.MAD.socially;
+package sg.MAD.socially.Class;
 
 public class Chat {
     public String sender;

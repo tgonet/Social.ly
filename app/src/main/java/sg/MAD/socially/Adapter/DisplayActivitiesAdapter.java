@@ -1,10 +1,8 @@
-package sg.MAD.socially;
+package sg.MAD.socially.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+
+import sg.MAD.socially.Class.Activity;
+import sg.MAD.socially.DisplaySelectedActivity;
+import sg.MAD.socially.R;
 
 public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivitiesAdapter.MyViewHolder> {
 

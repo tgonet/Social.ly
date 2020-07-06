@@ -1,6 +1,5 @@
 package sg.MAD.socially.ui.Explore;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -14,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import sg.MAD.socially.Activity;
 import sg.MAD.socially.DisplayActivities;
-import sg.MAD.socially.MainActivity;
 import sg.MAD.socially.R;
 
 public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHolder> {

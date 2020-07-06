@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,13 +23,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sg.MAD.socially.Adapter.MessageAdapter;
+import sg.MAD.socially.Class.Chat;
+import sg.MAD.socially.Class.User;
+import sg.MAD.socially.Notifications.APIService;
+import sg.MAD.socially.Notifications.Client;
+import sg.MAD.socially.Notifications.Data;
+import sg.MAD.socially.Notifications.MyResponse;
+import sg.MAD.socially.Notifications.Sender;
+import sg.MAD.socially.Notifications.Token;
 
 public class Message extends AppCompatActivity {
 
@@ -46,6 +57,11 @@ public class Message extends AppCompatActivity {
 
     Intent intent;
     MessageAdapter messageadapter;
+
+    APIService apiService;
+
+    boolean notify = false;
+    String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +82,9 @@ public class Message extends AppCompatActivity {
         send = findViewById(R.id.send);
 
         chatList = new ArrayList<>();
+
+        //Instantiates API
+        apiService = Client.getCilent("https://fcm.googleapis.com/").create(APIService.class);
 
         //Instantiates the adapter and telling it to display vertically
         rv = findViewById(R.id.rv_message);
@@ -89,6 +108,7 @@ public class Message extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notify = true;
                 String msg = message.getText().toString();
                 if (!msg.equals("")) {
                     //send the text to firebase
@@ -106,7 +126,7 @@ public class Message extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getName());
+                 username.setText(user.getName());
                 if (user.getImageURL().equals("default")) {
                     profile_pic.setImageResource(R.mipmap.ic_launcher);
                 } else {
@@ -123,9 +143,13 @@ public class Message extends AppCompatActivity {
 
             }
         });
+        //updateToken(FirebaseInstanceId.getInstance().getToken());
+        //Log.d("Token", (FirebaseInstanceId.getInstance().getToken()));
+
+
     }
 
-    private void sendMessage(String sender, String receiver, String message) {
+    private void sendMessage(String sender, final String receiver, String message) {
         HashMap<String, Object> hashmap = new HashMap<>();
         hashmap.put("sender", sender);
         hashmap.put("receiver", receiver);
@@ -133,6 +157,51 @@ public class Message extends AppCompatActivity {
 
         //upload the current message to firebase
         reference.child("Chats").push().setValue(hashmap);
+
+        //Sends notifications when receive new messages
+        final String msg = message;
+        if (notify) {
+            sendNotification(receiver, fuser.getDisplayName(), msg);
+        }
+    }
+
+    private void sendNotification(final String receiver, final String name, final String message) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(fuser.getUid(),  name+": "+message, "New Message",
+                            receiver);
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if (response.code() == 200){
+                                        if (response.body().success != 1){
+                                            Toast.makeText(Message.this, "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void readMessage(final String myid, final String userid) {
@@ -171,4 +240,6 @@ public class Message extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(rv.getWindowToken(), 0);
     }
+
+
 }

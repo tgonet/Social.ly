@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,17 +19,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import sg.MAD.socially.Adapter.UserAdapter;
+import sg.MAD.socially.Class.Chat;
+import sg.MAD.socially.Class.User;
+import sg.MAD.socially.Notifications.Token;
+
 public class Conversation extends AppCompatActivity {
 
     private RecyclerView rv;
     private UserAdapter adapter;
-    ArrayList<User> User;
+    ArrayList<sg.MAD.socially.Class.User> User;
     Set<String> Finaluserstringlist;
     Button user_button;
     FirebaseUser fuser;
@@ -96,6 +104,7 @@ public class Conversation extends AppCompatActivity {
             }
         });
 
+
         //Setting the user button to go to new activity
         user_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,4 +142,6 @@ public class Conversation extends AppCompatActivity {
             }
         });
     }
+
+
 }

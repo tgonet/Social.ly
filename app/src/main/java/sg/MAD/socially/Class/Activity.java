@@ -1,4 +1,4 @@
-package sg.MAD.socially;
+package sg.MAD.socially.Class;
 
 import java.io.Serializable;
 
