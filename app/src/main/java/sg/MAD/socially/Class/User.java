@@ -1,6 +1,6 @@
 package sg.MAD.socially.Class;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -13,6 +13,7 @@ public class User {
     String Email;
     String Friends;
     String PendingFriends;
+    //String RejectedFriends;
     String Interest;
 
     public User(){}
@@ -29,6 +30,7 @@ public class User {
         Friends = friends;
         PendingFriends = pendingfriends;
         Interest = interest;
+        //RejectedFriends = rejectedFriends;
     }
 
 
@@ -111,4 +113,13 @@ public class User {
     public void setInterest(String interest) {
         Interest = interest;
     }
+    /*
+    public String getRejectedFriends() {
+        return RejectedFriends;
+    }
+
+    public void setRejectedFriends(String rejectedFriends) {
+        RejectedFriends = rejectedFriends;
+    }
+    */
 }
