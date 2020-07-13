@@ -5,12 +5,14 @@ public class Data {
     private String body;
     private String title;
     private String sented;
+    private String type;
 
-    public Data(String user, String body, String title, String sented) {
+    public Data(String user, String body, String title, String sented, String type) {
         this.user = user;
         this.body = body;
         this.title = title;
         this.sented = sented;
+        this.type = type;
     }
 
     public Data(){
@@ -49,4 +51,11 @@ public class Data {
         this.sented = sented;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

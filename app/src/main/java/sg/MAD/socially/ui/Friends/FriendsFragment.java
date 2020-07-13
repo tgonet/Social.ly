@@ -23,12 +23,23 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sg.MAD.socially.MainActivity;
 import sg.MAD.socially.Message;
+import sg.MAD.socially.Notifications.APIService;
+import sg.MAD.socially.Notifications.Client;
+import sg.MAD.socially.Notifications.Data;
+import sg.MAD.socially.Notifications.MyResponse;
+import sg.MAD.socially.Notifications.Sender;
+import sg.MAD.socially.Notifications.Token;
 import sg.MAD.socially.R;
 import sg.MAD.socially.Class.User;
 
@@ -62,6 +73,9 @@ public class FriendsFragment extends Fragment {
     //External library
     SwipeFlingAdapterView swipeContainer;
 
+    //Service for notification
+    APIService apiService;
+
     private FriendsViewModel friendsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -88,6 +102,9 @@ public class FriendsFragment extends Fragment {
         //Current User ID:
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.d("Current UserId", "" + currentUserId);
+
+        //Instantiates API
+        apiService = Client.getCilent("https://fcm.googleapis.com/").create(APIService.class);
 
         //Populate allUsersList
         // Use id to get current user's friends
@@ -286,7 +303,7 @@ public class FriendsFragment extends Fragment {
                     currFriendList.add(userId);
                     friendList.add(currentUserId);
                     currPendingFriendList.remove(userId);
-
+                    sendNotification(userId);
 
                     /* DISPLAY USER */
 
@@ -405,6 +422,45 @@ public class FriendsFragment extends Fragment {
                     Log.d("Other user list", newpendingFriends);
 
                     Toast.makeText(v.getContext(), "You are added to " + user.getName() + "'s pending friend list", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void sendNotification(final String receiver) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(currentUserId,  "Start chatting now!", "Someone swiped right!",
+                            receiver,"Swiperight");
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if (response.code() == 200){
+                                        if (response.body().success != 1){
+                                            Toast.makeText(getActivity(), "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
                 }
             }
 

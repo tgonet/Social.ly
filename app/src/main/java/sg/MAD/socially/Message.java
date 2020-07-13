@@ -174,7 +174,7 @@ public class Message extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
                     Data data = new Data(fuser.getUid(),  name+": "+message, "New Message",
-                            receiver);
+                            receiver,"Message");
 
                     Sender sender = new Sender(data, token.getToken());
 
