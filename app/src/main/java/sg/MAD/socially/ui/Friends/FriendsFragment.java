@@ -28,11 +28,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sg.MAD.socially.MainActivity;
+import sg.MAD.socially.Class.Notification;
 import sg.MAD.socially.Message;
 import sg.MAD.socially.Notifications.APIService;
 import sg.MAD.socially.Notifications.Client;
@@ -52,6 +54,7 @@ public class FriendsFragment extends Fragment {
     DatabaseReference ref2;
     DatabaseReference ref3;
     DatabaseReference ref4;
+    DatabaseReference refNotification;
 
     //All users
     ArrayList<User> allUsersList;
@@ -399,6 +402,14 @@ public class FriendsFragment extends Fragment {
                             })
                             .setView(alertView);
                     alert.show();
+
+                    //Update new friend's notifications in the Notifications page
+                    Notification notification = new Notification();
+                    notification.setInfo(user.getName() + " is now your friend!");
+                    notification.setTime(Calendar.getInstance());
+                    refNotification = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference notifRef = refNotification.child("Users").child(userId).child("Notifications");
+                    notifRef.push().setValue(notification);
                 }
 
                 // If no, currPendingFriendList.contains(userId) is false
