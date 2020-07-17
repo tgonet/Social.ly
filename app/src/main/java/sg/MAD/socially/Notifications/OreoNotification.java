@@ -10,6 +10,8 @@ import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Build;
 
+import androidx.core.app.NotificationCompat;
+
 public class OreoNotification extends ContextWrapper {
 
     private static final String CHANNEL_ID = "1";
@@ -60,23 +62,39 @@ public class OreoNotification extends ContextWrapper {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public  Notification.Builder getOreoNotification(String title, String body,
-                                                     PendingIntent pendingIntent, Uri soundUri, int icon){
+    public NotificationCompat.Builder getOreoNotification(String title, String body,
+                                                          PendingIntent pendingIntent, Uri soundUri, int icon){
 
-            return new Notification.Builder(getApplicationContext(), CHANNEL_ID)
+        if(body.length() > 35){
+            return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(title)
+                    .setContentText(body)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText(body)
+                    .setBigContentTitle(title))
+                    .setSmallIcon(icon)
+                    .setSound(soundUri)
+                    .setAutoCancel(true);
+        }
+        else
+            {
+            return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(title)
                     .setContentText(body)
                     .setSmallIcon(icon)
                     .setSound(soundUri)
                     .setAutoCancel(true);
+            }
+
         }
 
         @TargetApi(Build.VERSION_CODES.O)
-        public  Notification.Builder getOreoNotificationFriends(String title, String body,
+        public  NotificationCompat.Builder getOreoNotificationFriends(String title, String body,
                 PendingIntent pendingIntent, Uri soundUri, int icon){
 
-            return new Notification.Builder(getApplicationContext(), CHANNEL_ID_1)
+            return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID_1)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(title)
                     .setContentText(body)

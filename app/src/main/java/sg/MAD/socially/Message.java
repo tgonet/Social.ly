@@ -117,6 +117,7 @@ public class Message extends AppCompatActivity {
                     Toast.makeText(Message.this, "Error in sending message", Toast.LENGTH_SHORT).show();
                 }
 
+
                 message.setText("");
             }
         });
@@ -149,11 +150,28 @@ public class Message extends AppCompatActivity {
 
     }
 
+    public static void sendMessagesss(String sender, final String receiver, CharSequence message , Context context){
+        HashMap<String, Object> hashmap = new HashMap<>();
+        hashmap.put("sender", sender);
+        hashmap.put("receiver", receiver);
+        hashmap.put("message", message);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        //upload the current message to firebase
+        reference.child("Chats").push().setValue(hashmap);
+
+        //Sends notifications when receive new messages
+        final CharSequence msg = message;
+        sendNotifications(receiver, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), msg, context);
+
+    }
+
     private void sendMessage(String sender, final String receiver, String message) {
         HashMap<String, Object> hashmap = new HashMap<>();
         hashmap.put("sender", sender);
         hashmap.put("receiver", receiver);
         hashmap.put("message", message);
+
 
         //upload the current message to firebase
         reference.child("Chats").push().setValue(hashmap);
@@ -165,6 +183,45 @@ public class Message extends AppCompatActivity {
         }
     }
 
+    public static void sendNotifications(final String receiver, final String name, final CharSequence message, final Context context) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(),name+": "+message, "New Message",receiver,"Message");
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    APIService apiService = Client.getCilent("https://fcm.googleapis.com/").create(APIService.class);
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if (response.code() == 200){
+                                        if (response.body().success != 1){
+                                            Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void sendNotification(final String receiver, final String name, final String message) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);
@@ -173,8 +230,7 @@ public class Message extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(fuser.getUid(),  name+": "+message, "New Message",
-                            receiver,"Message");
+                    Data data = new Data(fuser.getUid(),name+": "+message, "Message",receiver,"Message");
 
                     Sender sender = new Sender(data, token.getToken());
 

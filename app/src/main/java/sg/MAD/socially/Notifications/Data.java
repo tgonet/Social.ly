@@ -1,30 +1,30 @@
 package sg.MAD.socially.Notifications;
 
 public class Data {
-    private String user;
+    private String sender;
     private String body;
     private String title;
-    private String sented;
+    private String receiver;
     private String type;
 
-    public Data(String user, String body, String title, String sented, String type) {
-        this.user = user;
+    public Data(String sender, String body, String title, String receiver, String type) {
+        this.sender = sender;
         this.body = body;
         this.title = title;
-        this.sented = sented;
+        this.receiver = receiver;
         this.type = type;
     }
 
-    public Data(){
+    public Data() {
 
     }
 
-    public String getUser() {
-        return user;
+    public String getSender() {
+        return sender;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public String getBody() {
@@ -43,12 +43,12 @@ public class Data {
         this.title = title;
     }
 
-    public String getSented() {
-        return sented;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setSented(String sented) {
-        this.sented = sented;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getType() {
@@ -59,3 +59,4 @@ public class Data {
         this.type = type;
     }
 }
+
