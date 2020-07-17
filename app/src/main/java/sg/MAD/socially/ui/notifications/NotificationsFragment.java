@@ -35,14 +35,23 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        notificationsAdapter = new NotificationsAdapter( this.getContext(), this);
+        notificationsAdapter = new NotificationsAdapter(this.getContext(), this);
         viewPager = view.findViewById(R.id.notifications_viewpager);
         viewPager.setAdapter(notificationsAdapter);
 
         tabLayout = view.findViewById(R.id.notification_tabs);
-        for (int i: TAB_TITLES){
+        for (int i : TAB_TITLES) {
             tabLayout.addTab(tabLayout.newTab().setText(i));
         }
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                tabLayout.selectTab(tabLayout.getTabAt(position));
+            }
+        });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

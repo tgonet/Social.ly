@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import sg.MAD.socially.R;
 
-public class NotificationsFriendsViewModel extends RecyclerView.ViewHolder {
+public class NotificationsFriendsViewHolder extends RecyclerView.ViewHolder {
     ImageView Image;
     TextView Content;
     TextView Duration;
 
-    public NotificationsFriendsViewModel(final View itemView){
+    public NotificationsFriendsViewHolder(final View itemView){
         super(itemView);
         Image = itemView.findViewById(R.id.notification_friend_image);
         Content = itemView.findViewById(R.id.notification_friend_content);

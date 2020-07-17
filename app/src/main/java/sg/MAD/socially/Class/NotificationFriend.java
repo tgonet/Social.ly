@@ -2,14 +2,14 @@ package sg.MAD.socially.Class;
 
 import java.util.Calendar;
 
-public class Notification {
+public class NotificationFriend {
     String ImageURL;
     String Info;
     Calendar Time;
 
-    public Notification(){}
+    public NotificationFriend(){}
 
-    public Notification(String imageURL, String info, Calendar time) {
+    public NotificationFriend(String imageURL, String info, Calendar time) {
         ImageURL = imageURL;
         Info = info;
         Time = time;

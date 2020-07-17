@@ -29,6 +29,7 @@ public class NotificationsAdapter extends FragmentStateAdapter {
         switch (position){
             case 0:
                 return new NotificationsFriendsFragment();
+
             case 1:
                 return new NotificationsActivityFragment();
             default:
