@@ -40,8 +40,9 @@ public class NotificationsFragment extends Fragment {
         viewPager.setAdapter(notificationsAdapter);
 
         tabLayout = view.findViewById(R.id.notification_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Friends"));
-        tabLayout.addTab(tabLayout.newTab().setText("Activity"));
+        for (int i: TAB_TITLES){
+            tabLayout.addTab(tabLayout.newTab().setText(i));
+        }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

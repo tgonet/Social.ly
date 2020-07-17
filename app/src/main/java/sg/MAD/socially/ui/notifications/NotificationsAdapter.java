@@ -15,8 +15,6 @@ import sg.MAD.socially.ui.notifications.activities.NotificationsActivityFragment
 import sg.MAD.socially.ui.notifications.friends.NotificationsFriendsFragment;
 
 public class NotificationsAdapter extends FragmentStateAdapter {
-    @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
     private final Context mContext;
 
     public NotificationsAdapter(Context context, Fragment fragment) {
@@ -38,53 +36,9 @@ public class NotificationsAdapter extends FragmentStateAdapter {
         }
     }
 
-
-    @Nullable
-    public CharSequence getPageTitle(int position) {
-        return mContext.getResources().getString(TAB_TITLES[position]);
-    }
-
     @Override
     public int getItemCount() {
         return 2;
     }
 
 }
-
-/*
-    @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
-    private final Context mContext;
-
-    public NotificationsAdapter(Context context, Fragment fragment) {
-        super(fragment);
-        mContext = context;
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        Fragment fragment = null;
-        switch (position){
-            case 0:
-                fragment = new NotificationsFriendsFragment();
-            case 1:
-                fragment = new NotificationsActivityFragment();
-        }
-        return fragment;
-    }
-
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mContext.getResources().getString(TAB_TITLES[position]);
-    }
-
-    @Override
-    public int getCount() {
-        // Show 2 total pages.
-        return 2;
-    }
-}
- */
