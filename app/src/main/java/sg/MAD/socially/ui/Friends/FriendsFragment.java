@@ -405,6 +405,7 @@ public class FriendsFragment extends Fragment {
 
                     //Update new friend's notifications in the Notifications page
                     Notification notification = new Notification();
+                    notification.setImageURL(user.getImageURL());
                     notification.setInfo(user.getName() + " is now your friend!");
                     notification.setTime(Calendar.getInstance());
                     refNotification = FirebaseDatabase.getInstance().getReference();

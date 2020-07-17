@@ -47,4 +47,7 @@
         <item>Photography</item>
         <item>Volunteering</item>
     </string-array>
+
+    <string name="tab_text_1">Friends</string>
+    <string name="tab_text_2">Activity</string>
 </resources>
