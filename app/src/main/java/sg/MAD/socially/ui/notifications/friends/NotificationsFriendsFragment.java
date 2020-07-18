@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +29,7 @@ import sg.MAD.socially.Class.User;
 import sg.MAD.socially.R;
 
 public class NotificationsFriendsFragment extends Fragment {
+    View root;
     ImageView image;
     TextView content;
     TextView duration;
@@ -36,17 +39,11 @@ public class NotificationsFriendsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notifications_friends, container, false);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-/*
-        image = getView().findViewById(R.id.notification_friend_image);
-        content = getView().findViewById(R.id.notification_friend_content);
-        duration = getView().findViewById(R.id.notification_friend_duration);
-        RecyclerView recyclerView = getView().findViewById(R.id.rv_notifications_friends);
+        root = inflater.inflate(R.layout.fragment_notifications_friends, container, false);
+        image = root.findViewById(R.id.notification_friend_image);
+        content = root.findViewById(R.id.notification_friend_content);
+        duration = root.findViewById(R.id.notification_friend_duration);
+        final RecyclerView recyclerView = root.findViewById(R.id.rv_notifications_friends);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         final ArrayList<NotificationFriend> notifList = new ArrayList<>();
@@ -61,6 +58,11 @@ public class NotificationsFriendsFragment extends Fragment {
                     notifList.add(notif);
                 }
                 NotificationFriendsAdapter adapter = new NotificationFriendsAdapter(notifList);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(adapter);
 
             }
 
@@ -69,7 +71,6 @@ public class NotificationsFriendsFragment extends Fragment {
 
             }
         });
-    }
- */
+        return root;
     }
 }

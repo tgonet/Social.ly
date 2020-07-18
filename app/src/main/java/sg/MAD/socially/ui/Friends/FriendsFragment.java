@@ -54,6 +54,7 @@ public class FriendsFragment extends Fragment {
     DatabaseReference ref3;
     DatabaseReference ref4;
     DatabaseReference refNotification;
+    DatabaseReference currentUserRef;
 
     //All users
     ArrayList<User> allUsersList;
@@ -403,13 +404,31 @@ public class FriendsFragment extends Fragment {
                     alert.show();
 
                     //Update new friend's notifications in the Notifications page
-                    NotificationFriend notification = new NotificationFriend();
-                    notification.setImageURL(user.getImageURL());
-                    notification.setInfo(user.getName() + " is now your friend!");
-                    notification.setTime(Calendar.getInstance());
-                    refNotification = FirebaseDatabase.getInstance().getReference();
-                    DatabaseReference notifRef = refNotification.child("Users").child(userId).child("Notifications");
-                    notifRef.push().setValue(notification);
+                    currentUserRef = FirebaseDatabase.getInstance().getReference("Users");
+                    currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                User u = snapshot.getValue(User.class);
+
+                                if (u.getId().equals(currentUserId)) {
+                                    NotificationFriend notification = new NotificationFriend();
+                                    notification.setImageURL(u.getImageURL());
+                                    notification.setInfo(u.getName() + " is now your friend!");
+                                    notification.setTime(String.valueOf(System.currentTimeMillis()));
+                                    refNotification = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference notifRef = refNotification.child("Users").child(userId).child("Notifications");
+                                    notifRef.push().setValue(notification);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
 
                 // If no, currPendingFriendList.contains(userId) is false

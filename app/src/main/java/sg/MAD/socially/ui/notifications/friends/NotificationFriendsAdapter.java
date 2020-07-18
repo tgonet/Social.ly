@@ -16,11 +16,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import sg.MAD.socially.Class.NotificationFriend;
 import sg.MAD.socially.R;
-
-import static java.util.Calendar.getInstance;
 
 public class NotificationFriendsAdapter extends RecyclerView.Adapter<NotificationsFriendsViewHolder>{
     ArrayList<NotificationFriend> data;
@@ -39,20 +38,43 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
 
     @Override
     public void onBindViewHolder(NotificationsFriendsViewHolder holder, int position) {
-        Calendar currentTime = Calendar.getInstance();
         NotificationFriend notif = data.get(position);
         holder.Image.setImageURI(Uri.parse(notif.getImageURL()));
         holder.Content.setText(notif.getInfo());
-        /*
-        int days = Duration.between(curr.toInstant(), calendar2.toInstant());
-        LocalDate d1 = new LocalDate(currentTime.getTimeInMillis());
-        LocalDate d2 = new LocalDate(notif.getTime().getTimeInMillis());
-        int duration =currentTime.roll(notif.getTime(),false);
-*/
+
+        Date currentTime = new Date();
+        long time = Long.parseLong(notif.getTime());
+        Date notifTime = new Date(time);
+
+        long diffInMillis = currentTime.getTime() - notifTime.getTime();
+        String duration;
+
+        if (diffInMillis < 60000){
+            duration = TimeUnit.SECONDS.convert(diffInMillis, TimeUnit.MILLISECONDS) + "s";
+        }
+        else if (diffInMillis < 3.6e+6)
+        {
+            duration = TimeUnit.MINUTES.convert(diffInMillis, TimeUnit.MILLISECONDS) + "m";
+        }
+        else if (diffInMillis < 8.64e+7){
+            duration = TimeUnit.HOURS.convert(diffInMillis, TimeUnit.MILLISECONDS) + "h";
+        }
+        else {
+            long temp;
+            temp = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+            if (diffInMillis < 6.048e+8) {
+                duration = temp + "d";
+            }
+            else{
+                duration = temp + "w";
+            }
+        }
+
+        holder.Duration.setText(duration);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 }

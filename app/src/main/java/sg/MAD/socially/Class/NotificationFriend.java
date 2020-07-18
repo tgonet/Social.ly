@@ -1,15 +1,13 @@
 package sg.MAD.socially.Class;
 
-import java.util.Calendar;
-
 public class NotificationFriend {
     String ImageURL;
     String Info;
-    Calendar Time;
+    String Time;
 
     public NotificationFriend(){}
 
-    public NotificationFriend(String imageURL, String info, Calendar time) {
+    public NotificationFriend(String imageURL, String info, String time) {
         ImageURL = imageURL;
         Info = info;
         Time = time;
@@ -23,11 +21,11 @@ public class NotificationFriend {
         Info = info;
     }
 
-    public Calendar getTime() {
+    public String getTime() {
         return Time;
     }
 
-    public void setTime(Calendar time) {
+    public void setTime(String time) {
         Time = time;
     }
 
