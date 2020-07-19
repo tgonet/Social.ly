@@ -27,8 +27,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +59,7 @@ public class FriendsFragment extends Fragment {
     DatabaseReference ref3;
     DatabaseReference ref4;
     DatabaseReference refNotification;
+    DatabaseReference refNotification2;
     DatabaseReference currentUserRef;
 
     //All users
@@ -403,6 +409,17 @@ public class FriendsFragment extends Fragment {
                             .setView(alertView);
                     alert.show();
 
+                    //Update Current User's notification in the Notifications page
+                    NotificationFriend notif = new NotificationFriend();
+                    final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                    Date currTime = new Date();
+                    notif.setImageURL(user.getImageURL());
+                    notif.setInfo(user.getName() + " is now your friend!");
+                    notif.setTime(sdf.format(currTime));
+                    refNotification = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference notifRef = refNotification.child("Users").child(currentUserId).child("Notifications");
+                    notifRef.push().setValue(notif);
+
                     //Update new friend's notifications in the Notifications page
                     currentUserRef = FirebaseDatabase.getInstance().getReference("Users");
                     currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -414,11 +431,12 @@ public class FriendsFragment extends Fragment {
 
                                 if (u.getId().equals(currentUserId)) {
                                     NotificationFriend notification = new NotificationFriend();
+                                    Date currTime = new Date();
                                     notification.setImageURL(u.getImageURL());
                                     notification.setInfo(u.getName() + " is now your friend!");
-                                    notification.setTime(String.valueOf(System.currentTimeMillis()));
-                                    refNotification = FirebaseDatabase.getInstance().getReference();
-                                    DatabaseReference notifRef = refNotification.child("Users").child(userId).child("Notifications");
+                                    notification.setTime(sdf.format(currTime));
+                                    refNotification2 = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference notifRef = refNotification2.child("Users").child(userId).child("Notifications");
                                     notifRef.push().setValue(notification);
                                 }
                             }

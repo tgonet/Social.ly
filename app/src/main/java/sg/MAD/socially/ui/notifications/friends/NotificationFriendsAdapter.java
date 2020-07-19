@@ -1,6 +1,7 @@
 package sg.MAD.socially.ui.notifications.friends;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.joda.time.DateTime;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -42,32 +48,42 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
         holder.Image.setImageURI(Uri.parse(notif.getImageURL()));
         holder.Content.setText(notif.getInfo());
 
-        Date currentTime = new Date();
-        long time = Long.parseLong(notif.getTime());
-        Date notifTime = new Date(time);
-
-        long diffInMillis = currentTime.getTime() - notifTime.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        String now = sdf.format(new Date());
+        Date notifTime;
+        Date currentTime;
         String duration;
+        try {
+            notifTime  = sdf.parse(notif.getTime());
+            currentTime= sdf.parse(now);
+            Log.d("Notification Friends", "current time:" + currentTime);
+            Log.d("Notification Friends", "notifTime: " + notifTime);
+            long diff = currentTime.getTime() - notifTime.getTime();
 
-        if (diffInMillis < 60000){
-            duration = TimeUnit.SECONDS.convert(diffInMillis, TimeUnit.MILLISECONDS) + "s";
-        }
-        else if (diffInMillis < 3.6e+6)
-        {
-            duration = TimeUnit.MINUTES.convert(diffInMillis, TimeUnit.MILLISECONDS) + "m";
-        }
-        else if (diffInMillis < 8.64e+7){
-            duration = TimeUnit.HOURS.convert(diffInMillis, TimeUnit.MILLISECONDS) + "h";
-        }
-        else {
-            long temp;
-            temp = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
-            if (diffInMillis < 6.048e+8) {
-                duration = temp + "d";
+            int diffDays = (int) (diff / (24 * 60 * 60 * 1000));
+
+            int diffHours = (int) (diff / (60 * 60 * 1000));
+
+            int diffMin = (int) (diff / (60 * 1000));
+
+            int diffSec = (int) (diff / (1000));
+
+            if (diffDays > 0){
+                duration = diffDays + "d";
             }
-            else{
-                duration = temp + "w";
+            else if (diffHours > 0){
+                duration = diffHours + "h";
             }
+            else if (diffMin > 0){
+                duration = diffMin + "m";
+            }
+            else {
+                duration = diffSec + "s";
+            }
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            duration = "no";
         }
 
         holder.Duration.setText(duration);
