@@ -21,12 +21,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 
 import sg.MAD.socially.Class.NotificationFriend;
 import sg.MAD.socially.Class.User;
 import sg.MAD.socially.R;
+import sg.MAD.socially.ui.Friends.FriendsAdapter;
 
 public class NotificationsFriendsFragment extends Fragment {
     View root;
@@ -46,24 +48,25 @@ public class NotificationsFriendsFragment extends Fragment {
         final RecyclerView recyclerView = root.findViewById(R.id.rv_notifications_friends);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        final ArrayList<NotificationFriend> notifList = new ArrayList<>();
+        final ArrayList notifList = new ArrayList<>();
+        final NotificationFriendsAdapter adapter = new NotificationFriendsAdapter(notifList);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
         reference = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("Notifications");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notifList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
                     NotificationFriend notif = snapshot.getValue(NotificationFriend.class);
 
                     notifList.add(notif);
+                    adapter.notifyDataSetChanged();
                 }
-                NotificationFriendsAdapter adapter = new NotificationFriendsAdapter(notifList);
-                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-
-                recyclerView.setLayoutManager(mLayoutManager);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(adapter);
-
             }
 
             @Override

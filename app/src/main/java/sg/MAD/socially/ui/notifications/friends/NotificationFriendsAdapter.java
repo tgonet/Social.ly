@@ -45,7 +45,7 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
     @Override
     public void onBindViewHolder(NotificationsFriendsViewHolder holder, int position) {
         NotificationFriend notif = data.get(position);
-        holder.Image.setImageURI(Uri.parse(notif.getImageURL()));
+        Glide.with(holder.itemView).load(notif.getImageURL()).into(holder.Image);
         holder.Content.setText(notif.getInfo());
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
