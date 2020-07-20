@@ -88,13 +88,13 @@ public class Message extends AppCompatActivity {
 
         //Instantiates the adapter and telling it to display vertically
         rv = findViewById(R.id.rv_message);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager((this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);  //populate the recyclerview from the bottom instead
         rv.setLayoutManager(linearLayoutManager);
         messageadapter = new MessageAdapter(chatList, Message.this);
         rv.setAdapter(messageadapter);
 
-        //Retreive the userid of the person that the user selected
+        //Retrieve the userid of the person that the user selected
         intent = getIntent();
         final String userid = intent.getStringExtra("userid");
 
@@ -144,12 +144,9 @@ public class Message extends AppCompatActivity {
 
             }
         });
-        //updateToken(FirebaseInstanceId.getInstance().getToken());
-        //Log.d("Token", (FirebaseInstanceId.getInstance().getToken()));
-
-
     }
 
+    //Sends a message to the user
     public static void sendMessagesss(String sender, final String receiver, CharSequence message , Context context){
         HashMap<String, Object> hashmap = new HashMap<>();
         hashmap.put("sender", sender);
@@ -183,6 +180,46 @@ public class Message extends AppCompatActivity {
         }
     }
 
+    //Sends a payload to firebase to send a notification to recipient
+    private void sendNotification(final String receiver, final String name, final String message) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(fuser.getUid(),name+": "+message, "Message",receiver,"Message");
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if (response.code() == 200){
+                                        if (response.body().success != 1){
+                                            Toast.makeText(Message.this, "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    //This method is used in DirectReplyReceiver.class and it has the same function as sendNotification
     public static void sendNotifications(final String receiver, final String name, final CharSequence message, final Context context) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);
@@ -222,44 +259,7 @@ public class Message extends AppCompatActivity {
         });
     }
 
-    private void sendNotification(final String receiver, final String name, final String message) {
-        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
-        Query query = tokens.orderByKey().equalTo(receiver);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(fuser.getUid(),name+": "+message, "Message",receiver,"Message");
-
-                    Sender sender = new Sender(data, token.getToken());
-
-                    apiService.sendNotification(sender)
-                            .enqueue(new Callback<MyResponse>() {
-                                @Override
-                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                    if (response.code() == 200){
-                                        if (response.body().success != 1){
-                                            Toast.makeText(Message.this, "Failed!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<MyResponse> call, Throwable t) {
-
-                                }
-                            });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
+    //Read message from firebase
     private void readMessage(final String myid, final String userid) {
         //chatList = new ArrayList<>();
 
@@ -288,6 +288,8 @@ public class Message extends AppCompatActivity {
         });
     }
 
+
+    //Show latest notification
     private void showNewEntry(RecyclerView rv, ArrayList<Chat> data){
         //scroll to the last item of the recyclerview
         rv.scrollToPosition(data.size() - 1);

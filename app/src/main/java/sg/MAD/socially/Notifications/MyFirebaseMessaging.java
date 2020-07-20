@@ -62,7 +62,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     }
 
     private void sendFriendNotification(RemoteMessage remoteMessage) {
-        String user = remoteMessage.getData().get("user");
+        String user = remoteMessage.getData().get("sender");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
         RemoteMessage.Notification notification  = remoteMessage.getNotification();

@@ -27,16 +27,21 @@ import java.util.ArrayList;
 
 import sg.MAD.socially.Class.NotificationFriend;
 import sg.MAD.socially.Class.User;
+import sg.MAD.socially.MainActivity;
 import sg.MAD.socially.R;
 import sg.MAD.socially.ui.Friends.FriendsAdapter;
 
 public class NotificationsFriendsFragment extends Fragment {
+
     View root;
     ImageView image;
     TextView content;
     TextView duration;
     DatabaseReference reference;
     String currentUserId;
+    NotificationFriendsAdapter adapter;
+    ArrayList notifList;
+    RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -45,28 +50,29 @@ public class NotificationsFriendsFragment extends Fragment {
         image = root.findViewById(R.id.notification_friend_image);
         content = root.findViewById(R.id.notification_friend_content);
         duration = root.findViewById(R.id.notification_friend_duration);
-        final RecyclerView recyclerView = root.findViewById(R.id.rv_notifications_friends);
+        recyclerView = root.findViewById(R.id.rv_notifications_friends);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        final ArrayList notifList = new ArrayList<>();
-        final NotificationFriendsAdapter adapter = new NotificationFriendsAdapter(notifList);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        notifList = new ArrayList<>();
+        adapter = new NotificationFriendsAdapter(notifList);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this.getContext());
 
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        //recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("Notifications");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 notifList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NotificationFriend notif = snapshot.getValue(NotificationFriend.class);
-
+                    Log.d("GGWP", snapshot.toString());
                     notifList.add(notif);
-                    adapter.notifyDataSetChanged();
                 }
+                Log.d("GGWP", String.valueOf(notifList.size()));
+                adapter.notifyDataSetChanged();
             }
 
             @Override

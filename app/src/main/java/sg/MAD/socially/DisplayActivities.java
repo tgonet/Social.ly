@@ -32,7 +32,7 @@ public class DisplayActivities extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_activities);
+        setContentView(R.layout.activity_display_activities);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this)); //instantiates adapter to display as recylcerview

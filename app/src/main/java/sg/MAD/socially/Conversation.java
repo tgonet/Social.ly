@@ -62,9 +62,9 @@ public class Conversation extends AppCompatActivity {
         UserstringidList = new ArrayList<>();
         User = new ArrayList<>();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        /*Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Chats");
+        getSupportActionBar().setTitle("Chats");*/
 
         adapter = new UserAdapter(User, getBaseContext());
         rv.setAdapter(adapter);
