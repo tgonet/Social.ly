@@ -81,7 +81,7 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
         }
         catch (ParseException e) {
             e.printStackTrace();
-            duration = "no";
+            duration = "";
         }
 
         holder.Duration.setText(duration);

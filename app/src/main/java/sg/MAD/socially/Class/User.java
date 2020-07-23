@@ -1,7 +1,5 @@
 package sg.MAD.socially.Class;
 
-import java.util.List;
-
 public class User {
 
     String Id;
