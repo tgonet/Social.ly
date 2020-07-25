@@ -42,21 +42,26 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
 
     @Override
     public void onBindViewHolder(NotificationsFriendsViewHolder holder, int position) {
-        NotificationFriend notif = data.get(position);
-        Glide.with(holder.itemView).load(notif.getImageURL()).into(holder.Image);
-        holder.Content.setText(notif.getInfo());
+        NotificationFriend notif = data.get(position); //pass the list into objects
+        Glide.with(holder.itemView).load(notif.getImageURL()).into(holder.Image); //display the image of other user
+        holder.Content.setText(notif.getInfo()); //display the content of the notification
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-        String now = sdf.format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss"); //custom format of date by pattern (same as the one in firebase that we pushed)
+        String now = sdf.format(new Date()); //get current date and time and format it
         Date notifTime;
         Date currentTime;
         String duration;
+
+        //This is done to get the difference and display in seconds, minutes, hours, days or weeks
         try {
+            //convert the string back to dates in order to get difference
             notifTime  = sdf.parse(notif.getTime());
             currentTime= sdf.parse(now);
             Log.d("Notification Friends", "current time:" + currentTime);
             Log.d("Notification Friends", "notifTime: " + notifTime);
             long diff = currentTime.getTime() - notifTime.getTime();
+
+            int diffWeeks = (int) (diff / (7 * 24 * 60 * 60 * 1000));
 
             int diffDays = (int) (diff / (24 * 60 * 60 * 1000));
 
@@ -66,7 +71,10 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
 
             int diffSec = (int) (diff / (1000));
 
-            if (diffDays > 0){
+            if (diffWeeks > 0){
+                duration = diffDays + "w";
+            }
+            else if (diffDays > 0){
                 duration = diffDays + "d";
             }
             else if (diffHours > 0){
@@ -79,12 +87,13 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
                 duration = diffSec + "s";
             }
         }
+        //if error occurs (where string cannot be converted to date, the duration will not be displayed
         catch (ParseException e) {
             e.printStackTrace();
             duration = "";
         }
 
-        holder.Duration.setText(duration);
+        holder.Duration.setText(duration); //display duration of the notification
     }
 
     @Override

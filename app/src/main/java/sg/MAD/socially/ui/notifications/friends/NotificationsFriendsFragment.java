@@ -37,6 +37,7 @@ public class NotificationsFriendsFragment extends Fragment {
     ImageView image;
     TextView content;
     TextView duration;
+    TextView noNotifications;
     DatabaseReference reference;
     String currentUserId;
     NotificationFriendsAdapter adapter;
@@ -51,28 +52,29 @@ public class NotificationsFriendsFragment extends Fragment {
         content = root.findViewById(R.id.notification_friend_content);
         duration = root.findViewById(R.id.notification_friend_duration);
         recyclerView = root.findViewById(R.id.rv_notifications_friends);
+        noNotifications = root.findViewById(R.id.nonotifications);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         notifList = new ArrayList<>();
-        adapter = new NotificationFriendsAdapter(notifList);
+        adapter = new NotificationFriendsAdapter(notifList); //pass list into adapter
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this.getContext());
 
         recyclerView.setLayoutManager(mLayoutManager);
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter); //display adapter's notifList in recyclerview
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId).child("Notifications");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifList.clear();
+                notifList.clear(); //so that there are no duplicates
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NotificationFriend notif = snapshot.getValue(NotificationFriend.class);
-                    Log.d("GGWP", snapshot.toString());
                     notifList.add(notif);
                 }
-                Log.d("GGWP", String.valueOf(notifList.size()));
-                adapter.notifyDataSetChanged();
+                if (notifList.size() == 0){
+                    noNotifications.setText("You have no notifications."); //display text stating that there are no notifications
+                }
+                adapter.notifyDataSetChanged(); //this updates the adapter's notifList
             }
 
             @Override

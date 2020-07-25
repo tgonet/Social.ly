@@ -25,6 +25,7 @@ public class NotificationsAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        // this is to pass in the fragment needed to be in the corresponding viewpager
         Fragment fragment = null;
         switch (position){
             case 0:

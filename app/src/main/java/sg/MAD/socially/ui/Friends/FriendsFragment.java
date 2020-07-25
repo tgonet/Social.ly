@@ -90,10 +90,11 @@ public class FriendsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        /*
         //for the fragment view
         friendsViewModel =
                 ViewModelProviders.of(this).get(FriendsViewModel.class);
+         */
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
         //instantiating all users ArrayList
@@ -331,16 +332,18 @@ public class FriendsFragment extends Fragment {
                             .setView(alertView);
                     alert.show();
 
-                    //Update Current User's notification in the Notifications page
-                    NotificationFriend notif = new NotificationFriend();
-                    final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                    Date currTime = new Date();
+                    /* Update Notification's page */
+
+                    //Current User
+                    NotificationFriend notif = new NotificationFriend(); //Create new object to store the notification information
+                    final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss"); //custom format of date by pattern
+                    final String currTime = sdf.format(new Date()); //get current date and time and format it
                     notif.setImageURL(user.getImageURL());
                     notif.setInfo(user.getName() + " is now your friend!");
-                    notif.setTime(sdf.format(currTime));
+                    notif.setTime(currTime);
                     refNotification = FirebaseDatabase.getInstance().getReference();
                     DatabaseReference notifRef = refNotification.child("Users").child(currentUserId).child("Notifications");
-                    notifRef.push().setValue(notif);
+                    notifRef.push().setValue(notif); //push the notification object into firebase as a child
 
                     //Update new friend's notifications in the Notifications page
                     currentUserRef = FirebaseDatabase.getInstance().getReference("Users");
@@ -352,14 +355,13 @@ public class FriendsFragment extends Fragment {
                                 User u = snapshot.getValue(User.class);
 
                                 if (u.getId().equals(currentUserId)) {
-                                    NotificationFriend notification = new NotificationFriend();
-                                    Date currTime = new Date();
+                                    NotificationFriend notification = new NotificationFriend(); //Create new object to store the notification information
                                     notification.setImageURL(u.getImageURL());
                                     notification.setInfo(u.getName() + " is now your friend!");
-                                    notification.setTime(sdf.format(currTime));
+                                    notification.setTime(currTime);
                                     refNotification2 = FirebaseDatabase.getInstance().getReference();
                                     DatabaseReference notifRef = refNotification2.child("Users").child(userId).child("Notifications");
-                                    notifRef.push().setValue(notification);
+                                    notifRef.push().setValue(notification);//push the notification object into firebase as a child
                                 }
                             }
                         }
