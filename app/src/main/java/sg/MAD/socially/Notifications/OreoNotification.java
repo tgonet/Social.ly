@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 
@@ -29,6 +30,7 @@ public class OreoNotification extends ContextWrapper {
         }
     }
 
+    //Creates the channel
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
 
@@ -63,43 +65,44 @@ public class OreoNotification extends ContextWrapper {
 
     @TargetApi(Build.VERSION_CODES.O)
     public NotificationCompat.Builder getOreoNotification(String title, String body,
-                                                          PendingIntent pendingIntent, Uri soundUri, int icon){
+                                                          PendingIntent pendingIntent, Uri soundUri, int icon,Bitmap bitmap){
 
-        if(body.length() > 35){
-            return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle(title)
-                    .setContentText(body)
-                    .setStyle(new NotificationCompat.BigTextStyle()
-                    .bigText(body)
-                    .setBigContentTitle(title))
-                    .setSmallIcon(icon)
-                    .setSound(soundUri)
-                    .setAutoCancel(true);
-        }
-        else
-            {
-            return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle(title)
-                    .setContentText(body)
-                    .setSmallIcon(icon)
-                    .setSound(soundUri)
-                    .setAutoCancel(true);
-            }
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                .setContentIntent(pendingIntent)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSmallIcon(icon)
+                .setLargeIcon(bitmap)
+                .setSound(soundUri)
+                .setAutoCancel(true)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE);
 
-        }
+    }
 
-        @TargetApi(Build.VERSION_CODES.O)
-        public  NotificationCompat.Builder getOreoNotificationFriends(String title, String body,
-                PendingIntent pendingIntent, Uri soundUri, int icon){
+    @TargetApi(Build.VERSION_CODES.O)
+    public  NotificationCompat.Builder getOreoNotificationFriends(String title, String body,
+            PendingIntent pendingIntent, Uri soundUri, int icon){
 
-            return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID_1)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle(title)
-                    .setContentText(body)
-                    .setSmallIcon(icon)
-                    .setSound(soundUri)
-                    .setAutoCancel(true);
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID_1)
+                .setContentIntent(pendingIntent)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSmallIcon(icon)
+                .setSound(soundUri)
+                .setAutoCancel(true);
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    public  NotificationCompat.Builder getOreoMessage(PendingIntent pendingIntent, Uri soundUri, int icon){
+
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(icon)
+                .setSound(soundUri)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE);
+
     }
 }

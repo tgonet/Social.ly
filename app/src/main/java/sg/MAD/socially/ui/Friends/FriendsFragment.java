@@ -3,6 +3,7 @@ package sg.MAD.socially.ui.Friends;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -117,7 +118,6 @@ public class FriendsFragment extends Fragment {
         //Instantiates API
         apiService = Client.getCilent("https://fcm.googleapis.com/").create(APIService.class);
 
-
         //Populate allUsersList
         // Use id to get current user's friends
         ref = FirebaseDatabase.getInstance().getReference("Users");
@@ -133,6 +133,7 @@ public class FriendsFragment extends Fragment {
                     //Check if user is current user by Id
                     if (user.getId().equals(currentUserId)) {
                         currFriends = user.getFriends();
+
                         //Populate Current User FriendList
                         currFriendList = removeComma(currFriends);
                         Log.d("Current User", "FriendsList: " + currFriendList);
@@ -394,16 +395,20 @@ public class FriendsFragment extends Fragment {
         });
     }
 
+    //Sends a data payload(notification) to firebase
     private void sendNotification(final String receiver) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        //Finding the token id of the receiver
         Query query = tokens.orderByKey().equalTo(receiver);
+
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(currentUserId, "Start chatting now!", "Someone swiped right!",
-                            receiver, "Swiperight");
+                    //The json data payload that is sent
+                    Data data = new Data(currentUserId,  "Start chatting now!", "Someone swiped right!",
+                            receiver,"Swiperight");
 
                     Sender sender = new Sender(data, token.getToken());
 

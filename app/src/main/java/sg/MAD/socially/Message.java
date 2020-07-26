@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -51,6 +52,7 @@ public class Message extends AppCompatActivity {
     ImageButton send;
     RecyclerView rv;
     ArrayList<Chat> chatList;
+    String profile_url;
 
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -61,21 +63,12 @@ public class Message extends AppCompatActivity {
     APIService apiService;
 
     boolean notify = false;
-    String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        //Instantiates the views
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         profile_pic = findViewById(R.id.profile_image);
         username = findViewById(R.id.username_Message);
         message = findViewById(R.id.messaage);
@@ -128,6 +121,7 @@ public class Message extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                  username.setText(user.getName());
+                 profile_url = user.getImageURL();
                 if (user.getImageURL().equals("default")) {
                     profile_pic.setImageResource(R.mipmap.ic_launcher);
                 } else {
@@ -146,12 +140,15 @@ public class Message extends AppCompatActivity {
         });
     }
 
-    //Sends a message to the user
-    public static void sendMessagesss(String sender, final String receiver, CharSequence message , Context context){
+    //Method used in DirectReplyReceiver class
+    public static void sendMessagesss(String sender, final String receiver, CharSequence message, Context context, String type, String profilepic){
         HashMap<String, Object> hashmap = new HashMap<>();
         hashmap.put("sender", sender);
         hashmap.put("receiver", receiver);
         hashmap.put("message", message);
+        hashmap.put("name",FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        hashmap.put("profile_url", profilepic);
+        hashmap.put("timestamp",System.currentTimeMillis());
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         //upload the current message to firebase
@@ -159,16 +156,18 @@ public class Message extends AppCompatActivity {
 
         //Sends notifications when receive new messages
         final CharSequence msg = message;
-        sendNotifications(receiver, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), msg, context);
-
+        sendNotifications(receiver, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), msg, context,type,"0");
     }
 
+    //Sends a message to the user
     private void sendMessage(String sender, final String receiver, String message) {
         HashMap<String, Object> hashmap = new HashMap<>();
         hashmap.put("sender", sender);
         hashmap.put("receiver", receiver);
         hashmap.put("message", message);
-
+        hashmap.put("name",fuser.getDisplayName());
+        hashmap.put("profile_url", fuser.getPhotoUrl().toString());
+        hashmap.put("timestamp",System.currentTimeMillis());
 
         //upload the current message to firebase
         reference.child("Chats").push().setValue(hashmap);
@@ -189,7 +188,7 @@ public class Message extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(fuser.getUid(),name+": "+message, "Message",receiver,"Message");
+                    Data data = new Data(fuser.getUid(),message, name,receiver,"Message",fuser.getPhotoUrl().toString());
 
                     Sender sender = new Sender(data, token.getToken());
 
@@ -219,18 +218,30 @@ public class Message extends AppCompatActivity {
         });
     }
 
-    //This method is used in DirectReplyReceiver.class and it has the same function as sendNotification
-    public static void sendNotifications(final String receiver, final String name, final CharSequence message, final Context context) {
+    /**
+     * This This method is used in DirectReplyReceiver.class and it has the same function as sendNotification
+     * @param sender will only hold a meaningful value in the DirectReplyReceiver.class else it will be "0" as it represents the sender of the
+     * notification on the user's device after the user sends a reply.
+     */
+    public static void sendNotifications(final String receiver, final String name, final CharSequence message, final Context context, final String type,final String sender) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);
+        final Data[] data = {new Data()};
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(),name+": "+message, "New Message",receiver,"Message");
 
-                    Sender sender = new Sender(data, token.getToken());
+                    //Checks if receiver is the current user
+                    if(receiver.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        data[0] = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), (String) message, name,sender,type,FirebaseAuth.getInstance().getCurrentUser() .getPhotoUrl().toString());
+                    }
+                    else{
+                        data[0] = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), (String) message, name,receiver,type,FirebaseAuth.getInstance().getCurrentUser() .getPhotoUrl().toString());
+                    }
+
+                    Sender sender = new Sender(data[0], token.getToken());
 
                     APIService apiService = Client.getCilent("https://fcm.googleapis.com/").create(APIService.class);
                     apiService.sendNotification(sender)
@@ -257,9 +268,10 @@ public class Message extends AppCompatActivity {
 
             }
         });
+
     }
 
-    //Read message from firebase
+    //Read messages from firebase
     private void readMessage(final String myid, final String userid) {
         //chatList = new ArrayList<>();
 
@@ -287,7 +299,6 @@ public class Message extends AppCompatActivity {
             }
         });
     }
-
 
     //Show latest notification
     private void showNewEntry(RecyclerView rv, ArrayList<Chat> data){

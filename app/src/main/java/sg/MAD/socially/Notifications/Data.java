@@ -6,6 +6,16 @@ public class Data {
     private String title;
     private String receiver;
     private String type;
+    private String PicUrl;
+
+    public Data(String sender, String body, String title, String receiver, String type, String picUrl) {
+        this.sender = sender;
+        this.body = body;
+        this.title = title;
+        this.receiver = receiver;
+        this.type = type;
+        PicUrl = picUrl;
+    }
 
     public Data(String sender, String body, String title, String receiver, String type) {
         this.sender = sender;
@@ -17,6 +27,14 @@ public class Data {
 
     public Data() {
 
+    }
+
+    public String getPicUrl() {
+        return PicUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        PicUrl = picUrl;
     }
 
     public String getSender() {

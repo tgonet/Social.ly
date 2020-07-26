@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import sg.MAD.socially.Class.Chat;
+import sg.MAD.socially.Class.UserChatViewModel;
 import sg.MAD.socially.Message;
 import sg.MAD.socially.R;
 import sg.MAD.socially.Class.User;
@@ -30,12 +31,12 @@ import sg.MAD.socially.Class.User;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class UserAdapter  extends RecyclerView.Adapter<UserAdapter.MyViewHolder>{
-    List<User> Users;
+    List<UserChatViewModel> Users;
     Context mContext;
 
     String theLastMessage;
 
-    public UserAdapter(List<User> users, Context mContext) {
+    public UserAdapter(List<UserChatViewModel> users, Context mContext) {
         this.Users = users;
         this.mContext = mContext;
     }
@@ -65,21 +66,21 @@ public class UserAdapter  extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull UserAdapter.MyViewHolder holder, int position) {
-        final User user = Users.get(position);
-        lastMessage(user.getId(),holder.message);
-        holder.username.setText(user.getName());
-        if(user.getImageURL().equals("default")){
+        final UserChatViewModel user = Users.get(position);
+        holder.username.setText(user.getUser().getName());
+        holder.message.setText(user.getMessage());
+        if(user.getUser().getImageURL().equals("default")){
             holder.profilepic.setImageResource(R.mipmap.ic_launcher);
         }
         else{
-            Glide.with(mContext).load(user.getImageURL()).into(holder.profilepic);
+            Glide.with(mContext).load(user.getUser().getImageURL()).into(holder.profilepic);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, Message.class);
-                intent.putExtra("userid",user.getId());
+                intent.putExtra("userid",user.getUser().getId());
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
@@ -92,40 +93,5 @@ public class UserAdapter  extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
         return Users.size();
     }
 
-    //check for last message
-    private void lastMessage(final String userid, final TextView message){
-        theLastMessage = "Empty";
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    if (firebaseUser != null && chat != null) {
-                        if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
-                                chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {
-                            theLastMessage = chat.getMessage();
-                        }
-                    }
-                }
-
-                if(theLastMessage.equals("Empty")){
-                    message.setText("");
-
-                }
-                else {
-                    message.setText(theLastMessage);
-                }
-
-                theLastMessage = "Empty";
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

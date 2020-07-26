@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +24,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,13 +33,14 @@ import java.util.Set;
 import sg.MAD.socially.Adapter.UserAdapter;
 import sg.MAD.socially.Class.Chat;
 import sg.MAD.socially.Class.User;
+import sg.MAD.socially.Class.UserChatViewModel;
 import sg.MAD.socially.Notifications.Token;
 
 public class Conversation extends AppCompatActivity {
 
     private RecyclerView rv;
     private UserAdapter adapter;
-    ArrayList<sg.MAD.socially.Class.User> User;
+    ArrayList<UserChatViewModel> User;
     Set<String> Finaluserstringlist;
     Button user_button;
     FirebaseUser fuser;
@@ -118,20 +122,46 @@ public class Conversation extends AppCompatActivity {
 
     private void DisplayCurrentChats() {
 
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference = FirebaseDatabase.getInstance().getReference();
 
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 User.clear();
                 //Populates the Userlist
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
+                    UserChatViewModel userChatViewModel = new UserChatViewModel(user,0,"");
                     for (String id : Finaluserstringlist) {
                         if (user.getId().equals(id)) {
-                            User.add(user);
+                            User.add(userChatViewModel);
                         }
                     }
+                }
+                //Checks for last message
+                for(final UserChatViewModel i : User){
+                    reference.child("Chats").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot Datasnapshot) {
+                            for (DataSnapshot snapshot : Datasnapshot.getChildren()){
+                                Chat chat = snapshot.getValue(Chat.class);
+                                if (fuser.getUid() != null && chat != null) {
+                                            if (chat.getReceiver().equals(fuser.getUid()) && chat.getSender().equals(i.getUser().getId()) ||
+                                            chat.getReceiver().equals(i.getUser().getId()) && chat.getSender().equals(fuser.getUid())) {
+                                        i.message = chat.getMessage();
+                                        i.timestamp = chat.getTimestamp();
+                                    }
+                                }
+                            }
+                            Collections.sort(User);
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -144,4 +174,42 @@ public class Conversation extends AppCompatActivity {
     }
 
 
+    //check for last message
+    private void lastMessage(final String userid, final TextView message){
+        final String[] theLastMessage = {"Empty"};
+        final long[] timeStamp = {0};
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (firebaseUser != null && chat != null) {
+                        if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
+                                chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {
+                            theLastMessage[0] = chat.getMessage();
+                            timeStamp[0] = chat.getTimestamp();
+                        }
+                    }
+                }
+
+                if(theLastMessage[0].equals("Empty")){
+                    message.setText("");
+
+                }
+                else {
+                    message.setText(theLastMessage[0]);
+                }
+
+                theLastMessage[0] = "Empty";
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
