@@ -3,6 +3,7 @@ package sg.MAD.socially.Class;
 import java.io.Serializable;
 
 public class Activity implements Serializable {
+    private String activityid;
     private String act_picture;
     private String profile_image;
     private String Name_register;
@@ -16,7 +17,8 @@ public class Activity implements Serializable {
     public Activity() {
     }
 
-    public Activity(String act_picture, String profile_image, String name_register, String act_location, String act_time, String activity_name, String act_desc, String act_date, boolean permission) {
+    public Activity(String activityid, String act_picture, String profile_image, String name_register, String act_location, String act_time, String activity_name, String act_desc, String act_date, boolean permission) {
+        this.activityid = activityid;
         this.act_picture = act_picture;
         this.profile_image = profile_image;
         Name_register = name_register;
@@ -26,6 +28,14 @@ public class Activity implements Serializable {
         this.act_desc = act_desc;
         this.act_date = act_date;
         this.permission = permission;
+    }
+
+    public String getActivityid() {
+        return activityid;
+    }
+
+    public void setActivityid(String activityid) {
+        this.activityid = activityid;
     }
 
     public String getAct_picture() {
