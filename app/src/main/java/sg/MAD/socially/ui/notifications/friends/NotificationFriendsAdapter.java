@@ -72,7 +72,7 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
             int diffSec = (int) (diff / (1000));
 
             if (diffWeeks > 0){
-                duration = diffDays + "w";
+                duration = diffWeeks + "w";
             }
             else if (diffDays > 0){
                 duration = diffDays + "d";

@@ -11,7 +11,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -24,31 +23,20 @@ import androidx.core.graphics.drawable.IconCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
-import sg.MAD.socially.Class.Chat;
-import sg.MAD.socially.Class.User;
 import sg.MAD.socially.MainActivity;
 import sg.MAD.socially.Message;
 import sg.MAD.socially.R;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
 
-    /**
-     *
-     * @param remoteMessage
-     */
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -58,9 +46,6 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if(type.equals("Message")){
                     sendOreoNotification(remoteMessage);
-                }
-                else if(type.equals("Reply Message")){
-                    sendOreoMessage(remoteMessage);
                 }
                 else{
                     sendOreoFriendNotification(remoteMessage);
@@ -162,6 +147,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             Bundle bundles = new Bundle();
             bundles.putString("receiver",remoteMessage.getData().get("sender"));
             bundles.putString("Name",remoteMessage.getData().get("title"));
+            bundles.putString("Pic", remoteMessage.getData().get("PicUrl"));
             RemoteInput remoteInput = new RemoteInput.Builder("Notification reply")
                     .setLabel("Reply")
                     .build();
@@ -179,112 +165,6 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         }
 
         oreoNotification.getManager().notify(j, builder.build());
-    }
-
-    /**
-     * This is to use the messaging style in notifications which will show the user's reply to his friend's message
-     * and the message he replied to
-     */
-    private void sendOreoMessage(final RemoteMessage remoteMessage){
-        final String receiver = remoteMessage.getData().get("receiver");
-        final String[] URL = new String[1];
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
-        /**
-         * Retreive the friend's profile URL to be converted into an image
-         * This method is placed here as there has to have a buffer before the data is retrieved to be converted into an image
-          */
-        reference.child("Users").child(receiver).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                URL[0] = user.getImageURL();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        final Intent[] intent = new Intent[1];
-        final PendingIntent[] pendingIntent = new PendingIntent[1];
-        final String sender = remoteMessage.getData().get("sender");
-        final String title = remoteMessage.getData().get("title");
-        final Bitmap userpic = getBitmapfromUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
-        final ArrayList<Chat> MESSAGES = new ArrayList<>();
-        final ArrayList<Chat> last_two = new ArrayList<>();
-
-        final Bitmap bitmaps = getBitmapfromUrl(URL[0]);
-
-        reference.child("Chats").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                MESSAGES.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Chat chat = snapshot.getValue(Chat.class);
-                    //Checks if this message is send between the 2 users
-                    if (chat.getReceiver().equals(sender) && chat.getSender().equals(receiver) ||
-                            chat.getReceiver().equals(receiver) && chat.getSender().equals(sender)) {
-                        MESSAGES.add(chat);
-                    }
-                }
-
-                last_two.add(MESSAGES.get(MESSAGES.size()-2));
-                last_two.add(MESSAGES.get(MESSAGES.size()-1));
-
-                //Removes the alphabets in the userid
-                int j = Integer.parseInt(receiver.replaceAll("[\\D]", ""));
-
-                intent[0] = new Intent(getApplicationContext(), Message.class);
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-                stackBuilder.addNextIntentWithParentStack(intent[0]);
-                Bundle bundle = new Bundle();
-                bundle.putString("userid", receiver);
-                intent[0].putExtras(bundle);
-                pendingIntent[0] = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                OreoNotification oreoNotification = new OreoNotification(getApplicationContext());
-                NotificationCompat.Builder builder = oreoNotification.getOreoMessage(pendingIntent[0],
-                        defaultSound, R.drawable.logo_mark);
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                    Person person1 = new Person.Builder().setName(title).setIcon(IconCompat.createWithBitmap(bitmaps)).build();
-                    Person person2 = new Person.Builder().setName("You").setIcon(IconCompat.createWithBitmap(userpic)).build();
-                    NotificationCompat.MessagingStyle messagingStyle =
-                            new NotificationCompat.MessagingStyle(person1);
-                    messagingStyle.setConversationTitle(title);
-
-                    Person name;
-
-                    for(Chat chatMessage : last_two){
-                        if(chatMessage.getName().equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())){
-                            name = person2;
-                        }
-                        else{
-                            name = person1;
-                        }
-                        NotificationCompat.MessagingStyle.Message notificationMessage =
-                                new NotificationCompat.MessagingStyle.Message(
-                                        chatMessage.getMessage(),
-                                        chatMessage.getTimestamp(),
-                                        name
-                                );
-                        messagingStyle.addMessage(notificationMessage);
-                    }
-
-                    builder.setStyle(messagingStyle);
-                }
-
-                oreoNotification.getManager().notify(j, builder.build());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     //sends a chat notification to devices with android version < 8.0
@@ -333,7 +213,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     }
 
     //Converts an image URL into an image
-    public Bitmap getBitmapfromUrl(String imageUrl) {
+    public static Bitmap getBitmapfromUrl(String imageUrl) {
         try {
             URL url = new URL(imageUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -344,7 +224,11 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         } catch (Exception e) {
             Log.e("awesome", "Error in getting notification image: " + e.getLocalizedMessage());
+            e.printStackTrace();
             return null;
         }
     }
+
 }
+
+
