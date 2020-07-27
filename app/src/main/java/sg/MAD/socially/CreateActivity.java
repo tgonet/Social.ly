@@ -144,31 +144,6 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             }
         });
 
-        //Used to search for address of entered location
-        //final Geocoder geocoder = new Geocoder(this);
-
-        Location.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                /*try {
-                    //Retrieve addresses of location of similar names
-                    addressList = (ArrayList<Address>) geocoder.getFromLocationName(Location.getText().toString(), 6);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
-            }
-        });
-
         //Sets onclick for the date dialog
         Date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,8 +219,12 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         Log.d("time",time);
         if (!activityname.isEmpty() || !desc.isEmpty() || !location.isEmpty() || !time.isEmpty() || !date.isEmpty()) {
 
+            //Address of the firebase i am pushing data into
+            String activityid = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push().getKey();
+
             //Puts the data into a hashmap
             HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("activityid", activityid);
             hashMap.put("activity_name", activityname);
             hashMap.put("act_desc", desc);
             hashMap.put("profile_image", user.getPhotoUrl().toString());
