@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import sg.MAD.socially.Class.NotificationFriend;
 import sg.MAD.socially.Class.User;
@@ -71,6 +73,7 @@ public class NotificationsFriendsFragment extends Fragment {
                     NotificationFriend notif = snapshot.getValue(NotificationFriend.class);
                     notifList.add(notif);
                 }
+                Collections.reverse(notifList);
                 if (notifList.size() == 0){
                     noNotifications.setText("You have no notifications."); //display text stating that there are no notifications
                 }
