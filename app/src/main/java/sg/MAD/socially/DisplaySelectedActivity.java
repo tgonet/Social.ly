@@ -25,13 +25,18 @@ ImageView selected_profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent;
+        Bundle bundle;
+        Activity selected;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_selected);
 
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
+        intent = this.getIntent();
+        bundle = intent.getExtras();
 
-        Activity selected = (Activity) bundle.getSerializable("selected");
+        selected = (Activity) bundle.getSerializable("selected");
 
         selected_Name_register = (TextView) findViewById(R.id.selected_Name_register);
         selected_act_location= (TextView) findViewById(R.id.selected_act_location);

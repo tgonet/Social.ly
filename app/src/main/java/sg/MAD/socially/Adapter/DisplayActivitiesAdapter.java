@@ -91,7 +91,6 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
                     Intent intent = new Intent(v.getContext(), DisplaySelectedActivity.class);
                     intent.putExtras(bundle);
                     v.getContext().startActivity(intent);
-
                 }
             });
 

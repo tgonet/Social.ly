@@ -63,12 +63,14 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
         }
     }
 
+    //sends a notifcation to the user himself
     private void sendOreoMessage(String Pic){
         String[] bitmapstring = {Pic,FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString()};
         new Testing(bitmapstring,this).execute(bitmapstring);
     }
 
-    public void callback()
+    //the callback function used after getbitmapfromurl
+    public void buildnotification()
     {
         final ArrayList<Chat> MESSAGES = new ArrayList<>();
         final ArrayList<Chat> last_two = new ArrayList<>();
@@ -77,6 +79,7 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
         final PendingIntent[] pendingIntent = new PendingIntent[1];
         final Person[] name = new Person[1];
 
+        //Retreive the last 2 messages between the 2 users
         reference.child("Chats").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -96,7 +99,7 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
                 //Removes the alphabets in the userid
                 int j = Integer.parseInt(receivers.replaceAll("[\\D]", ""));
 
-                //rebuild notification
+                //Creating an intent to Message.java when notification is clicked
                 intent[0] = new Intent(context, Message.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
                 stackBuilder.addNextIntentWithParentStack(intent[0]);
@@ -105,12 +108,17 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
                 intent[0].putExtras(bundle);
                 pendingIntent[0] = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                //Sets the default ringtone
                 Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                //build the notification
                 OreoNotification oreoNotification = new OreoNotification(context);
                 NotificationCompat.Builder builder = oreoNotification.getOreoMessage(pendingIntent[0],
                         defaultSound, R.drawable.logo_mark);
 
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+
+                    //Creates a notification that is made for messages using messaging style
                     Person person2 = new Person.Builder().setName("You").setIcon(IconCompat.createWithBitmap(UserPic)).build();
                     Person person1 = new Person.Builder().setName(title).setIcon(IconCompat.createWithBitmap(FriendPic)).build();
                     NotificationCompat.MessagingStyle messagingStyle =
@@ -144,6 +152,7 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
         });
     }
 
+    //Used for getbitmapfromurl method
     public class Testing extends AsyncTask<String, Long, Bitmap[]>{
         DirectReplyReceiver directReply;
         String[] Bitmap;
@@ -165,7 +174,7 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
             FriendPic = bitmap[0];
             UserPic = bitmap[1];
 
-            directReply.callback();
+            directReply.buildnotification();
         }
     }
 }

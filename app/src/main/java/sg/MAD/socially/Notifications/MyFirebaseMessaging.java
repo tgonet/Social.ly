@@ -68,13 +68,17 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
 
+        //Removes the alphabets in the userid
         int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
 
+        //Creating an intent to the app when notification is clicked
         Intent intent = new Intent(this, MainActivity.class);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this,j,intent,PendingIntent.FLAG_ONE_SHOT);
 
+        //Sets the default ringtone
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        //Creates the notification
         Notification builder = new Notification.Builder(this)
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setSmallIcon(R.drawable.logo_mark)
@@ -90,20 +94,23 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         notificationManager.notify(j, builder);
     }
 
-    //sends a "Got new friend" notification to devices with android version > 8.0
     private void sendOreoFriendNotification(RemoteMessage remoteMessage) {
+    //sends a "Got new friend" notification to devices with android version > 8.0
         String sender = remoteMessage.getData().get("sender");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
 
         //Removes the alphabets in the userid
         int j = Integer.parseInt(sender.replaceAll("[\\D]", ""));
+
+        //Creating an intent to the app when notification is clicked
         Intent intent = new Intent(this, MainActivity.class);
-
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this,j,intent,PendingIntent.FLAG_ONE_SHOT);
+
+        //Sets the default ringtone
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
+        //Creates the notification
         OreoNotification oreoNotification = new OreoNotification(this);
         NotificationCompat.Builder builder = oreoNotification.getOreoNotificationFriends(title, body, pendingIntent,
                 defaultSound, R.drawable.logo_mark);
@@ -125,6 +132,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         //Removes the alphabets in the userid
         int j = Integer.parseInt(sender.replaceAll("[\\D]", ""));
 
+        //Creating an intent to Message.java when notification is clicked
         intent = new Intent(this, Message.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(intent);
@@ -133,12 +141,16 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         intent.putExtras(bundle);
         pendingIntent = stackBuilder.getPendingIntent(j, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        //Creates a notification that is made for messages using messaging style
         Person person = new Person.Builder().setName(title).setIcon(IconCompat.createWithBitmap(bitmap)).build();
         NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(person);
         messagingStyle.setConversationTitle(title);
         messagingStyle.addMessage(body,0,person);
 
+        //Sets the default ringtone
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        //Creates the notification
         OreoNotification oreoNotification = new OreoNotification(this);
         NotificationCompat.Builder builder = oreoNotification.getOreoNotification(title, body, pendingIntent,
                 defaultSound, R.drawable.logo_mark,bitmap);
@@ -148,15 +160,20 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             bundles.putString("receiver",remoteMessage.getData().get("sender"));
             bundles.putString("Name",remoteMessage.getData().get("title"));
             bundles.putString("Pic", remoteMessage.getData().get("PicUrl"));
+
+            //Creates the action
             RemoteInput remoteInput = new RemoteInput.Builder("Notification reply")
                     .setLabel("Reply")
                     .build();
 
+            //Reply is received in the DirectReplyReceiver.class
             replyIntent = new Intent(this, DirectReplyReceiver.class);
             replyIntent.putExtras(bundles);
             replyPendingIntent = PendingIntent.getBroadcast(this,
                     j, replyIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
 
+
+            //Adds the action to the notification
             NotificationCompat.Action action =
                     new NotificationCompat.Action.Builder(R.drawable.ic_baseline_reply_24,"Reply", replyPendingIntent)
                             .addRemoteInput(remoteInput).build();
@@ -180,6 +197,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         //Removes the alphabets in the userid
         int j = Integer.parseInt(sender.replaceAll("[\\D]", ""));
 
+        //Creating an intent to Message.java when notification is clicked
         intent = new Intent(this, Message.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(intent);
@@ -188,13 +206,16 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         intent.putExtras(bundle);
         pendingIntent = stackBuilder.getPendingIntent(j, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        //Sets the default ringtone
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Person person = new Person.Builder().setName(title).setIcon(IconCompat.createWithBitmap(bitmap)).build();
 
+        //Creates a notification that is made for messages using messaging style
+        Person person = new Person.Builder().setName(title).setIcon(IconCompat.createWithBitmap(bitmap)).build();
         NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(person);
         messagingStyle.setConversationTitle(title);
         messagingStyle.addMessage(body,0,person);
 
+        //Builds the notification
         builder = new NotificationCompat.Builder(this)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setSmallIcon(R.drawable.logo_mark)
