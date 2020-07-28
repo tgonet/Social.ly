@@ -2,8 +2,10 @@ package sg.MAD.socially;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,10 +29,11 @@ public class DisplayActivities extends AppCompatActivity {
     RecyclerView recyclerView;
     DatabaseReference reference;
     ArrayList<Activity> list;
+    ArrayList<Activity> filtered;
     DisplayActivitiesAdapter adapter;
     Button Createacticitybtn;
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_activities);
 
@@ -43,7 +46,7 @@ public class DisplayActivities extends AppCompatActivity {
         Createacticitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DisplayActivities.this,CreateActivity.class));
+                startActivity(new Intent(DisplayActivities.this, CreateActivity.class));
             }
         });
 
@@ -56,10 +59,13 @@ public class DisplayActivities extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list.clear(); //clear underlying list
-                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Activity a = dataSnapshot1.getValue(Activity.class);
+                    String key = dataSnapshot1.getKey();
+                    a.setActivityId(key);
+
                     list.add(a); //add activities retrieved from firebase into arraylist
+
                 }
                 adapter.notifyDataSetChanged(); //notify that new activities are added in
             }
@@ -73,5 +79,32 @@ public class DisplayActivities extends AppCompatActivity {
         adapter = new DisplayActivitiesAdapter(DisplayActivities.this, list);
         recyclerView.setAdapter(adapter);
 
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+
+    }
+
+
+    private void filter(String text) {
+        filtered = new ArrayList<>();
+
+
+        for (Activity activity : list){
+            if (activity.getActivity_name().toLowerCase().equals((text)) || activity.getActivity_name().toLowerCase().contains(text)){
+                filtered.add(activity);
+            }
+        }
+        adapter.filteredList(filtered);
     }
 }
