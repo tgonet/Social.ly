@@ -87,15 +87,8 @@ public class FriendsFragment extends Fragment {
     //Service for notification
     APIService apiService;
 
-    private FriendsViewModel friendsViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        /*
-        //for the fragment view
-        friendsViewModel =
-                ViewModelProviders.of(this).get(FriendsViewModel.class);
-         */
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
         //instantiating all users ArrayList
@@ -333,7 +326,8 @@ public class FriendsFragment extends Fragment {
                             .setView(alertView);
                     alert.show();
 
-                    /* Update Notification's page */
+                    /** Checkpoint 2 - Joey
+                     *  Update Notification's page */
 
                     //Current User
                     NotificationFriend notif = new NotificationFriend(); //Create new object to store the notification information
@@ -395,6 +389,7 @@ public class FriendsFragment extends Fragment {
         });
     }
 
+    /** Checkpoint 2 - Ming Zhe **/
     //Sends a data payload(notification) to firebase
     private void sendNotification(final String receiver) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
@@ -438,6 +433,9 @@ public class FriendsFragment extends Fragment {
         });
     }
 
+    /** Checkpoint 2 - Aw Joey
+     * I implemented these two methods so that it is public
+     * and my teammates will be able to implement them. **/
     public static ArrayList<String> removeComma(String data) {
         ArrayList<String> dataList = new ArrayList<>();
         if (!data.isEmpty()) {

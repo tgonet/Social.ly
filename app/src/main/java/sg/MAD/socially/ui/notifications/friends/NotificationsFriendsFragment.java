@@ -71,7 +71,7 @@ public class NotificationsFriendsFragment extends Fragment {
                 notifList.clear(); //so that there are no duplicates
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NotificationFriend notif = snapshot.getValue(NotificationFriend.class);
-                    notifList.add(0, notif);
+                    notifList.add(0, notif); //add notif to the front of the list.
                 }
                 if (notifList.size() == 0){
                     noNotifications.setText("You have no notifications."); //display text stating that there are no notifications
