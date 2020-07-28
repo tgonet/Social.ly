@@ -198,6 +198,9 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
                                 else if (minute == 0) {
                                     Time.setText(hourOfDay + ":" + minute + "0");
                                 }
+                                else if(minute < 10){
+                                    Time.setText(hourOfDay + ":" + "0" + minute);
+                                }
                                 else{
                                     Time.setText(hourOfDay + ":" + minute);
                                 }
@@ -220,7 +223,9 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
         if (!activityname.isEmpty() || !desc.isEmpty() || !location.isEmpty() || !time.isEmpty() || !date.isEmpty()) {
 
             //Address of the firebase i am pushing data into
-            String activityid = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push().getKey();
+            reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push();
+            //Address of the firebase i am pushing data into
+            String activityid = reference.getKey();
 
             //Puts the data into a hashmap
             HashMap<String, String> hashMap = new HashMap<>();
@@ -234,8 +239,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             hashMap.put("Name_register", user.getDisplayName());
             hashMap.put("Interest", interest);
 
-            //Address of the firebase i am pushing data into
-            reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push();
+
             //Pushing of data
             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
