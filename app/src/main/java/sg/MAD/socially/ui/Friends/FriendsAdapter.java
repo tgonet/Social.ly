@@ -9,12 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import sg.MAD.socially.Class.NotificationFriend;
 import sg.MAD.socially.R;
 import sg.MAD.socially.Class.User;
+import sg.MAD.socially.ui.Friends.Interests.FriendsInterestAdapter;
 
 public class FriendsAdapter extends ArrayAdapter<User> {
 
@@ -35,7 +41,7 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         TextView nickname = (TextView) convertView.findViewById(R.id.addfriend_nickname);
         ImageView image = (ImageView) convertView.findViewById(R.id.addfriend_profilepic);
         TextView friendCount = (TextView) convertView.findViewById(R.id.addfriend_friendcount);
-        TextView interests = (TextView) convertView.findViewById(R.id.addfriend_interests);
+        RecyclerView rv_interests = (RecyclerView) convertView.findViewById(R.id.rv_addfriends_interest);
         TextView desc = (TextView) convertView.findViewById(R.id.addfriend_shortdesc);
 
         //setting the user details to each content
@@ -56,7 +62,14 @@ public class FriendsAdapter extends ArrayAdapter<User> {
             }
         }
         friendCount.setText(friends + " friends");
-        interests.setText(user.getInterest());
+
+        ArrayList<String> interest_list = FriendsFragment.removeComma(user.getInterest());
+        FriendsInterestAdapter mAdapter = new FriendsInterestAdapter(interest_list);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
+
+        rv_interests.setLayoutManager(mLayoutManager);
+        rv_interests.setAdapter(mAdapter);
+
         desc.setText(user.getShortDesc());
 
         //return the details in a card view

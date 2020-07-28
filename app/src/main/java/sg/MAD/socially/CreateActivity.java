@@ -229,6 +229,7 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
 
             //Puts the data into a hashmap
             HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("host_id",FirebaseAuth.getInstance().getCurrentUser().getUid());
             hashMap.put("activityid", activityid);
             hashMap.put("activity_name", activityname);
             hashMap.put("act_desc", desc);

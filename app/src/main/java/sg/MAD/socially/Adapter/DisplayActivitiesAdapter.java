@@ -3,25 +3,31 @@ package sg.MAD.socially.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.squareup.picasso.Picasso;
 
+import java.io.FilterReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.MAD.socially.Class.Activity;
 import sg.MAD.socially.DisplaySelectedActivity;
 import sg.MAD.socially.R;
 
-public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivitiesAdapter.MyViewHolder> {
+public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivitiesAdapter.MyViewHolder>{
 
     Context context;
     ArrayList<Activity> activities;
@@ -46,6 +52,8 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
         holder.activity_name.setText(activities.get(position).getActivity_name());
         holder.act_desc.setText(activities.get(position).getAct_desc());
         holder.act_date.setText(activities.get(position).getAct_date());
+
+
 
         //load image
         Picasso.get().load(activities.get(position).getAct_picture()).into(holder.act_picture);
@@ -79,6 +87,7 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
             act_picture = (ImageView) itemView.findViewById(R.id.act_picture);
             profile_image = (ImageView) itemView.findViewById(R.id.profile_image);
 
+
             v = itemView;
 
             //bring user to page that displays the selected activity
@@ -95,5 +104,10 @@ public class DisplayActivitiesAdapter extends RecyclerView.Adapter<DisplayActivi
             });
 
         }
+    }
+
+    public void filteredList(ArrayList<Activity> filtered){
+        activities = filtered;
+        notifyDataSetChanged();
     }
 }

@@ -1,9 +1,12 @@
 package sg.MAD.socially.Class;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 
 public class Activity implements Serializable {
-    private String activityid;
+    @Exclude private String activityId;
+    private String Interest;
     private String act_picture;
     private String profile_image;
     private String Name_register;
@@ -17,8 +20,8 @@ public class Activity implements Serializable {
     public Activity() {
     }
 
-    public Activity(String activityid, String act_picture, String profile_image, String name_register, String act_location, String act_time, String activity_name, String act_desc, String act_date, boolean permission) {
-        this.activityid = activityid;
+    public Activity(String Interest, String act_picture, String profile_image, String name_register, String act_location, String act_time, String activity_name, String act_desc, String act_date, boolean permission) {
+        this.Interest = Interest;
         this.act_picture = act_picture;
         this.profile_image = profile_image;
         Name_register = name_register;
@@ -30,12 +33,12 @@ public class Activity implements Serializable {
         this.permission = permission;
     }
 
-    public String getActivityid() {
-        return activityid;
+    public String getActivityId() {
+        return activityId;
     }
 
-    public void setActivityid(String activityid) {
-        this.activityid = activityid;
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
     }
 
     public String getAct_picture() {
@@ -44,6 +47,14 @@ public class Activity implements Serializable {
 
     public void setAct_picture(String act_picture) {
         this.act_picture = act_picture;
+    }
+
+    public String getInterest() {
+        return Interest;
+    }
+
+    public void setInterest(String interest) {
+        Interest = interest;
     }
 
     public String getProfile_image() {
