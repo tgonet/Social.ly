@@ -237,8 +237,8 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
             hashMap.put("act_location", location);
             hashMap.put("act_time", time);
             hashMap.put("act_date", date);
-            hashMap.put("Name_register", user.getDisplayName());
-            hashMap.put("Interest", interest);
+            hashMap.put("name_register", user.getDisplayName());
+            hashMap.put("interest", interest);
 
 
             //Pushing of data

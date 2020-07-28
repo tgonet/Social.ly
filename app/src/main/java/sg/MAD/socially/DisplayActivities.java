@@ -51,7 +51,7 @@ public class DisplayActivities extends AppCompatActivity {
         });
 
         list = new ArrayList<>(); //create array list to store activities
-        String activity = getIntent().getStringExtra("activity");
+        final String activity = getIntent().getStringExtra("activity");
 
         //retrieve activities
         reference = FirebaseDatabase.getInstance().getReference().child("Activity").child(activity);
@@ -61,8 +61,6 @@ public class DisplayActivities extends AppCompatActivity {
                 list.clear(); //clear underlying list
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Activity a = dataSnapshot1.getValue(Activity.class);
-                    String key = dataSnapshot1.getKey();
-                    a.setActivityId(key);
 
                     list.add(a); //add activities retrieved from firebase into arraylist
 
