@@ -25,7 +25,6 @@ import java.util.Collections;
 
 import sg.MAD.socially.Class.NotificationFriend;
 import sg.MAD.socially.R;
-import sg.MAD.socially.ui.notifications.friends.NotificationFriendsAdapter;
 
 public class NotificationsActivityFragment extends Fragment {
     View root;
@@ -42,12 +41,8 @@ public class NotificationsActivityFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        image = root.findViewById(R.id.notification_friend_image);
-        content = root.findViewById(R.id.notification_friend_content);
-        duration = root.findViewById(R.id.notification_friend_duration);
-        recyclerView = root.findViewById(R.id.rv_notifications_friends);
-        noNotifications = root.findViewById(R.id.nonotifications);
+        root = inflater.inflate(R.layout.fragment_notifications_activity, container, false);
+        recyclerView = root.findViewById(R.id.activity_rv);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         notifList = new ArrayList<>();
@@ -61,15 +56,13 @@ public class NotificationsActivityFragment extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifList.clear(); //so that there are no duplicates
+                notifList.clear(); //clear list so that there wont be repeated values
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NotificationFriend notif = snapshot.getValue(NotificationFriend.class);
                     notifList.add(notif);
                 }
                 Collections.reverse(notifList);
-                if (notifList.size() == 0){
-                    noNotifications.setText("You have no notifications."); //display text stating that there are no notifications
-                }
                 adapter.notifyDataSetChanged(); //this updates the adapter's notifList
             }
 

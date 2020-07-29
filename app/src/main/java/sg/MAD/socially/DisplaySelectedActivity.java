@@ -173,14 +173,6 @@ Bundle bundle;
             }
             });
 
-
-        //NotificationFriend notification = new NotificationFriend();
-
-        //notification.setImageURL(user.getImageURL());
-        //notification.setInfo(user.getDisplayName() + "has joined ");
-
-
-
     }
 
 
