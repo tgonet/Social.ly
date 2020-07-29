@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyAccount">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".MyAccount">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/backBtn"
+                android:background="@drawable/background_left"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <RelativeLayout
+        android:layout_below="@id/toolbar"
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+   <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profleImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/profile"
+        app:civ_border_color="#FF000000"
+        android:layout_marginTop="20dp"
+        app:civ_border_width="2dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/nameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_picture"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/profleImage"
+        />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/editProfile"
+            android:layout_alignParentRight="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Profile"
+                android:padding="5dp"
+                android:drawablePadding="5dp"
+                android:drawableStart="@drawable/profile"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:layout_below="@id/topLayout"
+        android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/nicnameEdt"
+                android:elevation="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nick-Name"
+                android:clickable="false"
+                android:editable="false"
+                android:inputType="text"
+                android:background="@drawable/secondary_button"
+                android:padding="16dp"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <EditText
+                android:id="@+id/interestsEdt"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Interests"
+                android:elevation="5dp"
+                android:inputType="text"
+                android:clickable="false"
+                android:editable="false"
+                android:padding="16dp"
+                android:background="@drawable/secondary_button"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <EditText
+                android:id="@+id/shortDescEdt"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="15dp"
+                android:hint="Short Description"
+                android:inputType="textMultiLine"
+                android:padding="16dp"
+                android:clickable="false"
+                android:editable="false"
+                android:elevation="5dp"
+                android:background="@drawable/secondary_button"
+                android:textColor="@color/colorPrimary"
+                />
+        <Button
+            android:id="@+id/updateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/secondary_button"
+            android:text="Update Profile"/>
+    </LinearLayout>
+
+</RelativeLayout>
+</ScrollView>

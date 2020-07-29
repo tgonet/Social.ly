@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context=".CreateActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Add Activity"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/act_picture"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="Header Image"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+
+        <ImageButton
+            android:id="@+id/Camera_Createactivity"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/take_photo"
+            android:foregroundGravity="left"
+            android:background="@drawable/camera_button" />
+
+        <ImageButton
+            android:id="@+id/Gallery_select_Createactivity"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/image_gallery"
+            android:foregroundGravity="left"
+            android:background="@drawable/gallery_button" />
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/interest_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:prompt="@string/interest_prompt"
+        android:entries="@array/interest_array"
+        ></Spinner>
+
+    <TextView
+        android:id="@+id/activity_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto"
+        android:text="Activity Name" />
+
+    <EditText
+        android:id="@+id/new_activity_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/act_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Description"
+        />
+
+    <EditText
+        android:id="@+id/new_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/act_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Location"
+        />
+
+    <EditText
+        android:id="@+id/new_actlocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/act_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Time"
+        />
+
+    <EditText
+        android:id="@+id/new_acttime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
+        android:hint="12:00"
+        android:inputType="time"/>
+
+    <TextView
+        android:id="@+id/act_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Date"
+        />
+
+    <EditText
+        android:id="@+id/new_actdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
+        android:ems="10"
+        android:hint="01/12/2000"
+        android:inputType="date"/>
+
+    <Button
+        android:id="@+id/Create_activity_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/create_activity"
+        android:background="@drawable/primary_button"
+        android:shadowColor="#31FFFFFF"
+        android:shadowRadius="0"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>
+</ScrollView>
