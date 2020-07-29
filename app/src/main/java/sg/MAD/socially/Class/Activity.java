@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class Activity implements Serializable {
 
     private String Interest;
-    private String name_register;
+    private String Name_register;
     private String act_date;
     private String act_desc;
     private String act_location;
@@ -23,7 +23,7 @@ public class Activity implements Serializable {
 
     public Activity(String Interest, String name_register, String act_date, String act_desc, String act_location, String act_picture, String act_time, String activity_name, String activityid, String host_id, String profile_image, boolean permission) {
         this.Interest = Interest;
-        this.name_register = name_register;
+        this.Name_register = name_register;
         this.act_date = act_date;
         this.act_desc = act_desc;
         this.act_location = act_location;
@@ -46,11 +46,11 @@ public class Activity implements Serializable {
     }
 
     public String getName_register() {
-        return name_register;
+        return Name_register;
     }
 
     public void setName_register(String name_register) {
-        this.name_register = name_register;
+        this.Name_register = name_register;
     }
 
     public String getAct_date() {
