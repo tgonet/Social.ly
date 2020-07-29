@@ -100,7 +100,7 @@ public class Register2 extends AppCompatActivity {
         Register = findViewById(R.id.Register_register2);
         Nickname = findViewById(R.id.Nickname_register2);
         ShortDesc = findViewById(R.id.Shortdesc_register2);
-       profileImage = findViewById(R.id.profleImage);
+        profileImage = findViewById(R.id.profleImage);
         MultiSpinnerSearch Spinner = findViewById(R.id.Interest_register2);
         //Check for runtime permissions Above 6.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
