@@ -36,9 +36,6 @@ import sg.MAD.socially.ui.Friends.FriendsAdapter;
 public class NotificationsFriendsFragment extends Fragment {
 
     View root;
-    ImageView image;
-    TextView content;
-    TextView duration;
     TextView noNotifications;
     DatabaseReference reference;
     String currentUserId;
@@ -50,9 +47,6 @@ public class NotificationsFriendsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_notifications_friends, container, false);
-        image = root.findViewById(R.id.notification_friend_image);
-        content = root.findViewById(R.id.notification_friend_content);
-        duration = root.findViewById(R.id.notification_friend_duration);
         recyclerView = root.findViewById(R.id.rv_notifications_friends);
         noNotifications = root.findViewById(R.id.nonotifications);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();

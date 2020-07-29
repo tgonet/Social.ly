@@ -63,7 +63,7 @@ public class FriendsAdapter extends ArrayAdapter<User> {
         }
         friendCount.setText(friends + " friends");
 
-        //setting up the recyclerview for interests to be displayed in 'pills' using the grid layout.
+        //setting up the recyclerview for interests to be displayed in 3 'pills' per row using the grid layout.
         ArrayList<String> interest_list = FriendsFragment.removeComma(user.getInterest());
         FriendsInterestAdapter mAdapter = new FriendsInterestAdapter(interest_list);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
