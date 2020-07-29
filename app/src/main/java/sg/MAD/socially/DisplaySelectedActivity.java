@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import java.util.Map;
 
 import sg.MAD.socially.Class.Activity;
 import sg.MAD.socially.Class.NotificationFriend;
+import sg.MAD.socially.Class.User;
 
 public class DisplaySelectedActivity extends AppCompatActivity {
 
@@ -43,21 +45,26 @@ TextView selected_act_date;
 ImageView selected_act_picture;
 ImageView selected_profile_image;
 Button interested_button;
-FirebaseUser user;
-DatabaseReference refer;
+
+//join activity
+FirebaseUser currentUser;
 String activityid;
-Intent intent;
-Bundle bundle;
 Activity selected;
 String interest;
 
+//notification
+DatabaseReference refNotification;
+DatabaseReference refNotification2;
+DatabaseReference currentUserRef;
+String currentUserId;
+
+Intent intent;
+Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent intent;
-        Bundle bundle;
-        Activity selected;
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_selected);
@@ -67,7 +74,7 @@ String interest;
 
         selected = (Activity) bundle.getSerializable("selected");
 
-        selected = (Activity) bundle.getSerializable("selected");
+        Log.d("I LOVE EUGUNESSS",selected.getInterest());
 
         //instantiate views
         selected_Name_register = findViewById(R.id.selected_Name_register);
@@ -98,43 +105,73 @@ String interest;
             @Override
             public void onClick(View v) {
                 InterestedButton();
+
             }
         });
 
     }
 
     private void InterestedButton() {
-        //retrieve user details
-        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
         //retrieve selected activity's id
         interest = selected.getInterest();
-        activityid = selected.getActivityId();
+        activityid = selected.getActivityid();
 
-        //address firebase
+        //get current user id from firebase
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+
+
+        //address firebase and put data into firebase
         FirebaseDatabase.getInstance().getReference().child("Activity").child(interest).child(activityid).child("Joined_users")
-                .child(user.getUid()).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .child(currentUserId).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(getBaseContext(), "Successfully joined activity!", Toast.LENGTH_SHORT).show();
-                    finish();
+
+                    ValueEventListener getUserinfo = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String name = (String) snapshot.child("Name").getValue();
+                            String imageURL = (String) snapshot.child("ImageURL").getValue();
+
+                            //store notification information
+                            NotificationFriend notif = new NotificationFriend();
+                            //custom date format
+                            final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                            //current date and time with format
+                            final String timeNow = dateFormat.format(new Date());
+                            notif.setImageURL(imageURL);
+                            notif.setInfo(name + " has joined your activity!");
+                            notif.setTime(timeNow);
+                            refNotification = FirebaseDatabase.getInstance().getReference();
+                            Log.d("USERS","HOST" + selected.getHost_id());
+                            DatabaseReference notiRef = refNotification.child("Users").child(selected.getHost_id()).child("Activity_Notifications");
+                            //push the notification object into firebase as a child
+                            notiRef.push().setValue(notif);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+
+                    };
+                    databaseRef.child(currentUserId)
+                    .addValueEventListener(getUserinfo);
                 }
+
+
+
                 else {
                     Toast.makeText(getBaseContext(), "Failed to join activity!", Toast.LENGTH_SHORT).show();
                 }
             }
             });
-
-        //store notification information
-        //NotificationFriend notification = new NotificationFriend();
-        //custom date format
-        //final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-        //current date and time with format
-        //final String timeNow = dateFormat.format(new Date());
-        //notification.setImageURL(user.getImageURL());
-        //notification.setInfo(user.getDisplayName() + "has joined ");
-
-
 
     }
 

@@ -6,14 +6,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +57,7 @@ public class Message extends AppCompatActivity {
     EditText message;
     ImageButton send;
     RecyclerView rv;
+    RelativeLayout mainlayout;
     ArrayList<Chat> chatList;
     String profile_url;
 
@@ -102,14 +109,13 @@ public class Message extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 notify = true;
-                String msg = message.getText().toString();
+                String msg = message.getText().toString().trim();
                 if (!msg.equals("")) {
                     //send the text to firebase
                     sendMessage(fuser.getUid(), userid, msg);
                 } else {
                     Toast.makeText(Message.this, "Error in sending message", Toast.LENGTH_SHORT).show();
                 }
-
 
                 message.setText("");
             }
@@ -304,11 +310,6 @@ public class Message extends AppCompatActivity {
     private void showNewEntry(RecyclerView rv, ArrayList<Chat> data){
         //scroll to the last item of the recyclerview
         rv.scrollToPosition(data.size() - 1);
-
-        //auto hide keyboard after entry
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(rv.getWindowToken(), 0);
     }
-
 
 }
