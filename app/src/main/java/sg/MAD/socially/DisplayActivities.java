@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,13 +62,12 @@ public class DisplayActivities extends AppCompatActivity {
                 list.clear(); //clear underlying list
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Activity a = dataSnapshot1.getValue(Activity.class);
-
-                    list.add(a); //add activities retrieved from firebase into arraylist
-
+                    if(!a.getHost_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        list.add(a); //add activities retrieved from firebase into arraylist
+                    }
                 }
                 adapter.notifyDataSetChanged(); //notify that new activities are added in
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(DisplayActivities.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -76,7 +76,6 @@ public class DisplayActivities extends AppCompatActivity {
 
         adapter = new DisplayActivitiesAdapter(DisplayActivities.this, list);
         recyclerView.setAdapter(adapter);
-
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

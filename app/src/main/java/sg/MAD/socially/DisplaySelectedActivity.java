@@ -47,16 +47,14 @@ ImageView selected_profile_image;
 Button interested_button;
 
 //join activity
-FirebaseUser currentUser;
 String activityid;
 Activity selected;
 String interest;
 
 //notification
 DatabaseReference refNotification;
-DatabaseReference refNotification2;
-DatabaseReference currentUserRef;
 String currentUserId;
+String hostId;
 
 Intent intent;
 Bundle bundle;
@@ -74,7 +72,7 @@ Bundle bundle;
 
         selected = (Activity) bundle.getSerializable("selected");
 
-        Log.d("I LOVE EUGUNESSS",selected.getInterest());
+        Log.d("int",selected.getInterest());
 
         //instantiate views
         selected_Name_register = findViewById(R.id.selected_Name_register);
@@ -122,14 +120,12 @@ Bundle bundle;
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-
-
         //address firebase and put data into firebase
         FirebaseDatabase.getInstance().getReference().child("Activity").child(interest).child(activityid).child("Joined_users")
                 .child(currentUserId).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful())  {
                     Toast.makeText(getBaseContext(), "Successfully joined activity!", Toast.LENGTH_SHORT).show();
 
                     ValueEventListener getUserinfo = new ValueEventListener() {
