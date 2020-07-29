@@ -164,44 +164,4 @@ public class Conversation extends AppCompatActivity {
             }
         });
     }
-
-
-    //check for last message
-    private void lastMessage(final String userid, final TextView message){
-        final String[] theLastMessage = {"Empty"};
-        final long[] timeStamp = {0};
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    if (firebaseUser != null && chat != null) {
-                        if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
-                                chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {
-                            theLastMessage[0] = chat.getMessage();
-                            timeStamp[0] = chat.getTimestamp();
-                        }
-                    }
-                }
-
-                if(theLastMessage[0].equals("Empty")){
-                    message.setText("");
-
-                }
-                else {
-                    message.setText(theLastMessage[0]);
-                }
-
-                theLastMessage[0] = "Empty";
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 }
