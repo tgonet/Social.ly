@@ -67,8 +67,7 @@ public class NewChat extends AppCompatActivity {
                     //Check if the friendlist has any string inside as long
                     // as the string is not empty there is at least 1 friend
                     FriendListID = FriendsFragment.removeComma(friendliststring);
-                    /*
-                    if (!friendliststring.isEmpty()) {
+                    /*if (!friendliststring.isEmpty()) {
                         if (friendliststring.contains(",")) {
                             String[] friendList = friendliststring.split(",");
                             for (String i : friendList) {
@@ -77,8 +76,7 @@ public class NewChat extends AppCompatActivity {
                         } else {
                             FriendListID.add(friendliststring);
                         }
-                    }
-                     */
+                    }*/
                 }
             }
 

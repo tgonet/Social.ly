@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.Chat:
                 startActivity(new Intent(MainActivity.this, Conversation.class));
                 return true;
+            case R.id.Account:
+                startActivity(new Intent(MainActivity.this, MyAccount.class));
+                return true;
             case R.id.Logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(MainActivity.this, Start.class);

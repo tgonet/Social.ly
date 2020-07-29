@@ -1,7 +1,6 @@
 package sg.MAD.socially;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -9,11 +8,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -26,33 +23,30 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidbuts.multispinnerfilter.KeyPairBoolData;
-import com.androidbuts.multispinnerfilter.MultiSpinner;
-import com.androidbuts.multispinnerfilter.MultiSpinnerListener;
-import com.androidbuts.multispinnerfilter.MultiSpinnerSearch;
-import com.androidbuts.multispinnerfilter.SpinnerListener;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -61,24 +55,24 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Register2 extends AppCompatActivity {
-
-    Button Register;
-    EditText Nickname, ShortDesc;
-    ImageButton Gallerybutton, Camerabutton;
+public class MyAccount extends AppCompatActivity implements View.OnClickListener{
     CircleImageView profileImage;
+    TextView nameTxt;
     FirebaseAuth auth;
     DatabaseReference reference;
-
+    String userid;
+    ImageView profleImage;
+    EditText nicnameEdt,interestsEdt,shortDescEdt;
+    Button updateProfile;
+    RelativeLayout editProfile;
+    ImageButton backBtn;
+    ImageButton Gallerybutton, Camerabutton;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReferenceFromUrl("gs://socially-943f3.appspot.com");
     public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
@@ -88,154 +82,125 @@ public class Register2 extends AppCompatActivity {
     String mUri;
     private Uri filepath;
     String imageFilePath;
+	ProgressDialog dialog;
     AlertDialog alertDialog;
     private static final int CAMERA_REQUEST_CODE = 1;
-
-    String Interest;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register2);
-        Register = findViewById(R.id.Register_register2);
-        Nickname = findViewById(R.id.Nickname_register2);
-        ShortDesc = findViewById(R.id.Shortdesc_register2);
-       profileImage = findViewById(R.id.profleImage);
-        MultiSpinnerSearch Spinner = findViewById(R.id.Interest_register2);
-        //Check for runtime permissions Above 6.0
+        setContentView(R.layout.activity_my_account);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermission();
         }
+		dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setMessage("Please wait");
+        profileImage = findViewById(R.id.profleImage);
+        nicnameEdt = findViewById(R.id.nicnameEdt);
+        interestsEdt = findViewById(R.id.interestsEdt);
+        shortDescEdt = findViewById(R.id.shortDescEdt);
+        updateProfile = findViewById(R.id.updateBtn);
+        editProfile = findViewById(R.id.editProfile);
+        backBtn = findViewById(R.id.backBtn);
 
-        final List<String> list = Arrays.asList(getResources().getStringArray(R.array.Sports));
-        final List<KeyPairBoolData> listArray0 = new ArrayList<>();
+        updateProfile.setOnClickListener(this);
+        editProfile.setOnClickListener(this);
+        backBtn.setOnClickListener(this);
+        profileImage.setOnClickListener(this);
 
-        Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/profile-placeholder.png?alt=media&token=de632eea-3125-44fb-af7d-a883a82d107c")
-                .placeholder(R.drawable.profile).into(profileImage);
+        nameTxt = findViewById(R.id.nameTxt);
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();  //Current logged in user
+         userid = firebaseUser.getUid();  //Logged in user's ID
 
-        for (int i = 0; i < list.size(); i++) {
-            KeyPairBoolData h = new KeyPairBoolData();
-            h.setId(i + 1);
-            h.setName(list.get(i));
-            h.setSelected(false);
-            listArray0.add(h);
-        }
-        Interest = "";
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        getData();
 
-/***
- * -1 is no by default selection
- * 0 to length will select corresponding values
- */
-        Spinner.setItems(listArray0, -1, new SpinnerListener() {
+
+    }
+
+    private void getData(){
+        reference.child(userid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                hideClickable();
+
+                nameTxt.setText(""+dataSnapshot.child("Name").getValue(String.class));
+                nicnameEdt.setText(""+dataSnapshot.child("NickName").getValue(String.class));
+                interestsEdt.setText(""+dataSnapshot.child("Interest").getValue(String.class));
+                shortDescEdt.setText(""+dataSnapshot.child("ShortDesc").getValue(String.class));
+                       Glide.with(MyAccount.this).load(dataSnapshot.child("ImageURL").getValue(String.class))
+                               .into(profileImage);
+            }
 
             @Override
-            public void onItemsSelected(List<KeyPairBoolData> items) {
-                Interest = "";
-
-                for (int i = 0; i < items.size(); i++) {
-                    if (items.get(i).isSelected()) {
-                        Log.i("Check", i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
-                        Interest += items.get(i).getName() + ",";
-                    }
-                }
-                if (Interest != ""){
-                    Interest = Interest.substring(0, Interest.length() - 1);
-                }
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MyAccount.this,"Error!",Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
 
-        auth = FirebaseAuth.getInstance();
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.backBtn:
+                onBackPressed();
+                break;
+            case R.id.editProfile:
+                editProfileClick();
+                break;
+            case R.id.profleImage:
+                openDialog();
+                break;
+            case R.id.updateBtn:
+                updateProfileData(nicnameEdt.getText().toString(),shortDescEdt.getText().toString(),interestsEdt.getText().toString(),nameTxt.getText().toString());
+                break;
 
-        final String Email = getIntent().getStringExtra("Email");
-        final String Name = getIntent().getStringExtra("Name");
-        final String Password = getIntent().getStringExtra("Password");
-        final String DOB = getIntent().getStringExtra("DOB");
+        }
+    }
 
-        Register.setOnClickListener(new View.OnClickListener() {
+    private void editProfileClick(){
+        updateProfile.setVisibility(View.VISIBLE);
+        editProfile.setVisibility(View.GONE);
+        nicnameEdt.setEnabled(true);
+        interestsEdt.setEnabled(true);
+        shortDescEdt.setEnabled(true);
+    }
+    private void hideClickable(){
+        updateProfile.setVisibility(View.GONE);
+        nicnameEdt.setEnabled(false);
+        interestsEdt.setEnabled(false);
+        shortDescEdt.setEnabled(false);
+    }
+    private void openDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyAccount.this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View dialogView = layoutInflater.inflate(R.layout.button_dialog,null);
+        builder.setView(dialogView);
+        Gallerybutton = dialogView.findViewById(R.id.Gallery_select_Register2);
+        Camerabutton = dialogView.findViewById(R.id.Camera_Register2);
+        alertDialog = builder.create();
+        alertDialog.show();
+        Gallerybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nickname = Nickname.getText().toString();
-                String shortdesc = ShortDesc.getText().toString();
 
-                //Check for validation
-                if (verifyField()){
-                    Register(Name, Email,Password,DOB,nickname,shortdesc);
-                }else{
-                    Toast.makeText(Register2.this, "Fill the required field", Toast.LENGTH_SHORT).show();
-                }
-
+                alertDialog.dismiss();
+                openImage();
             }
         });
 
-       profileImage.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               openDialog();
-           }
-       });
-    }
-
-
-    public void Register(final String Name, final String Email, final String Password, final String DOB, final String Nickname, final String ShortDesc){
-        auth.createUserWithEmailAndPassword(Email,Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        Camerabutton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){  //Checks if task is successful then add the user data to firebase
-                    FirebaseUser firebaseUser = auth.getCurrentUser();  //Current logged in user
-                    String userid = firebaseUser.getUid();  //Logged in user's ID
-
-                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userid); // address in the database to access (/User/$userid)
-
-//                    Add info into hash map for register 2
-                    HashMap<String, String> hashMap = new HashMap<>();
-                    hashMap.put("Id", userid);
-                    hashMap.put("Name", Name);
-                    hashMap.put("NickName",Nickname);
-                    hashMap.put("Password",Password);
-                    hashMap.put("Email", Email);
-                    hashMap.put("DOB",DOB);
-                    hashMap.put("ShortDesc",ShortDesc);
-                    hashMap.put("Interest",Interest);
-                    hashMap.put("Friends", "");
-                    hashMap.put("PendingFriends", "");
-
-
-                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {   //Checks if current task is completed
-                            if(task.isSuccessful()){
-                                uploadImage(Name);
-                                Intent intent = new Intent(Register2.this,MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish(); //Prevents user from coming back to this page
-                            }
-                            else{
-                                Toast.makeText(Register2.this,"You cant register with this info!",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-                else{
-                    try{
-                        throw task.getException();
-                    } catch (FirebaseAuthUserCollisionException existEmail){
-                        Toast.makeText(Register2.this,"Email Id already Exists. Please use different Id or Login.",Toast.LENGTH_SHORT).show();
-                    }catch (FirebaseAuthWeakPasswordException password){
-                        Toast.makeText(Register2.this,"Weak password, Password length > 6.",Toast.LENGTH_SHORT).show();
-                    } catch (FirebaseAuthInvalidCredentialsException mulFormedEmail){
-                        Toast.makeText(Register2.this,"Enter a valid email.",Toast.LENGTH_SHORT).show();
-                    }catch (Exception e) {
-                        e.printStackTrace();
-                        Log.w("Ex",""+e.getMessage());
-                    }
-
-                }
+            public void onClick(View v){
+                alertDialog.dismiss();
+                openCamera();
             }
         });
-    }
 
+    }
     private void openImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -255,7 +220,7 @@ public class Register2 extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if(photoFile != null){
-                    Uri photoURI = FileProvider.getUriForFile(Register2.this, "sg.MAD.socially.provider", photoFile);
+                    Uri photoURI = FileProvider.getUriForFile(MyAccount.this, "sg.MAD.socially.provider", photoFile);
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                             photoURI);
                     startActivityForResult(cameraIntent,
@@ -276,32 +241,7 @@ public class Register2 extends AppCompatActivity {
 
     private void uploadImage(final String Name){
         if(imageUri == null) {
-            //For updating default Image
-            String urlDefault = "https://firebasestorage.googleapis.com/v0/b/socially-943f3.appspot.com/o/profile-placeholder.png?alt=media&token=de632eea-3125-44fb-af7d-a883a82d107c";
-            FirebaseUser fuser = auth.getCurrentUser();
-            reference = FirebaseDatabase.getInstance().getReference("Users").child((fuser.getUid()));
-            HashMap<String,Object> map = new HashMap<>();
-            map.put("ImageURL",urlDefault);
-            reference.updateChildren(map);
-            Log.w("Successful","upload"+urlDefault);
-
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(Name)
-                    .setPhotoUri(Uri.parse(urlDefault))
-                    .build();
-
-            FirebaseUser firebaseUser = auth.getCurrentUser();
-            firebaseUser.updateProfile(profileUpdates)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("Checck", "User profile updated.");
-                            }
-                        }
-                    });
-
-            //imageUri = Uri.parse("content://com.android.providers.media.documents/document/image%3A672111");
+            Toast.makeText(MyAccount.this, "Something went wrong,please try again", Toast.LENGTH_SHORT).show();
         }else {
 
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "."
@@ -344,23 +284,22 @@ public class Register2 extends AppCompatActivity {
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("ImageURL", mUri);
                         reference.updateChildren(map);
+						dialog.dismiss();
+					Toast.makeText(MyAccount.this,"Profile updated successfully",Toast.LENGTH_SHORT).show();
                     } else {
 
-                        Toast.makeText(Register2.this, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyAccount.this, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
 
-                    Toast.makeText(Register2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyAccount.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
-    }/*
-        else{
-            Toast.makeText(Register2.this,"No image selected",Toast.LENGTH_SHORT).show();
-        }*/
+    }
 
     public String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
@@ -412,11 +351,11 @@ public class Register2 extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-           // profileImage.setPadding(2,2,2,2);
+            // profileImage.setPadding(2,2,2,2);
 
             //Toast.makeText(Register2.this,"Gallery Upload: " + imageUri , Toast.LENGTH_SHORT).show();
             if(uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(Register2.this,"Gallery Upload In Progress: " + imageUri ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyAccount.this,"Gallery Upload In Progress: " + imageUri ,Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -433,7 +372,7 @@ public class Register2 extends AppCompatActivity {
                 e.printStackTrace();
             }
             if(uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(Register2.this,"Camera Image Upload in progress",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyAccount.this,"Camera Image Upload in progress",Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -441,15 +380,15 @@ public class Register2 extends AppCompatActivity {
     //Check if camera
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(Register2.this,
+            if (ContextCompat.checkSelfPermission(MyAccount.this,
                     Manifest.permission.READ_EXTERNAL_STORAGE) + ContextCompat
-                    .checkSelfPermission(Register2.this,
+                    .checkSelfPermission(MyAccount.this,
                             Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                if (ActivityCompat.shouldShowRequestPermissionRationale (Register2.this, Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale (Register2.this, Manifest.permission.CAMERA)) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale (MyAccount.this, Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale (MyAccount.this, Manifest.permission.CAMERA)) {
 
-                    Toast.makeText(Register2.this,"Please enable camera permissions",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyAccount.this,"Please enable camera permissions",Toast.LENGTH_SHORT).show();
 
                 } else {
                     requestPermissions(
@@ -477,57 +416,42 @@ public class Register2 extends AppCompatActivity {
                     {
 
                     } else {
-                        Toast.makeText(Register2.this,"Please enable upload image permissions",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyAccount.this,"Please enable upload image permissions",Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
         }
     }
-//Verify field
-    public boolean verifyField(){
-        boolean check = true;
+    public void updateProfileData(final String Nickname, final String ShortDesc, final String Interest, final String Name){
+		dialog.show();
+        FirebaseUser firebaseUser = auth.getCurrentUser();  //Current logged in user
+        String userid = firebaseUser.getUid();  //Logged in user's ID
 
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(userid); // address in the database to access (/User/$userid)
 
-        if(Nickname.getText().toString().trim().length()<1){
-            Nickname.setError("Name cannot be left blank");
-            check = false;
-        }
-        if(ShortDesc.getText().toString().trim().length()<1){
-            ShortDesc.setError("Please describe yourself");
-            check = false;
-        }
-
-        return check;
-    }
-    private void openDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Register2.this);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View dialogView = layoutInflater.inflate(R.layout.button_dialog,null);
-        builder.setView(dialogView);
-        Gallerybutton = dialogView.findViewById(R.id.Gallery_select_Register2);
-        Camerabutton = dialogView.findViewById(R.id.Camera_Register2);
-      alertDialog = builder.create();
-        alertDialog.show();
-        Gallerybutton.setOnClickListener(new View.OnClickListener() {
+//                    Add info into hash map for register 2
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                reference.child("NickName").setValue(Nickname);
+                reference.child("ShortDesc").setValue(ShortDesc);
+                reference.child("Interest").setValue(Interest);
+                if (imageUri!= null){
+                    uploadImage(Name+"_"+System.currentTimeMillis());
+                }else{
+					dialog.dismiss();
+					Toast.makeText(MyAccount.this,"Profile updated successfully",Toast.LENGTH_SHORT).show();
+				}
 
-                alertDialog.dismiss();
-                openImage();
+                
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
-        Camerabutton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                alertDialog.dismiss();
-                openCamera();
-            }
-        });
-
-
-
     }
+
 }
-
-
