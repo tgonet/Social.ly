@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import sg.MAD.socially.Adapter.GridFriendAdapter;
 import sg.MAD.socially.Class.User;
+import sg.MAD.socially.ui.Friends.FriendsFragment;
 
 public class NewChat extends AppCompatActivity {
 
@@ -65,7 +66,8 @@ public class NewChat extends AppCompatActivity {
                     String friendliststring = user.getFriends();
                     //Check if the friendlist has any string inside as long
                     // as the string is not empty there is at least 1 friend
-                    if (!friendliststring.isEmpty()) {
+                    FriendListID = FriendsFragment.removeComma(friendliststring);
+                    /*if (!friendliststring.isEmpty()) {
                         if (friendliststring.contains(",")) {
                             String[] friendList = friendliststring.split(",");
                             for (String i : friendList) {
@@ -74,7 +76,7 @@ public class NewChat extends AppCompatActivity {
                         } else {
                             FriendListID.add(friendliststring);
                         }
-                    }
+                    }*/
                 }
             }
 
