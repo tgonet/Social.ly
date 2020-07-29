@@ -72,22 +72,61 @@ public class Register extends AppCompatActivity {
                 String email = Email.getText().toString();
                 String dob = DOB.getText().toString();
 
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name) || TextUtils.isEmpty(dob)) {  //Prevent registering if fields are empty
+             /*   if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name) || TextUtils.isEmpty(dob)) {  //Prevent registering if fields are empty
                     Toast.makeText(Register.this, "All fields required", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    Intent intent = new Intent(Register.this, Register2.class);
-                    intent.putExtra("Name", Name.getText().toString());
-                    intent.putExtra("Password", Password.getText().toString());
-                    intent.putExtra("Email", Email.getText().toString());
-                    intent.putExtra("DOB", DOB.getText().toString());
-                    startActivity(intent);
-                }
+                else {*/
+                    //Check for validation
+                    if (verifyField()){
+                        Intent intent = new Intent(Register.this, Register2.class);
+                        intent.putExtra("Name", Name.getText().toString());
+                        intent.putExtra("Password", Password.getText().toString());
+                        intent.putExtra("Email", Email.getText().toString());
+                        intent.putExtra("DOB", DOB.getText().toString());
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(Register.this, "All fields required", Toast.LENGTH_SHORT).show();
+                    }
+
+                //}
             }
         });
+    }
+    //Function for verification check
+    public boolean verifyField(){
+        boolean check = true;
+        if (Email.getText().toString().trim().equals("") &&
+                Password.getText().toString().trim().equals("") &&
+                Name.getText().toString().trim().equals("") &&
+                DOB.getText().toString().trim().equals("")){
+            check = false;
+            Email.setError("Email cannot be left blank");
+            Password.setError("Password cannot be left blank");
+            Name.setError("Name cannot be left blank");
+            DOB.setError("DOB cannot be left blank");
+        }
 
+        if(Email.getText().toString().trim().length()<1){
+            Email.setError("Email cannot be left blank");
+            check = false;
+        }else if(!Email.getText().toString().trim().contains("@")){
+            Email.setError("Please enter a valid email");
+            check = false;
+        }
+        if(Password.getText().toString().trim().length()<1){
+            Password.setError("Please enter a valid password");
+            check = false;
+        }
+        if(Name.getText().toString().trim().length()<1){
+            Name.setError("Name cannot be left blank");
+            check = false;
+        }
+        if(DOB.getText().toString().trim().length()<1){
+            DOB.setError("Please Enter Date of Birth");
+            check = false;
+        }
 
-
+        return check;
     }
 }
 
