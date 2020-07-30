@@ -71,6 +71,11 @@
             android:name=".Register"
             android:parentActivityName=".Start"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyAccount"
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -41,8 +41,9 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         String type = remoteMessage.getData().get("type");
+        String receiver = remoteMessage.getData().get("receiver");
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null){
+        if (firebaseUser != null && receiver.equals(firebaseUser.getUid())){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if(type.equals("Message")){
                     sendOreoNotification(remoteMessage);
