@@ -1,5 +1,7 @@
 package sg.MAD.socially.Notifications;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +33,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import sg.MAD.socially.MainActivity;
 import sg.MAD.socially.Message;
@@ -37,30 +41,30 @@ import sg.MAD.socially.R;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
 
+    @SuppressLint("WrongThread")
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         String type = remoteMessage.getData().get("type");
         String receiver = remoteMessage.getData().get("receiver");
+        String profilepicurl = remoteMessage.getData().get("PicUrl");
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null && receiver.equals(firebaseUser.getUid())){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if(type.equals("Message")){
-                    sendOreoNotification(remoteMessage);
+        if(!isAppForeground(this)){
+            if (firebaseUser != null && receiver.equals(firebaseUser.getUid())){
+                if(!type.equals("Message")){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        sendOreoFriendNotification(remoteMessage);
+                    }
+                    else{
+                        sendFriendNotification(remoteMessage);
+                    }
                 }
                 else{
-                    sendOreoFriendNotification(remoteMessage);
-                }
-            }
-            else {
-                if(type.equals("Message")){
-                    sendNotification(remoteMessage);
-                }
-                else{
-                    sendFriendNotification(remoteMessage);
+                    new Tested(remoteMessage).execute(profilepicurl);
                 }
             }
         }
+
     }
 
     //sends a "Got new friend" notification to devices with android version < 8.0
@@ -120,7 +124,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     }
 
     //sends a chat notification to devices with android version > 8.0
-    private void sendOreoNotification(RemoteMessage remoteMessage){
+    private void sendOreoNotification(RemoteMessage remoteMessage,Bitmap bitmap){
         Intent intent;
         PendingIntent pendingIntent;
         Intent replyIntent;
@@ -128,7 +132,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String sender = remoteMessage.getData().get("sender");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
-        final Bitmap bitmap = getBitmapfromUrl(remoteMessage.getData().get("PicUrl"));
+        //final Bitmap bitmap = getBitmapfromUrl(remoteMessage.getData().get("PicUrl"));
 
         //Removes the alphabets in the userid
         int j = Integer.parseInt(sender.replaceAll("[\\D]", ""));
@@ -186,14 +190,14 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     }
 
     //sends a chat notification to devices with android version < 8.0
-    private void sendNotification(RemoteMessage remoteMessage) {
+    private void sendNotification(RemoteMessage remoteMessage,Bitmap bitmap) {
         Intent intent;
         PendingIntent pendingIntent;
         Notification builder;
         String sender = remoteMessage.getData().get("sender");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
-        final Bitmap bitmap = getBitmapfromUrl(remoteMessage.getData().get("PicUrl"));
+        //final Bitmap bitmap = getBitmapfromUrl(remoteMessage.getData().get("PicUrl"));
 
         //Removes the alphabets in the userid
         int j = Integer.parseInt(sender.replaceAll("[\\D]", ""));
@@ -249,6 +253,45 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    //Used for getbitmapfromurl method
+    public class Tested  extends AsyncTask<String , Long, Bitmap> {
+        RemoteMessage RemoteMessage;
+        public Tested( RemoteMessage remoteMessage){
+            RemoteMessage =  remoteMessage;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            Bitmap bitmap = getBitmapfromUrl(params[0]);
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                sendOreoNotification(RemoteMessage,bitmap);
+            }
+            else{
+                sendNotification(RemoteMessage,bitmap);
+            }
+        }
+
+    }
+
+    public static boolean isAppForeground(Context context) {
+
+        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> l = mActivityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo info : l) {
+            if (info.uid == context.getApplicationInfo().uid && info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
