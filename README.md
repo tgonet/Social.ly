@@ -7,17 +7,17 @@ This application is created to allow its users to make new friends.This applicat
 
 
 ## Roles and contribution:
-Ming Zhe - Lead Developer
-Joey - Lead Developer
-Terris - Lead Designer
-Yukie - Lead Developer
+Ming Zhe - Lead Developer </br>
+Aw Joey - Lead Developer </br>
+Terris - Lead Designer </br>
+Yukie - Lead Developer 
 
 ### Class file
 Yukie: ExploreAdapter.java, ExploreFragment.java, DisplayActivities, DisplayActivitiesAdapter, DisplaySelectedActivity, Activity
 
-MingZhe: Chat, Conversation, CreateActivity, GridFriendAdapter, Message, MessageAdapter, NewChat, Useradapter
+MingZhe: Chat, Conversation, CreateActivity, GridFriendAdapter, Message, MessageAdapter, NewChat, UserAdapter, <b>UserChatViewModel, APIService, Client, Data, DirectReplyReceiver, MyFirebaseIdService, MyResponse, OreoNotification, Sender, Token, MyFirebaseMessaging, SplashScreen</b>
 
-Aw Joey: User, FriendsAdapter, FriendsFragment, FriendsViewModel
+Aw Joey: User, FriendsAdapter, FriendsFragment, <b>FriendsInterestAdapter, FriendsInterestViewHolder, NotificationsFriend, NotificationsFragment, NotificationsAdapter, NotificationsFriendsFragment, NotificationsFriendsAdapter, NotificationsFriendsViewHolder</b>
 
 Terris: Register.java, Register2.Java, Login.Java, Start.Java
 
@@ -25,9 +25,9 @@ Terris: Register.java, Register2.Java, Login.Java, Start.Java
 
 Yukie: activity_display_selected.xml, create_activity.xml, display_activities.xml, fragment_explore.xml, activityitem.xml, interestitem.xml
 
-MingZhe: Activity_conversation.xml, Activity_message, Activity_NewChat.xml, chat_left.xml, chat_right.xml,gridfrienditem.xml,useritem.xml
+MingZhe: Activity_conversation.xml, Activity_message, Activity_NewChat.xml, chat_left.xml, chat_right.xml,gridfrienditem.xml, useritem.xml
 
-Aw Joey: fragment_home.xml, fragment_home_addfriend.xml, fragment_home_alert.xml
+Aw Joey: fragment_home.xml, fragment_home_addfriend.xml, fragment_home_alert.xml, <b>fragment_home_addfriend_interest.xml, fragment_notifications.xml, fragment_notifications_activity.xml, fragment_notifications_friends.xml, fragment_notifications_friends_list_item.xml, activity_splash_screen</b>
 
 Terris: activity_login.xml, activity_register.xml, activity_register2.xml, toolbar.xml,topmenu.xml
 
@@ -85,7 +85,7 @@ This activity allows the logged in user to see who he has chat with.The button "
 <img src="/Images/Screenshot_20200607_132748_sg.MAD.socially.jpg" width=40% height= 40%/>
 
 ### New Chat
-This activity will allow users to select a friend to start a conversation. By clicking on a friend the user will be brought to the message activity. 
+This activity will allow users to select a friend to start a conversation. By clicking on a friend the user will be brought to the message activity. </br>
 <img src="/Images/Screenshot_20200607_161231_sg.MAD.socially.jpg" width=40% height= 40%/>
 
 ### Message
