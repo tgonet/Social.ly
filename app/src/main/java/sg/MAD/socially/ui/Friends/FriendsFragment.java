@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -337,7 +338,9 @@ public class FriendsFragment extends Fragment {
 
                     //Current User
                     NotificationFriend notif = new NotificationFriend(); //Create new object to store the notification information
+                    TimeZone tz = TimeZone.getTimeZone("SGT");
                     final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss"); //custom format of date by pattern
+                    sdf.setTimeZone(tz);
                     final String currTime = sdf.format(new Date()); //get current date and time and format it
                     notif.setImageURL(user.getImageURL());
                     notif.setInfo(user.getName() + " is now your friend!");

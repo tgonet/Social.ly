@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import sg.MAD.socially.Class.NotificationFriend;
@@ -47,6 +48,8 @@ public class NotificationFriendsAdapter extends RecyclerView.Adapter<Notificatio
         holder.Content.setText(notif.getInfo()); //display the content of the notification
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss"); //custom format of date by pattern (same as the one in firebase that we pushed)
+        TimeZone tz = TimeZone.getTimeZone("SGT");
+        sdf.setTimeZone(tz);
         String now = sdf.format(new Date()); //get current date and time and format it
         Date notifTime;
         Date currentTime;
