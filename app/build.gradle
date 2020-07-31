@@ -9,7 +9,7 @@ android {
         applicationId "sg.MAD.socially"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 8
+        versionCode 9
         versionName "Final"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

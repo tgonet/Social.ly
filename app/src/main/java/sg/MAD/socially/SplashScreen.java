@@ -44,12 +44,14 @@ public class SplashScreen extends AppCompatActivity {
             }
         }, SPLASH_TIME);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                updateToken(instanceIdResult.getToken());
-            }
-        });
+        if(fuser != null){
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    updateToken(instanceIdResult.getToken());
+                }
+            });
+        }
     }
 
     private void updateToken(String token){
