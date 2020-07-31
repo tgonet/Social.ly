@@ -117,14 +117,21 @@ public class Login extends AppCompatActivity {
         builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-                String email = edtEmail.getText().toString().trim();
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    String email = edtEmail.getText().toString().trim();
+
+                    if(!edtEmail.getText().toString().matches("")) {
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            dialog.dismiss();
+                            Toast.makeText(Login.this, "Reset link sent to your email.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    } else {
+
                         dialog.dismiss();
-                        Toast.makeText(Login.this, "Reset Link send on your email.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Please enter email.", Toast.LENGTH_SHORT).show();
                     }
-                });
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
