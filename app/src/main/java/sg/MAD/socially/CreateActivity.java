@@ -214,13 +214,26 @@ public class CreateActivity extends AppCompatActivity implements AdapterView.OnI
     private void CreateBtn() {
         //Retrieve the input text
         String activityname = ActivityName.getText().toString();
+        if(activityname.isEmpty()){
+            ActivityName.setError("Activity name cannot be left blank");
+        }
         String desc = Desc.getText().toString();
+        if(desc.isEmpty()){
+            Desc.setError("Description cannot be left blank");
+        }
         String location = Location.getText().toString();
+        if(location.isEmpty()){
+           Location.setError("Location cannot be left blank");
+        }
         String time = Time.getText().toString();
+        if(time.isEmpty()){
+            Time.setError("Time cannot be left blank");
+        }
         String date = Date.getText().toString();
-        Log.d("date", date);
-        Log.d("time",time);
-        if (!activityname.isEmpty() || !desc.isEmpty() || !location.isEmpty() || !time.isEmpty() || !date.isEmpty()) {
+        if(date.isEmpty()){
+            Date.setError("Date cannot be left blank");
+        }
+        if (!activityname.isEmpty() && !desc.isEmpty() && !location.isEmpty() && !time.isEmpty() && !date.isEmpty()) {
 
             //Address of the firebase i am pushing data into
             reference = FirebaseDatabase.getInstance().getReference("Activity").child(interest).push();

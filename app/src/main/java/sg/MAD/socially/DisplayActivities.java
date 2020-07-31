@@ -43,6 +43,7 @@ public class DisplayActivities extends AppCompatActivity {
         Createacticitybtn = findViewById(R.id.button_create_activity);
         list = new ArrayList<>();
 
+
         //bring user to create activity
         Createacticitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
