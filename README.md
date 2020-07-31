@@ -44,6 +44,10 @@ Terris: activity_login.xml, activity_register.xml, activity_register2.xml, toolb
 10. Toast
 11. Dialog
 12. Recyclerview
+13. TabLayout/ViewPager2
+14. Phone Notifications Service
+15. Broadcast Receiver
+16. HTTP Post
 
 ## Relevant appendices
 
@@ -113,7 +117,7 @@ This activity allows user to view the activity they selected.
 ![DisplaySelectedActivity_Activity](Images/Screenshot_1591544338.png)
 
 ### Notifications
-This fragment displays two tabs, Friends and Activity. Upon clicking the tab or swiping left/right, the page will change to its respective fragment.
+This fragment uses the ViewPager2 and TabLayout. It displays two tabs, Friends and Activity. Upon clicking the tab or swiping left/right, the page will change to its respective fragment.
 ### Notifications Friends
 This fragment displays the new friends that the user has made and displays the duration added to friend's list. 
 <img src="/Images/Rv_friends.png" width=40% height= 40%/>
