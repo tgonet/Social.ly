@@ -47,6 +47,9 @@ Terris: activity_login.xml, activity_register.xml, activity_register2.xml, toolb
 
 ## Relevant appendices
 
+### Splash Screen
+This activity shows a loading page with our app logo.
+<img src="/Images/SplashScreen" width=40% height= 40%/>
 ### Welcome Screen
 This activity welcomes our users and shows them a welcome message along with a short description of what our app is about. This activity allows the user to register or login.
 
@@ -69,7 +72,7 @@ The toolbar replaces the default App bar to give us more customization on the de
 
 ### Add Friend
 This fragment displays many users, each in a card. Upon swiping the card, another user will be displayed.
-<img src="/Images/AddFriend.png" width=40% height= 40%/>
+<img src="/Images/Swipe_new_pic.jpeg" width=30% height= 30%/>
 
 By swiping left, the previous user will be removed and another user will be displayed.
 
@@ -81,7 +84,7 @@ By swiping right, one of the two events will occur.
 <img src="/Images/AddFriend_Toast.png" width=40% height= 40%/>
 
 ### Conversations
-This activity allows the logged in user to see who he has chat with.The button "Start a new chat" allows users to start the NewChat activity.By clicking on a friend, user will be brought to the message activity.
+This activity allows the logged in user to see who he has chat with.The button "Start a new chat" allows users to start the NewChat activity.By clicking on a friend, user will be brought to the message activity.</br>
 <img src="/Images/Screenshot_20200607_132748_sg.MAD.socially.jpg" width=40% height= 40%/>
 
 ### New Chat
@@ -94,7 +97,7 @@ This activity allows user to send a message to a friend and read the message sen
 
 ### Create an Activity
 This activity allows users to create an activity based on the given fields.
-<img src="/Images/Screenshot_20200607_132852_sg.MAD.socially.jpg)" width=40% height= 40%/>
+<img src="/Images/Screenshot_20200607_132852_sg.MAD.socially.jpg" width=40% height= 40%/>
 
 ### Explore
 This fragment allows users to view the different interests on the app. By clicking on any of the interests, users will be brought to the display activities activity.
@@ -108,3 +111,20 @@ This activity allows users to view activities that users created for each intere
 This activity allows user to view the activity they selected. 
 (Not implemented yet: Button allows interested user to communicate with user who created the selected activity)
 ![DisplaySelectedActivity_Activity](Images/Screenshot_1591544338.png)
+
+### Notifications
+This fragment displays two tabs, Friends and Activity. Upon clicking the tab or swiping left/right, the page will change to its respective fragment.
+#### Notifications Friends
+This fragment displays the new friends that the user has made and displays the duration added to friend's list. 
+<img src="/Images/Rv_friends.png" width=40% height= 40%/>
+
+### Phone Notifications
+This service allows users to receive notifications shown on their phone notifications sheet. This applies to any Android API level.
+#### Phone Friends Notifications
+When both users swipe right, the one that swiped right first will receive a notification that tells him/her that he made a new friend.
+<img src="/Images/Friendsnotification.png" width=40% height= 40%/>
+#### Phone Reply Notifications
+When a user sends the current user a message, he/she will receive a notification that displays the message contents.
+<img src="/Images/Messagenotification.png" width=40% height= 40%/></br>
+The current user can click the "Reply" button to send a message back without entering the app. Afterwhich, the message he/she sends will be displayed.
+<img src="/Images/Replynotification.png" width=40% height= 40%/>
