@@ -119,7 +119,7 @@ public class Login extends AppCompatActivity {
             public void onClick(final DialogInterface dialog, int which) {
                     String email = edtEmail.getText().toString().trim();
 
-                    if(!edtEmail.getText().toString().matches("")) {
+                if (!edtEmail.getText().toString().matches("")) {
                     FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -127,11 +127,11 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, "Reset link sent to your email.", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    } else {
+                } else {
 
-                        dialog.dismiss();
-                        Toast.makeText(Login.this, "Please enter email.", Toast.LENGTH_SHORT).show();
-                    }
+                    dialog.dismiss();
+                    Toast.makeText(Login.this, "Please enter email.", Toast.LENGTH_SHORT).show();
+                }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
