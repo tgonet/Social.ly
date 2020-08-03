@@ -13,7 +13,7 @@ Terris - Lead Designer </br>
 Yukie - Lead Developer 
 
 ### Class file
-Yukie: ExploreAdapter.java, ExploreFragment.java, DisplayActivities, DisplayActivitiesAdapter, DisplaySelectedActivity, Activity
+Yukie: ExploreAdapter.java, ExploreFragment.java, DisplayActivities, DisplayActivitiesAdapter, DisplaySelectedActivity, Activity, NotificationsActivityAdapter, NotificationsActivityFragment, NotificationsFriendsViewHolder
 
 MingZhe: Chat, Conversation, CreateActivity, GridFriendAdapter, Message, MessageAdapter, NewChat, UserAdapter, <b>UserChatViewModel, APIService, Client, Data, DirectReplyReceiver, MyFirebaseIdService, MyResponse, OreoNotification, Sender, Token, MyFirebaseMessaging, SplashScreen</b>
 
@@ -109,7 +109,8 @@ This fragment allows users to view the different interests on the app. By clicki
 
 ### Display Activities
 This activity allows users to view activities that users created for each interest. If users are interested, they can click on the activity.
-![DisplayActivities_Activity](Images/Screenshot_1591544332.png)
+Users can search for specific activity names using the search button.
+![DisplayActivities_Activity](Images/Display_Activities.png)
 
 ### Display Selected Activity
 This activity allows user to view the activity they selected. 
