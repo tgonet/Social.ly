@@ -113,14 +113,17 @@ This activity allows users to view activities that users created for each intere
 
 ### Display Selected Activity
 This activity allows user to view the activity they selected. 
-(Not implemented yet: Button allows interested user to communicate with user who created the selected activity)
-![DisplaySelectedActivity_Activity](Images/Screenshot_1591544338.png)
+The button now allows interested users to join the activity
+![DisplaySelectedActivity_Activity](Images/Joined_Activity.png)
 
 ### Notifications
 This fragment uses the ViewPager2 and TabLayout. It displays two tabs, Friends and Activity. Upon clicking the tab or swiping left/right, the page will change to its respective fragment.
 ### Notifications Friends
 This fragment displays the new friends that the user has made and displays the duration added to friend's list. 
 <img src="/Images/Rv_friends.png" width=40% height= 40%/>
+### Notifications Activity
+This fragment displays the people who have joined the activity this user has created.
+![DisplayActivityNotification](Images/Display_Notifications.png)
 
 ### Phone Notifications
 This service allows users to receive notifications shown on their phone notifications sheet. This applies to any Android API level.
