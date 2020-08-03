@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/backBtn"
-                android:background="@drawable/background_left"/>
+                android:background="@drawable/ic_baseline_arrow_back_24"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 android:text="Edit Profile"
                 android:padding="5dp"
                 android:drawablePadding="5dp"
-                android:drawableStart="@drawable/profile"/>
+                android:drawableStart="@drawable/edit_profile"/>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -94,7 +94,7 @@
                 android:clickable="false"
                 android:editable="false"
                 android:inputType="text"
-                android:background="@drawable/secondary_button"
+                android:background="@drawable/btn_box_shape"
                 android:padding="16dp"
                 android:textColor="@color/colorPrimary"
                 />
@@ -110,24 +110,32 @@
                 android:clickable="false"
                 android:editable="false"
                 android:padding="16dp"
-                android:background="@drawable/secondary_button"
+                android:background="@drawable/btn_box_shape"
                 android:textColor="@color/colorPrimary"
                 />
+        <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
+            android:id="@+id/Spinner"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Interests"
+            />
 
-            <EditText
-                android:id="@+id/shortDescEdt"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginTop="15dp"
-                android:hint="Short Description"
-                android:inputType="textMultiLine"
-                android:padding="16dp"
-                android:clickable="false"
-                android:editable="false"
-                android:elevation="5dp"
-                android:background="@drawable/secondary_button"
-                android:textColor="@color/colorPrimary"
-                />
+        <EditText
+            android:id="@+id/shortDescEdt"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_box_shape"
+            android:clickable="false"
+            android:editable="false"
+            android:elevation="5dp"
+            android:gravity="top"
+            android:hint="Short Description"
+            android:inputType="textMultiLine"
+            android:padding="16dp"
+            android:textColor="@color/colorPrimary" />
         <Button
             android:id="@+id/updateBtn"
             android:layout_width="match_parent"
@@ -135,7 +143,7 @@
             android:visibility="gone"
             android:layout_marginTop="20dp"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/secondary_button"
+            android:background="@drawable/btn_box_shape"
             android:text="Update Profile"/>
     </LinearLayout>
 

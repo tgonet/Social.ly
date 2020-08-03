@@ -59,6 +59,11 @@
 
         </activity>
         <activity
+            android:name=".MyAccount"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
             android:name=".Login"
             android:parentActivityName=".Start"
             android:screenOrientation="portrait" />
@@ -66,7 +71,6 @@
             android:name=".Register"
             android:parentActivityName=".Start"
             android:screenOrientation="portrait" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

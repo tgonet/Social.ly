@@ -6,15 +6,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import sg.MAD.socially.Notifications.Token;
+
 public class SplashScreen extends AppCompatActivity {
 
     int SPLASH_TIME = 2000; //This is 2 seconds
+    FirebaseUser fuser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //set View to layout
         setContentView(R.layout.activity_splash_screen);
+
+        //Getting logged in user details
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
 
         //Display SplashScreen for a period of time (in this case is 2 seconds)
         new Handler().postDelayed(new Runnable() {
@@ -29,5 +43,20 @@ public class SplashScreen extends AppCompatActivity {
 
             }
         }, SPLASH_TIME);
+
+        if(fuser != null){
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    updateToken(instanceIdResult.getToken());
+                }
+            });
+        }
+    }
+
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(fuser.getUid()).setValue(token1);
     }
 }

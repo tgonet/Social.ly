@@ -92,7 +92,6 @@ public class DisplayActivities extends AppCompatActivity {
 
     }
 
-
     private void filter(String text) {
         filtered = new ArrayList<>();
 

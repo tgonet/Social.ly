@@ -66,7 +66,7 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
     //sends a notifcation to the user himself
     private void sendOreoMessage(String Pic){
         String[] bitmapstring = {Pic,FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString()};
-        new Testing(bitmapstring,this).execute(bitmapstring);
+        new Testing(this).execute(bitmapstring);
     }
 
     //the callback function used after getbitmapfromurl
@@ -155,9 +155,8 @@ public class DirectReplyReceiver extends BroadcastReceiver  {
     //Used for getbitmapfromurl method
     public class Testing extends AsyncTask<String, Long, Bitmap[]>{
         DirectReplyReceiver directReply;
-        String[] Bitmap;
-        public Testing(String[] bitmap, DirectReplyReceiver drr){
-            Bitmap = bitmap;
+
+        public Testing(DirectReplyReceiver drr){
             directReply = drr;
         }
 

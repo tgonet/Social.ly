@@ -34,6 +34,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidbuts.multispinnerfilter.KeyPairBoolData;
+import com.androidbuts.multispinnerfilter.MultiSpinnerSearch;
+import com.androidbuts.multispinnerfilter.SpinnerListener;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,8 +58,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,6 +75,7 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
     String userid;
     ImageView profleImage;
     EditText nicnameEdt,interestsEdt,shortDescEdt;
+    MultiSpinnerSearch Spinner;
     Button updateProfile;
     RelativeLayout editProfile;
     ImageButton backBtn;
@@ -84,7 +91,11 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
     String imageFilePath;
 	ProgressDialog dialog;
     AlertDialog alertDialog;
+    List<KeyPairBoolData> listArray0;
+    String Interest;
     private static final int CAMERA_REQUEST_CODE = 1;
+    String myInterest;
+    ArrayList<String> myInterestsList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,12 +104,16 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermission();
         }
+        final List<String> list = Arrays.asList(getResources().getStringArray(R.array.Sports));
+         listArray0 = new ArrayList<>();
+        myInterestsList = new ArrayList<>();
 		dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
         dialog.setMessage("Please wait");
         profileImage = findViewById(R.id.profleImage);
         nicnameEdt = findViewById(R.id.nicnameEdt);
         interestsEdt = findViewById(R.id.interestsEdt);
+        Spinner = findViewById(R.id.Spinner);
         shortDescEdt = findViewById(R.id.shortDescEdt);
         updateProfile = findViewById(R.id.updateBtn);
         editProfile = findViewById(R.id.editProfile);
@@ -116,6 +131,37 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
 
         reference = FirebaseDatabase.getInstance().getReference("Users");
         getData();
+        for (int i = 0; i < list.size(); i++) {
+            KeyPairBoolData h = new KeyPairBoolData();
+            h.setId(i + 1);
+            h.setName(list.get(i));
+            h.setSelected(false);
+
+            listArray0.add(h);
+        }
+        Interest = "";
+
+/***
+ * -1 is no by default selection
+ * 0 to length will select corresponding values
+ */
+        Spinner.setItems(listArray0, -1, new SpinnerListener() {
+
+            @Override
+            public void onItemsSelected(List<KeyPairBoolData> items) {
+                Interest = "";
+
+                for (int i = 0; i < items.size(); i++) {
+                    if (items.get(i).isSelected()) {
+                        Log.i("Check", i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
+                        Interest += items.get(i).getName() + ",";
+                    }
+                }
+                if (Interest != ""){
+                    Interest = Interest.substring(0, Interest.length() - 1);
+                }
+            }
+        });
 
 
     }
@@ -128,8 +174,8 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
 
                 nameTxt.setText(""+dataSnapshot.child("Name").getValue(String.class));
                 nicnameEdt.setText(""+dataSnapshot.child("NickName").getValue(String.class));
-                interestsEdt.setText(""+dataSnapshot.child("Interest").getValue(String.class));
-                shortDescEdt.setText(""+dataSnapshot.child("ShortDesc").getValue(String.class));
+               interestsEdt.setText(""+dataSnapshot.child("Interest").getValue(String.class));
+               shortDescEdt.setText(""+dataSnapshot.child("ShortDesc").getValue(String.class));
                        Glide.with(MyAccount.this).load(dataSnapshot.child("ImageURL").getValue(String.class))
                                .into(profileImage);
             }
@@ -139,6 +185,8 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(MyAccount.this,"Error!",Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
     }
 
@@ -155,7 +203,7 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
                 openDialog();
                 break;
             case R.id.updateBtn:
-                updateProfileData(nicnameEdt.getText().toString(),shortDescEdt.getText().toString(),interestsEdt.getText().toString(),nameTxt.getText().toString());
+                updateProfileData(nicnameEdt.getText().toString(),shortDescEdt.getText().toString(),Interest,nameTxt.getText().toString());
                 break;
 
         }
@@ -165,13 +213,16 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
         updateProfile.setVisibility(View.VISIBLE);
         editProfile.setVisibility(View.GONE);
         nicnameEdt.setEnabled(true);
-        interestsEdt.setEnabled(true);
+        interestsEdt.setVisibility(View.GONE);
+        Spinner.setVisibility(View.VISIBLE);
         shortDescEdt.setEnabled(true);
     }
     private void hideClickable(){
         updateProfile.setVisibility(View.GONE);
         nicnameEdt.setEnabled(false);
         interestsEdt.setEnabled(false);
+        interestsEdt.setVisibility(View.VISIBLE);
+        Spinner.setVisibility(View.GONE);
         shortDescEdt.setEnabled(false);
     }
     private void openDialog() {
