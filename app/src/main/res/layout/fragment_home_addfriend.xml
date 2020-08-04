@@ -111,6 +111,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="TextView"
                 android:textSize="18sp"
@@ -140,6 +141,8 @@
                 android:id="@+id/constraintLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -158,9 +161,9 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView9"
+                    app:layout_constraintEnd_toStartOf="@+id/textView12"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@+id/textView9"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                 <TextView
@@ -172,8 +175,8 @@
                     android:text="Maybe Next Time!"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView11"
-                    app:layout_constraintEnd_toEndOf="@+id/addfriend_no"
-                    app:layout_constraintStart_toStartOf="@+id/addfriend_no"
+                    app:layout_constraintEnd_toStartOf="@+id/textView10"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/addfriend_no" />
 
                 <ImageView
@@ -181,7 +184,6 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
                     android:rotation="180"
                     android:tint="@color/colorAccent"
                     app:backgroundTint="#E6E8E3"
@@ -191,7 +193,6 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.80"
                     app:layout_constraintVertical_chainStyle="packed"
                     app:srcCompat="@drawable/swipe_right" />
 
@@ -221,9 +222,9 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView10"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@+id/textView10"
+                    app:layout_constraintStart_toEndOf="@+id/textView11"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
                 <TextView
@@ -235,9 +236,9 @@
                     android:text="Let's Be Friends!"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView12"
-                    app:layout_constraintEnd_toEndOf="@+id/addfriend_yes"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@+id/addfriend_yes"
+                    app:layout_constraintStart_toEndOf="@+id/textView9"
                     app:layout_constraintTop_toBottomOf="@+id/addfriend_yes" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
