@@ -176,7 +176,7 @@ public class MyAccount extends AppCompatActivity implements View.OnClickListener
                 nicnameEdt.setText(""+dataSnapshot.child("NickName").getValue(String.class));
                interestsEdt.setText(""+dataSnapshot.child("Interest").getValue(String.class));
                shortDescEdt.setText(""+dataSnapshot.child("ShortDesc").getValue(String.class));
-                       Glide.with(MyAccount.this).load(dataSnapshot.child("ImageURL").getValue(String.class))
+                       Glide.with(getApplicationContext()).load(dataSnapshot.child("ImageURL").getValue(String.class))
                                .into(profileImage);
             }
 
